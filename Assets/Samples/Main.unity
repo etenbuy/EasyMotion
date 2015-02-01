@@ -120,7 +120,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 198035434}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 100, y: 100, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -136,6 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3952189594fd1084e832a1f0e3fc6f27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fromCurrent: 0
   from: {x: 100, y: 100}
   to: {x: -100, y: -100}
   delay: 1
@@ -252,7 +253,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c32066f564804c841aed081e36ac598a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  from: {x: 100, y: 0}
+  fromCurrent: 1
+  from: {x: 0, y: 0}
   fromAngle: 90
   rotateAngle: 360
   radius: 100

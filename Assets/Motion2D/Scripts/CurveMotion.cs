@@ -14,6 +14,12 @@ using System.Collections;
 /// </summary>
 public class CurveMotion : MotionBase2D {
     /// <summary>
+    /// 現在位置を始点とするかどうか
+    /// </summary>
+    [SerializeField]
+    private bool fromCurrent = false;
+
+    /// <summary>
     /// 始点
     /// </summary>
     [SerializeField]
@@ -53,6 +59,10 @@ public class CurveMotion : MotionBase2D {
     /// 旋回移動コルーチンを実行する
     /// </summary>
     private void Start() {
+        if ( fromCurrent ) {
+            from = Position2D;
+        }
+
         StartCoroutine(Curve(from, fromAngle, rotateAngle, radius, delay, duration));
     }
 }

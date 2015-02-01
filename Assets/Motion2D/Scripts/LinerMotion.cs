@@ -14,6 +14,12 @@ using System.Collections;
 /// </summary>
 public class LinerMotion : MotionBase2D {
     /// <summary>
+    /// 現在位置を始点とするかどうか
+    /// </summary>
+    [SerializeField]
+    private bool fromCurrent = false;
+
+    /// <summary>
     /// 始点
     /// </summary>
     [SerializeField]
@@ -41,6 +47,10 @@ public class LinerMotion : MotionBase2D {
     /// 直線移動コルーチンを実行する
     /// </summary>
     private void Start() {
+        if ( fromCurrent ) {
+            from = Position2D;
+        }
+
         StartCoroutine(Line(from, to, delay, duration));
     }
 }
