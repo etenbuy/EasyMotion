@@ -1,0 +1,8 @@
+Library/
+Assets/UnityVS/
+Assets/Editor/Template.meta
+Assets/Editor/Template/
+obj/
+Temp/
+UnityVS.EasyMotion.CSharp.Editor.csproj
+UnityVS.EasyMotion.CSharp.csproj
