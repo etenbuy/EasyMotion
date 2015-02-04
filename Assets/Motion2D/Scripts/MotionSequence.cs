@@ -23,28 +23,31 @@ public class MotionSequence : MotionBase2D {
         Curve,
     };
 
+    /// <summary>
+    /// シリアライズ済みモーション
+    /// </summary>
     [Serializable]
-    public class SequenceBase {
+    public class SerializedMotion {
+        // 共通
         public MotionType type;
-        public Vector2 from;
         public float delay;
         public float duration;
-    };
+        public Vector2 from;
 
-    [Serializable]
-    public class SequenceLine : SequenceBase {
+        // 直線移動用
         public Vector2 to;
-    };
 
-    [Serializable]
-    public class SequenceCurve : SequenceBase {
+        // 旋回移動用
         public float fromAngle;
         public float rotateAngle;
         public float radius;
-    };
+    }
 
+    /// <summary>
+    /// モーションの一連の流れ
+    /// </summary>
     [SerializeField]
-    private SequenceBase[] sequence = null;
+    private SerializedMotion[] sequence = null;
 
     /// <summary>
     /// 初期化
