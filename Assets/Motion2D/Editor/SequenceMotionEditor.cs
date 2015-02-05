@@ -28,9 +28,18 @@ public class SequenceMotionEditor : Editor {
         var arraySize = sequence.arraySize;
 
         for ( int i = 0 ; i < arraySize ; ++i ) {
-            //EditorGUILayout.PropertyField(sequence.GetArrayElementAtIndex(i), true);
-
             var elem = sequence.GetArrayElementAtIndex(i);
+
+            // 各動きのヘッダ表示
+            GUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Motion" + (i + 1), GUILayout.Width(100));
+            GUILayout.RepeatButton("Up", GUILayout.Width(60));
+            GUILayout.RepeatButton("Down", GUILayout.Width(60));
+            GUILayout.RepeatButton("Insert New", GUILayout.Width(80));
+            GUILayout.RepeatButton("Remove", GUILayout.Width(80));
+            GUILayout.EndHorizontal();
+
+            ++EditorGUI.indentLevel;
 
             // モーション共通のGUI表示
             EditorGUILayout.PropertyField(elem.FindPropertyRelative("type"));
@@ -55,6 +64,13 @@ public class SequenceMotionEditor : Editor {
             default:
                 break;
             }
+
+            --EditorGUI.indentLevel;
+        }
+
+        if ( arraySize == 0 ) {
+            // 動きが存在しない場合は新規追加ボタンのみ表示
+            GUILayout.RepeatButton("Insert New", GUILayout.Width(80));
         }
 
         serializedObject.ApplyModifiedProperties();
