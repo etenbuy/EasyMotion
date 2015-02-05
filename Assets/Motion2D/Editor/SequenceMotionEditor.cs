@@ -17,27 +17,39 @@ using System.Collections.Generic;
 /// </summary>
 [CustomEditor(typeof(MotionSequence))]
 public class SequenceMotionEditor : Editor {
+    private bool[] expansion;
+
     /// <summary>
     /// MotionSequenceのインスペクタ上のレイアウト
     /// </summary>
     public override void OnInspectorGUI() {
         serializedObject.Update();
 
-        // 配列UIを動的表示する
+        // 各モーションの格納状態更新
         var sequence = serializedObject.FindProperty("sequence");
         var arraySize = sequence.arraySize;
 
+        if ( expansion == null || expansion.Length != arraySize ) {
+            expansion = new bool[arraySize];
+        }
+
+        // 配列UIを動的表示する
         for ( int i = 0 ; i < arraySize ; ++i ) {
             var elem = sequence.GetArrayElementAtIndex(i);
 
             // 各動きのヘッダ表示
             GUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Motion" + (i + 1), GUILayout.Width(100));
+            expansion[i] = EditorGUILayout.Foldout(expansion[i], "Motion" + (i + 1));
+
             GUILayout.RepeatButton("Up", GUILayout.Width(60));
             GUILayout.RepeatButton("Down", GUILayout.Width(60));
             GUILayout.RepeatButton("Insert New", GUILayout.Width(80));
             GUILayout.RepeatButton("Remove", GUILayout.Width(80));
             GUILayout.EndHorizontal();
+
+            if ( !expansion[i] ) {
+                continue;
+            }
 
             ++EditorGUI.indentLevel;
 
@@ -49,6 +61,10 @@ public class SequenceMotionEditor : Editor {
 
             // モーション個別のGUI表示
             switch ( (MotionSequence.MotionType)elem.FindPropertyRelative("type").enumValueIndex ) {
+            case MotionSequence.MotionType.Base:
+                // 基本
+                break;
+
             case MotionSequence.MotionType.Line:
                 // 直線
                 EditorGUILayout.PropertyField(elem.FindPropertyRelative("to"));
