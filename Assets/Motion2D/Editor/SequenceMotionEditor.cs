@@ -17,7 +17,33 @@ using System.Collections.Generic;
 /// </summary>
 [CustomEditor(typeof(MotionSequence))]
 public class SequenceMotionEditor : Editor {
-    private bool[] expansion;
+    private struct MotionGUI {
+        public bool expansion;
+        public bool up;
+        public bool upPrev;
+    };
+
+    private MotionGUI[] motionGui;
+
+    //private void OnGUI() {
+    //    for ( int i = 0 ; i < motionGui.Length ; ++i ) {
+    //        var gui = motionGui[i];
+
+    //        if ( !gui.upPrev && gui.up ) {
+    //            OnUp();
+    //        }
+
+    //        gui.upPrev = gui.up;
+
+    //        motionGui[i] = gui;
+    //    }
+
+    //    //if ( expansion[i].up && !upPrev ) {
+    //    //    // TODO 押した瞬間だけ反応するようにしたい
+    //    //    OnUp();
+    //    //}
+
+    //}
 
     /// <summary>
     /// MotionSequenceのインスペクタ上のレイアウト
@@ -29,8 +55,8 @@ public class SequenceMotionEditor : Editor {
         var sequence = serializedObject.FindProperty("sequence");
         var arraySize = sequence.arraySize;
 
-        if ( expansion == null || expansion.Length != arraySize ) {
-            expansion = new bool[arraySize];
+        if ( motionGui == null ) {
+            motionGui = new MotionGUI[arraySize];
         }
 
         // 配列UIを動的表示する
@@ -39,15 +65,15 @@ public class SequenceMotionEditor : Editor {
 
             // 各動きのヘッダ表示
             GUILayout.BeginHorizontal();
-            expansion[i] = EditorGUILayout.Foldout(expansion[i], "Motion" + (i + 1));
+            motionGui[i].expansion = EditorGUILayout.Foldout(motionGui[i].expansion, "Motion" + (i + 1));
 
-            GUILayout.RepeatButton("Up", GUILayout.Width(60));
             GUILayout.RepeatButton("Down", GUILayout.Width(60));
             GUILayout.RepeatButton("Insert New", GUILayout.Width(80));
             GUILayout.RepeatButton("Remove", GUILayout.Width(80));
             GUILayout.EndHorizontal();
 
-            if ( !expansion[i] ) {
+            if ( !motionGui[i].expansion ) {
+                // 折りたたまれていたら以降は非表示
                 continue;
             }
 
@@ -61,10 +87,6 @@ public class SequenceMotionEditor : Editor {
 
             // モーション個別のGUI表示
             switch ( (MotionSequence.MotionType)elem.FindPropertyRelative("type").enumValueIndex ) {
-            case MotionSequence.MotionType.Base:
-                // 基本
-                break;
-
             case MotionSequence.MotionType.Line:
                 // 直線
                 EditorGUILayout.PropertyField(elem.FindPropertyRelative("to"));
@@ -90,5 +112,12 @@ public class SequenceMotionEditor : Editor {
         }
 
         serializedObject.ApplyModifiedProperties();
+    }
+
+    /// <summary>
+    /// 上移動ボタンがクリックされた
+    /// </summary>
+    private void OnUp() {
+        Debug.Log("OnUp");
     }
 }

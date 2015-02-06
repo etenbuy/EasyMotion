@@ -47,7 +47,7 @@ public class MotionSequence : MotionBase2D {
     /// ƒ‚[ƒVƒ‡ƒ“‚Ìˆê˜A‚Ì—¬‚ê
     /// </summary>
     [SerializeField]
-    private SerializedMotion[] sequence = null;
+    private SerializedMotion[] sequence;
 
     /// <summary>
     /// ‰Šú‰»
