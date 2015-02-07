@@ -67,12 +67,6 @@ public class SequenceMotionEditor : Editor {
             GUILayout.BeginHorizontal();
             motionGui[i].expansion = EditorGUILayout.Foldout(motionGui[i].expansion, "Motion" + (i + 1));
 
-            var upPrev = motionGui[i].up;
-            motionGui[i].up = GUILayout.RepeatButton("Up", GUILayout.Width(60));
-            if ( !upPrev && motionGui[i].up ) {
-                OnUp();
-            }
-
             GUILayout.RepeatButton("Down", GUILayout.Width(60));
             GUILayout.RepeatButton("Insert New", GUILayout.Width(80));
             GUILayout.RepeatButton("Remove", GUILayout.Width(80));
