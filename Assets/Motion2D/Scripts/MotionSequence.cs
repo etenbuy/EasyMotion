@@ -82,23 +82,14 @@ public class MotionSequence : MotionBase2D {
     }
 
     /// <summary>
-    /// 初期化
-    /// </summary>
-    private void Start() {
-        StartCoroutine(ExecuteMotion());
-    }
-
-    /// <summary>
     /// モーションシーケンスを実行する
     /// </summary>
-    private IEnumerator ExecuteMotion() {
+    private IEnumerator Start() {
         foreach ( var motion in sequence ) {
             switch ( motion.type ) {
             case MotionType.Line:
                 // 直線移動
-                Debug.Log("MotionType.Line start");
                 yield return StartCoroutine(Line(motion.from, motion.to, motion.delay, motion.duration));
-                Debug.Log("MotionType.Line end");
                 break;
 
             case MotionType.Curve:
