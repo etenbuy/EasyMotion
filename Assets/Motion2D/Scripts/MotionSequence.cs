@@ -7,8 +7,9 @@
 //                                                                                               //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 using UnityEngine;
-using System.Collections;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 /// <summary>
 /// 連続したモーション
@@ -47,7 +48,38 @@ public class MotionSequence : MotionBase2D {
     /// モーションの一連の流れ
     /// </summary>
     [SerializeField]
-    private SerializedMotion[] sequence;
+    public SerializedMotion[] sequence;
+
+    /// <summary>
+    /// モーションを入れ替える
+    /// </summary>
+    /// <param name="index1"></param>
+    /// <param name="index2"></param>
+    public void Replace(int index1, int index2) {
+        var tmp = sequence[index1];
+        sequence[index1] = sequence[index2];
+        sequence[index2] = tmp;
+    }
+
+    /// <summary>
+    /// 新規モーションを指定位置に挿入する
+    /// </summary>
+    /// <param name="index"></param>
+    public void InsertNew(int index) {
+        var newSequence = new List<SerializedMotion>(sequence);
+        newSequence.Insert(index, new SerializedMotion());
+        sequence = newSequence.ToArray();
+    }
+
+    /// <summary>
+    /// 指定位置のモーションを削除する
+    /// </summary>
+    /// <param name="index"></param>
+    public void Remove(int index) {
+        var newSequence = new List<SerializedMotion>(sequence);
+        newSequence.RemoveAt(index);
+        sequence = newSequence.ToArray();
+    }
 
     /// <summary>
     /// 初期化

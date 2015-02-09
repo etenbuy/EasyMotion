@@ -17,11 +17,7 @@ using System.Collections.Generic;
 /// </summary>
 [CustomEditor(typeof(MotionSequence))]
 public class SequenceMotionEditor : Editor {
-    private struct MotionGUI {
-        public bool expansion;
-    };
-
-    private MotionGUI[] motionGui;
+    private bool[] expansion;
 
     /// <summary>
     /// MotionSequenceのインスペクタ上のレイアウト
@@ -31,19 +27,18 @@ public class SequenceMotionEditor : Editor {
 
         // 各モーションの格納状態更新
         var sequence = serializedObject.FindProperty("sequence");
-        var arraySize = sequence.arraySize;
 
-        if ( motionGui == null ) {
-            motionGui = new MotionGUI[arraySize];
+        if ( expansion == null ) {
+            expansion = new bool[sequence.arraySize];
         }
 
         // 配列UIを動的表示する
-        for ( int i = 0 ; i < arraySize ; ++i ) {
+        for ( int i = 0 ; i < sequence.arraySize ; ++i ) {
             var elem = sequence.GetArrayElementAtIndex(i);
 
             // 各動きのヘッダ表示
             GUILayout.BeginHorizontal();
-            motionGui[i].expansion = EditorGUILayout.Foldout(motionGui[i].expansion, "Motion" + (i + 1));
+            expansion[i] = EditorGUILayout.Foldout(expansion[i], "Motion" + (i + 1));
 
             if ( GUILayout.Button("Up", GUILayout.Width(60)) ) {
                 OnUp(i);
@@ -53,13 +48,17 @@ public class SequenceMotionEditor : Editor {
             }
             if ( GUILayout.Button("Insert New", GUILayout.Width(80)) ) {
                 OnInsertNew(i);
+                serializedObject.Update();
             }
             if ( GUILayout.Button("Remove", GUILayout.Width(80)) ) {
-                OnRemove(i);
+                OnRemove(i--);
+                GUILayout.EndHorizontal();
+                serializedObject.Update();
+                continue;
             }
             GUILayout.EndHorizontal();
 
-            if ( !motionGui[i].expansion ) {
+            if ( !expansion[i] ) {
                 // 折りたたまれていたら以降は非表示
                 continue;
             }
@@ -93,9 +92,11 @@ public class SequenceMotionEditor : Editor {
             --EditorGUI.indentLevel;
         }
 
-        if ( arraySize == 0 ) {
+        if ( sequence.arraySize == 0 ) {
             // 動きが存在しない場合は新規追加ボタンのみ表示
-            GUILayout.RepeatButton("Insert New", GUILayout.Width(80));
+            if ( GUILayout.RepeatButton("Insert New", GUILayout.Width(80)) ) {
+                OnInsertNew(0);
+            }
         }
 
         serializedObject.ApplyModifiedProperties();
@@ -107,6 +108,12 @@ public class SequenceMotionEditor : Editor {
     /// <param name="index">モーションのインデックス</param>
     private void OnUp(int index) {
         Debug.Log("OnUp : " + index);
+
+        if ( index == 0 ) {
+            return;
+        }
+
+        Replace(index, index - 1);
     }
 
     /// <summary>
@@ -115,6 +122,12 @@ public class SequenceMotionEditor : Editor {
     /// <param name="index">モーションのインデックス</param>
     private void OnDown(int index) {
         Debug.Log("OnDown : " + index);
+
+        if ( index >= expansion.Length - 1 ) {
+            return;
+        }
+
+        Replace(index, index + 1);
     }
 
     /// <summary>
@@ -123,6 +136,12 @@ public class SequenceMotionEditor : Editor {
     /// <param name="index">モーションのインデックス</param>
     private void OnInsertNew(int index) {
         Debug.Log("OnInsertNew : " + index);
+
+        (target as MotionSequence).InsertNew(index);
+
+        var newExpansion = new List<bool>(expansion);
+        newExpansion.Insert(index, false);
+        expansion = newExpansion.ToArray();
     }
 
     /// <summary>
@@ -131,5 +150,24 @@ public class SequenceMotionEditor : Editor {
     /// <param name="index">モーションのインデックス</param>
     private void OnRemove(int index) {
         Debug.Log("OnRemove : " + index);
+
+        (target as MotionSequence).Remove(index);
+
+        var newExpansion = new List<bool>(expansion);
+        newExpansion.RemoveAt(index);
+        expansion = newExpansion.ToArray();
+    }
+
+    /// <summary>
+    /// モーションを入れ替える
+    /// </summary>
+    /// <param name="index1"></param>
+    /// <param name="index2"></param>
+    private void Replace(int index1, int index2) {
+        (target as MotionSequence).Replace(index1, index2);
+
+        var tmp = expansion[index1];
+        expansion[index1] = expansion[index2];
+        expansion[index2] = tmp;
     }
 }
