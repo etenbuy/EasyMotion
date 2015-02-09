@@ -33,6 +33,7 @@ public class MotionSequence : MotionBase2D {
         public MotionType type;
         public float delay;
         public float duration;
+        public bool fromCurrent = true;
         public Vector2 from;
 
         // íºê¸à⁄ìÆóp
@@ -86,15 +87,17 @@ public class MotionSequence : MotionBase2D {
     /// </summary>
     private IEnumerator Start() {
         foreach ( var motion in sequence ) {
+            var from = motion.fromCurrent ? Position2D : motion.from;
+
             switch ( motion.type ) {
             case MotionType.Line:
                 // íºê¸à⁄ìÆ
-                yield return StartCoroutine(Line(motion.from, motion.to, motion.delay, motion.duration));
+                yield return StartCoroutine(Line(from, motion.to, motion.delay, motion.duration));
                 break;
 
             case MotionType.Curve:
                 // ê˘âÒà⁄ìÆ
-                yield return StartCoroutine(Curve(motion.from, motion.fromAngle, motion.rotateAngle, motion.radius, motion.delay, motion.duration));
+                yield return StartCoroutine(Curve(from, motion.fromAngle, motion.rotateAngle, motion.radius, motion.delay, motion.duration));
                 break;
 
             default:

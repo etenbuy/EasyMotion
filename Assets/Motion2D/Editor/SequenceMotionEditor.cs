@@ -69,7 +69,13 @@ public class SequenceMotionEditor : Editor {
             EditorGUILayout.PropertyField(elem.FindPropertyRelative("type"));
             EditorGUILayout.PropertyField(elem.FindPropertyRelative("delay"));
             EditorGUILayout.PropertyField(elem.FindPropertyRelative("duration"));
+
+            var fromCurrent = elem.FindPropertyRelative("fromCurrent");
+            EditorGUILayout.PropertyField(fromCurrent);
+
+            EditorGUI.BeginDisabledGroup(fromCurrent.boolValue);
             EditorGUILayout.PropertyField(elem.FindPropertyRelative("from"));
+            EditorGUI.EndDisabledGroup();
 
             // ÉÇÅ[ÉVÉáÉìå¬ï ÇÃGUIï\é¶
             switch ( (MotionSequence.MotionType)elem.FindPropertyRelative("type").enumValueIndex ) {
