@@ -19,31 +19,9 @@ using System.Collections.Generic;
 public class SequenceMotionEditor : Editor {
     private struct MotionGUI {
         public bool expansion;
-        public bool up;
-        public bool upPrev;
     };
 
     private MotionGUI[] motionGui;
-
-    //private void OnGUI() {
-    //    for ( int i = 0 ; i < motionGui.Length ; ++i ) {
-    //        var gui = motionGui[i];
-
-    //        if ( !gui.upPrev && gui.up ) {
-    //            OnUp();
-    //        }
-
-    //        gui.upPrev = gui.up;
-
-    //        motionGui[i] = gui;
-    //    }
-
-    //    //if ( expansion[i].up && !upPrev ) {
-    //    //    // TODO 押した瞬間だけ反応するようにしたい
-    //    //    OnUp();
-    //    //}
-
-    //}
 
     /// <summary>
     /// MotionSequenceのインスペクタ上のレイアウト
@@ -67,15 +45,18 @@ public class SequenceMotionEditor : Editor {
             GUILayout.BeginHorizontal();
             motionGui[i].expansion = EditorGUILayout.Foldout(motionGui[i].expansion, "Motion" + (i + 1));
 
-            var upPrev = motionGui[i].up;
-            motionGui[i].up = GUILayout.RepeatButton("Up", GUILayout.Width(60));
-            if ( !upPrev && motionGui[i].up ) {
-                OnUp();
+            if ( GUILayout.Button("Up", GUILayout.Width(60)) ) {
+                OnUp(i);
             }
-
-            GUILayout.RepeatButton("Down", GUILayout.Width(60));
-            GUILayout.RepeatButton("Insert New", GUILayout.Width(80));
-            GUILayout.RepeatButton("Remove", GUILayout.Width(80));
+            if ( GUILayout.Button("Down", GUILayout.Width(60)) ) {
+                OnDown(i);
+            }
+            if ( GUILayout.Button("Insert New", GUILayout.Width(80)) ) {
+                OnInsertNew(i);
+            }
+            if ( GUILayout.Button("Remove", GUILayout.Width(80)) ) {
+                OnRemove(i);
+            }
             GUILayout.EndHorizontal();
 
             if ( !motionGui[i].expansion ) {
@@ -123,7 +104,32 @@ public class SequenceMotionEditor : Editor {
     /// <summary>
     /// 上移動ボタンがクリックされた
     /// </summary>
-    private void OnUp() {
-        Debug.Log("OnUp");
+    /// <param name="index">モーションのインデックス</param>
+    private void OnUp(int index) {
+        Debug.Log("OnUp : " + index);
+    }
+
+    /// <summary>
+    /// 下移動ボタンがクリックされた
+    /// </summary>
+    /// <param name="index">モーションのインデックス</param>
+    private void OnDown(int index) {
+        Debug.Log("OnDown : " + index);
+    }
+
+    /// <summary>
+    /// 挿入ボタンがクリックされた
+    /// </summary>
+    /// <param name="index">モーションのインデックス</param>
+    private void OnInsertNew(int index) {
+        Debug.Log("OnInsertNew : " + index);
+    }
+
+    /// <summary>
+    /// 削除ボタンがクリックされた
+    /// </summary>
+    /// <param name="index">モーションのインデックス</param>
+    private void OnRemove(int index) {
+        Debug.Log("OnRemove : " + index);
     }
 }
