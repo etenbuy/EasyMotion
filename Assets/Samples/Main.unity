@@ -84,6 +84,7 @@ GameObject:
   - 4: {fileID: 198035436}
   - 212: {fileID: 198035435}
   - 114: {fileID: 198035437}
+  - 61: {fileID: 198035438}
   m_Layer: 0
   m_Name: Line
   m_TagString: Untagged
@@ -141,6 +142,17 @@ MonoBehaviour:
   to: {x: -100, y: -100}
   delay: 1
   duration: 3
+--- !u!61 &198035438
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 198035434}
+  m_Enabled: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Size: {x: 48, y: 48}
+  m_Center: {x: 0, y: 0}
 --- !u!1 &365669666
 GameObject:
   m_ObjectHideFlags: 0
