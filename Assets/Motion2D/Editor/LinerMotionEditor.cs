@@ -6,8 +6,8 @@
 //  Desc    :   直線モーションエディタ拡張。                                                     //
 //                                                                                               //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-using UnityEditor;
 using UnityEngine;
+using UnityEditor;
 
 /// <summary>
 /// 直線モーションエディタ拡張
@@ -49,23 +49,17 @@ public class LinerMotionEditor : Editor {
     }
 
     /// <summary>
-    /// シーン上の描画
+    /// 軌跡の描画
     /// </summary>
     /// <param name="sceneView"></param>
     private void OnSceneView(SceneView sceneView) {
-        //var com = target as LinerMotion;
+        Handles.BeginGUI();
 
-        //Handles.BeginGUI();
+        var from = HandleUtility.WorldToGUIPoint(serializedObject.FindProperty("from").vector2Value);
+        var to = HandleUtility.WorldToGUIPoint(serializedObject.FindProperty("to").vector2Value);
 
-        //Vector3 from = serializedObject.FindProperty("from").vector2Value;
-        //Vector3 to = serializedObject.FindProperty("to").vector2Value;
-        ////from.z = com.transform.localPosition.z;
-        ////to.z = com.transform.localPosition.z;
+        Handles.DrawLine(from, to);
 
-        //var sceneCamera = SceneView.currentDrawingSceneView.camera;
-
-        //Handles.DrawLine(from, to);
-
-        //Handles.EndGUI();
+        Handles.EndGUI();
     }
 }
