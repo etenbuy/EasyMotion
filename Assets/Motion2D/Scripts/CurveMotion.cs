@@ -81,26 +81,21 @@ public class CurveMotion : MotionBase2D {
         var fromCos = Mathf.Cos(fromAngleRad);
         var rotateAngleRad = rotateAngle * Mathf.Deg2Rad;
 
-        // ï`âÊçœÇ›ÉtÉâÉO
-        bool draw = false;
-
         // énì_åvéZ
         var fromPos = (fromCurrent && !Application.isPlaying) ? (Vector2)transform.localPosition : from;
 
         // ãOê’ÇÃï`âÊ
         for ( int i = 0 ; i < POINT_NUM ; ++i ) {
-            var curAngle = 2 * Mathf.PI * i / POINT_NUM;
-            var nextAngle = 2 * Mathf.PI * (i + 1) / POINT_NUM;
+            var curAngle = 2 * Mathf.PI * i / POINT_NUM + fromAngleRad;
+            var nextAngle = 2 * Mathf.PI * (i + 1) / POINT_NUM + fromAngleRad;
 
             // ï`âÊîÕàÕäOÇÃäpìxÇ»ÇÁâΩÇ‡ÇµÇ»Ç¢
-            if ( curAngle < fromAngleRad || curAngle > fromAngleRad + rotateAngleRad ) {
+            if ( curAngle > fromAngleRad + rotateAngleRad ) {
                 continue;
             }
 
             // â~å ÇÃí[ÇÃÇ∏ÇÍï‚ê≥
-            if ( !draw ) {
-                curAngle = fromAngleRad;
-            } else if ( nextAngle > fromAngleRad + rotateAngleRad ) {
+            if ( nextAngle > fromAngleRad + rotateAngleRad ) {
                 nextAngle = fromAngleRad + rotateAngleRad;
             }
 
@@ -108,8 +103,6 @@ public class CurveMotion : MotionBase2D {
             Gizmos.DrawLine(
                 fromPos + new Vector2(-fromSin + Mathf.Sin(curAngle), fromCos - Mathf.Cos(curAngle)) * radius,
                 fromPos + new Vector2(-fromSin + Mathf.Sin(nextAngle), fromCos - Mathf.Cos(nextAngle)) * radius);
-
-            draw = true;
         }
     }
 }
