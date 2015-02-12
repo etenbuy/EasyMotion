@@ -120,4 +120,42 @@ public class MotionBase2D : MonoBehaviour {
             );
         }
     }
+
+    /// <summary>
+    /// 矢印の矢の部分の描画
+    /// </summary>
+    /// <param name="from"></param>
+    /// <param name="angle"></param>
+    protected void DrawArrowCap(Vector2 from, float angle) {
+        var sceneCamera = UnityEditor.SceneView.lastActiveSceneView.camera;
+        var scale = sceneCamera.orthographicSize / sceneCamera.pixelHeight;
+
+        Mesh mesh = new Mesh();
+
+        mesh.vertices = new Vector3[3] {
+            new Vector3( 0, -10) * scale,
+            new Vector3( 0,  10) * scale,
+            new Vector3( 20, 0 ) * scale
+        };
+
+        mesh.triangles = new int[] {
+            0, 1, 2
+        };
+
+        mesh.normals = new Vector3[] {
+            Vector3.forward,
+            Vector3.forward,
+            Vector3.forward,
+        };
+
+        mesh.colors = new Color[] {
+            Color.cyan,
+            Color.cyan,
+            Color.cyan,
+        };
+
+        Graphics.DrawMeshNow(mesh, from, Quaternion.Euler(0, 0, angle));
+
+        DestroyImmediate(mesh);
+    }
 }

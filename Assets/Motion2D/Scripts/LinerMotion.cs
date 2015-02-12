@@ -65,5 +65,9 @@ public class LinerMotion : MotionBase2D {
 
         // 直線の描画
         Gizmos.DrawLine(fromPos, to);
+
+        // 矢印の描画
+        var dir = to - fromPos;
+        DrawArrowCap(to, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
     }
 }

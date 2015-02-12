@@ -80,6 +80,7 @@ public class CurveMotion : MotionBase2D {
         var fromSin = Mathf.Sin(fromAngleRad);
         var fromCos = Mathf.Cos(fromAngleRad);
         var rotateAngleRad = rotateAngle * Mathf.Deg2Rad;
+        var toAngleRad = fromAngleRad + rotateAngleRad;
 
         // Žn“_ŒvŽZ
         var fromPos = (fromCurrent && !Application.isPlaying) ? (Vector2)transform.localPosition : from;
@@ -90,13 +91,13 @@ public class CurveMotion : MotionBase2D {
             var nextAngle = 2 * Mathf.PI * (i + 1) / POINT_NUM + fromAngleRad;
 
             // •`‰æ”ÍˆÍŠO‚ÌŠp“x‚È‚ç‰½‚à‚µ‚È‚¢
-            if ( curAngle > fromAngleRad + rotateAngleRad ) {
+            if ( curAngle > toAngleRad ) {
                 continue;
             }
 
             // ‰~ŒÊ‚Ì’[‚Ì‚¸‚ê•â³
-            if ( nextAngle > fromAngleRad + rotateAngleRad ) {
-                nextAngle = fromAngleRad + rotateAngleRad;
+            if ( nextAngle > toAngleRad ) {
+                nextAngle = toAngleRad;
             }
 
             // ‰~ŒÊ‚Ì•`‰æ
@@ -104,5 +105,9 @@ public class CurveMotion : MotionBase2D {
                 fromPos + new Vector2(-fromSin + Mathf.Sin(curAngle), fromCos - Mathf.Cos(curAngle)) * radius,
                 fromPos + new Vector2(-fromSin + Mathf.Sin(nextAngle), fromCos - Mathf.Cos(nextAngle)) * radius);
         }
+
+        // –îˆó‚Ì•`‰æ
+        var to = fromPos + new Vector2(-fromSin + Mathf.Sin(toAngleRad), fromCos - Mathf.Cos(toAngleRad)) * radius;
+        DrawArrowCap(to, toAngleRad * Mathf.Rad2Deg);
     }
 }
