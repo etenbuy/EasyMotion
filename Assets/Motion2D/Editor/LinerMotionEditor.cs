@@ -15,20 +15,6 @@ using UnityEditor;
 [CustomEditor(typeof(LinerMotion))]
 public class LinerMotionEditor : Editor {
     /// <summary>
-    /// 初期化
-    /// </summary>
-    private void Awake() {
-        SceneView.onSceneGUIDelegate += OnSceneView;
-    }
-
-    /// <summary>
-    /// 後処理
-    /// </summary>
-    private void OnDestroy() {
-        SceneView.onSceneGUIDelegate -= OnSceneView;
-    }
-
-    /// <summary>
     /// LinerMotionのインスペクタ上のレイアウト
     /// </summary>
     public override void OnInspectorGUI() {
@@ -46,20 +32,5 @@ public class LinerMotionEditor : Editor {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("duration"));
 
         serializedObject.ApplyModifiedProperties();
-    }
-
-    /// <summary>
-    /// 軌跡の描画
-    /// </summary>
-    /// <param name="sceneView"></param>
-    private void OnSceneView(SceneView sceneView) {
-        Handles.BeginGUI();
-
-        var from = HandleUtility.WorldToGUIPoint(serializedObject.FindProperty("from").vector2Value);
-        var to = HandleUtility.WorldToGUIPoint(serializedObject.FindProperty("to").vector2Value);
-
-        Handles.DrawLine(from, to);
-
-        Handles.EndGUI();
     }
 }

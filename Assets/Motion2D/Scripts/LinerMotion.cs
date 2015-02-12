@@ -53,4 +53,17 @@ public class LinerMotion : MotionBase2D {
 
         StartCoroutine(Line(from, to, delay, duration));
     }
+
+    /// <summary>
+    /// 軌跡の描画(Editor用)
+    /// </summary>
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.cyan;
+
+        // 始点計算
+        var fromPos = (fromCurrent && !Application.isPlaying) ? (Vector2)transform.localPosition : from;
+
+        // 直線の描画
+        Gizmos.DrawLine(fromPos, to);
+    }
 }
