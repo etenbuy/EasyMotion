@@ -77,6 +77,11 @@ public class MotionBase2D : MonoBehaviour {
             yield return 0;
         }
 
+        if ( rotateAngle < 0 ) {
+            // 右旋回の場合
+            fromAngle += 180;
+        }
+
         // 旋回モーション実行
         rotateAngle *= Mathf.Deg2Rad;
         fromAngle *= Mathf.Deg2Rad;
@@ -121,6 +126,9 @@ public class MotionBase2D : MonoBehaviour {
         }
     }
 
+#if UNITY_EDITOR
+    private Material material;
+
     /// <summary>
     /// 矢印の矢の部分の描画
     /// </summary>
@@ -135,7 +143,7 @@ public class MotionBase2D : MonoBehaviour {
         mesh.vertices = new Vector3[3] {
             new Vector3( 0, -10) * scale,
             new Vector3( 0,  10) * scale,
-            new Vector3( 20, 0 ) * scale
+            new Vector3( 20, 0 ) * scale,
         };
 
         mesh.triangles = new int[] {
@@ -158,4 +166,5 @@ public class MotionBase2D : MonoBehaviour {
 
         DestroyImmediate(mesh);
     }
+#endif
 }

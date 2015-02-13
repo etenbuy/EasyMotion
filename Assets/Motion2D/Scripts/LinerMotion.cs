@@ -54,6 +54,7 @@ public class LinerMotion : MotionBase2D {
         StartCoroutine(Line(from, to, delay, duration));
     }
 
+#if UNITY_EDITOR
     /// <summary>
     /// 軌跡の描画(Editor用)
     /// </summary>
@@ -70,4 +71,5 @@ public class LinerMotion : MotionBase2D {
         var dir = to - fromPos;
         DrawArrowCap(to, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
     }
+#endif
 }

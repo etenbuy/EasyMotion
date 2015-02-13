@@ -29,7 +29,12 @@ public class CurveMotionEditor : Editor {
 
         EditorGUILayout.PropertyField(serializedObject.FindProperty("fromAngle"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("rotateAngle"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("radius"));
+        var radius = serializedObject.FindProperty("radius");
+        radius.floatValue = EditorGUILayout.FloatField("Radius", radius.floatValue);
+        if ( radius.floatValue < 0 ) {
+            // ù‰ñ”¼Œa‚Íí‚É³
+            radius.floatValue = 0;
+        }
         EditorGUILayout.PropertyField(serializedObject.FindProperty("delay"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("duration"));
 
