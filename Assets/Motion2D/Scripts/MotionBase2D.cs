@@ -127,7 +127,92 @@ public class MotionBase2D : MonoBehaviour {
     }
 
 #if UNITY_EDITOR
-    private Material material;
+    /// <summary>
+    /// 直線矢印を描画する
+    /// </summary>
+    /// <param name="from"></param>
+    /// <param name="to"></param>
+    /// <param name="fromCurrent"></param>
+    protected void DrawLineArrow(Vector2 from, Vector2 to, bool fromCurrent) {
+        Gizmos.color = Color.cyan;
+
+        // 始点計算
+        var fromPos = (fromCurrent && !Application.isPlaying) ? (Vector2)transform.localPosition : from;
+
+        // 直線の描画
+        Gizmos.DrawLine(fromPos, to);
+
+        // 矢印の描画
+        var dir = to - fromPos;
+        DrawArrowCap(to, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
+    }
+
+    /// <summary>
+    /// 円弧矢印を描画する
+    /// </summary>
+    /// <param name="from"></param>
+    /// <param name="fromAngle"></param>
+    /// <param name="rotateAngle"></param>
+    /// <param name="radius"></param>
+    /// <param name="fromCurrent"></param>
+    protected void DrawArcArrow(Vector2 from, float fromAngle, float rotateAngle, float radius, bool fromCurrent) {
+        Gizmos.color = Color.cyan;
+
+        // 円の頂点数
+        const int POINT_NUM = 45;
+
+        // 角度情報
+        var fromAngleRad = fromAngle * Mathf.Deg2Rad;
+        var isRight = rotateAngle < 0;
+        if ( isRight ) {
+            // 右旋回の場合
+            fromAngleRad -= Mathf.PI;
+        }
+
+        var fromSin = Mathf.Sin(fromAngleRad);
+        var fromCos = Mathf.Cos(fromAngleRad);
+        var rotateAngleRad = rotateAngle * Mathf.Deg2Rad;
+        var toAngleRad = fromAngleRad + rotateAngleRad;
+
+        if ( isRight ) {
+            var tmp = toAngleRad;
+            toAngleRad = fromAngleRad;
+            fromAngleRad = tmp;
+        }
+
+        // 始点計算
+        var fromPos = (fromCurrent && !Application.isPlaying) ? (Vector2)transform.localPosition : from;
+
+        // 軌跡の描画
+        for ( int i = 0 ; i < POINT_NUM ; ++i ) {
+            var curAngle = 2 * Mathf.PI * i / POINT_NUM + fromAngleRad;
+            var nextAngle = 2 * Mathf.PI * (i + 1) / POINT_NUM + fromAngleRad;
+
+            // 描画範囲外の角度なら何もしない
+            if ( curAngle > toAngleRad ) {
+                continue;
+            }
+
+            // 円弧の端のずれ補正
+            if ( nextAngle > toAngleRad ) {
+                nextAngle = toAngleRad;
+            }
+
+            // 円弧の描画
+            Gizmos.DrawLine(
+                fromPos + new Vector2(-fromSin + Mathf.Sin(curAngle), fromCos - Mathf.Cos(curAngle)) * radius,
+                fromPos + new Vector2(-fromSin + Mathf.Sin(nextAngle), fromCos - Mathf.Cos(nextAngle)) * radius);
+        }
+
+        // 矢印の描画
+        if ( isRight ) {
+            var toPos = fromPos + new Vector2(-fromSin + Mathf.Sin(fromAngleRad), fromCos - Mathf.Cos(fromAngleRad)) * radius;
+            DrawArrowCap(toPos, fromAngleRad * Mathf.Rad2Deg + 180);
+        } else {
+            var toPos = fromPos + new Vector2(-fromSin + Mathf.Sin(toAngleRad), fromCos - Mathf.Cos(toAngleRad)) * radius;
+            DrawArrowCap(toPos, toAngleRad * Mathf.Rad2Deg);
+        }
+    }
 
     /// <summary>
     /// 矢印の矢の部分の描画

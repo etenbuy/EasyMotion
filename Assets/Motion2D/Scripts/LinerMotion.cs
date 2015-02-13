@@ -59,17 +59,7 @@ public class LinerMotion : MotionBase2D {
     /// 軌跡の描画(Editor用)
     /// </summary>
     private void OnDrawGizmos() {
-        Gizmos.color = Color.cyan;
-
-        // 始点計算
-        var fromPos = (fromCurrent && !Application.isPlaying) ? (Vector2)transform.localPosition : from;
-
-        // 直線の描画
-        Gizmos.DrawLine(fromPos, to);
-
-        // 矢印の描画
-        var dir = to - fromPos;
-        DrawArrowCap(to, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
+        DrawLineArrow(from, to, fromCurrent);
     }
 #endif
 }

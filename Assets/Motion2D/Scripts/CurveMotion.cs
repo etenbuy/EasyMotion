@@ -71,63 +71,7 @@ public class CurveMotion : MotionBase2D {
     /// ãOê’ÇÃï`âÊ(Editoróp)
     /// </summary>
     private void OnDrawGizmos() {
-        Gizmos.color = Color.cyan;
-
-        // â~ÇÃí∏ì_êî
-        const int POINT_NUM = 45;
-
-        // äpìxèÓïÒ
-        var fromAngleRad = fromAngle * Mathf.Deg2Rad;
-        var isRight = rotateAngle < 0;
-        if ( isRight ) {
-            // âEê˘âÒÇÃèÍçá
-            fromAngleRad -= Mathf.PI;
-        }
-
-        var fromSin = Mathf.Sin(fromAngleRad);
-        var fromCos = Mathf.Cos(fromAngleRad);
-        var rotateAngleRad = rotateAngle * Mathf.Deg2Rad;
-        var toAngleRad = fromAngleRad + rotateAngleRad;
-
-        if ( isRight ) {
-            var tmp = toAngleRad;
-            toAngleRad = fromAngleRad;
-            fromAngleRad = tmp;
-        }
-
-        // énì_åvéZ
-        var fromPos = (fromCurrent && !Application.isPlaying) ? (Vector2)transform.localPosition : from;
-
-        // ãOê’ÇÃï`âÊ
-        for ( int i = 0 ; i < POINT_NUM ; ++i ) {
-            var angleUnit = rotateAngle < 0 ? -i : i;
-            var curAngle = 2 * Mathf.PI * i / POINT_NUM + fromAngleRad;
-            var nextAngle = 2 * Mathf.PI * (i + 1) / POINT_NUM + fromAngleRad;
-
-            // ï`âÊîÕàÕäOÇÃäpìxÇ»ÇÁâΩÇ‡ÇµÇ»Ç¢
-            if ( curAngle > toAngleRad ) {
-                continue;
-            }
-
-            // â~å ÇÃí[ÇÃÇ∏ÇÍï‚ê≥
-            if ( nextAngle > toAngleRad ) {
-                nextAngle = toAngleRad;
-            }
-
-            // â~å ÇÃï`âÊ
-            Gizmos.DrawLine(
-                fromPos + new Vector2(-fromSin + Mathf.Sin(curAngle), fromCos - Mathf.Cos(curAngle)) * radius,
-                fromPos + new Vector2(-fromSin + Mathf.Sin(nextAngle), fromCos - Mathf.Cos(nextAngle)) * radius);
-        }
-
-        // ñÓàÛÇÃï`âÊ
-        if ( isRight ) {
-            var toPos = fromPos + new Vector2(-fromSin + Mathf.Sin(fromAngleRad), fromCos - Mathf.Cos(fromAngleRad)) * radius;
-            DrawArrowCap(toPos, fromAngleRad * Mathf.Rad2Deg + 180);
-        }else{
-            var toPos = fromPos + new Vector2(-fromSin + Mathf.Sin(toAngleRad), fromCos - Mathf.Cos(toAngleRad)) * radius;
-            DrawArrowCap(toPos, toAngleRad * Mathf.Rad2Deg);
-        }
+        DrawArcArrow(from, fromAngle, rotateAngle, radius, fromCurrent);
     }
 #endif
 }
