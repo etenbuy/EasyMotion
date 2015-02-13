@@ -324,11 +324,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sequence:
   - type: 1
-    delay: 1
-    duration: 3
+    delay: 0
+    duration: 1
     fromCurrent: 1
     from: {x: 0, y: 0}
     to: {x: 150, y: 0}
+    fromAngle: 0
+    rotateAngle: 0
+    radius: 0
+  - type: 2
+    delay: 0
+    duration: .5
+    fromCurrent: 1
+    from: {x: 0, y: 0}
+    to: {x: 50, y: 50}
+    fromAngle: 0
+    rotateAngle: 180
+    radius: 100
+  - type: 1
+    delay: 0
+    duration: 1
+    fromCurrent: 1
+    from: {x: 0, y: 0}
+    to: {x: 0, y: 200}
     fromAngle: 0
     rotateAngle: 0
     radius: 0
@@ -361,7 +379,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1285154866}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -144.899994, y: 59.5999985, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

@@ -115,9 +115,16 @@ public class MotionBase2D : MonoBehaviour {
     /// </summary>
     protected Vector2 Position2D {
         get {
+#if UNITY_EDITOR
+            selfTrans = transform;
+#endif
             return (Vector2)selfTrans.localPosition;
+
         }
         set {
+#if UNITY_EDITOR
+            selfTrans = transform;
+#endif
             selfTrans.localPosition = new Vector3(
                 value.x,
                 value.y,
@@ -133,7 +140,8 @@ public class MotionBase2D : MonoBehaviour {
     /// <param name="from"></param>
     /// <param name="to"></param>
     /// <param name="fromCurrent"></param>
-    protected void DrawLineArrow(Vector2 from, Vector2 to, bool fromCurrent) {
+    /// <returns></returns>
+    protected Vector2 DrawLineArrow(Vector2 from, Vector2 to, bool fromCurrent) {
         Gizmos.color = Color.cyan;
 
         // 始点計算
@@ -145,6 +153,8 @@ public class MotionBase2D : MonoBehaviour {
         // 矢印の描画
         var dir = to - fromPos;
         DrawArrowCap(to, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
+
+        return to;
     }
 
     /// <summary>
@@ -155,7 +165,8 @@ public class MotionBase2D : MonoBehaviour {
     /// <param name="rotateAngle"></param>
     /// <param name="radius"></param>
     /// <param name="fromCurrent"></param>
-    protected void DrawArcArrow(Vector2 from, float fromAngle, float rotateAngle, float radius, bool fromCurrent) {
+    /// <returns></returns>
+    protected Vector2 DrawArcArrow(Vector2 from, float fromAngle, float rotateAngle, float radius, bool fromCurrent) {
         Gizmos.color = Color.cyan;
 
         // 円の頂点数
@@ -205,13 +216,16 @@ public class MotionBase2D : MonoBehaviour {
         }
 
         // 矢印の描画
+        Vector2 toPos;
         if ( isRight ) {
-            var toPos = fromPos + new Vector2(-fromSin + Mathf.Sin(fromAngleRad), fromCos - Mathf.Cos(fromAngleRad)) * radius;
+            toPos = fromPos + new Vector2(-fromSin + Mathf.Sin(fromAngleRad), fromCos - Mathf.Cos(fromAngleRad)) * radius;
             DrawArrowCap(toPos, fromAngleRad * Mathf.Rad2Deg + 180);
         } else {
-            var toPos = fromPos + new Vector2(-fromSin + Mathf.Sin(toAngleRad), fromCos - Mathf.Cos(toAngleRad)) * radius;
+            toPos = fromPos + new Vector2(-fromSin + Mathf.Sin(toAngleRad), fromCos - Mathf.Cos(toAngleRad)) * radius;
             DrawArrowCap(toPos, toAngleRad * Mathf.Rad2Deg);
         }
+
+        return toPos;
     }
 
     /// <summary>

@@ -51,6 +51,13 @@ public class MotionSequence : MotionBase2D {
     [SerializeField]
     public SerializedMotion[] sequence;
 
+#if UNITY_EDITOR
+    /// <summary>
+    /// 初期位置
+    /// </summary>
+    private Vector2 initPosition;
+#endif
+
     /// <summary>
     /// モーションを入れ替える
     /// </summary>
@@ -86,6 +93,10 @@ public class MotionSequence : MotionBase2D {
     /// モーションシーケンスを実行する
     /// </summary>
     private IEnumerator Start() {
+#if UNITY_EDITOR
+        initPosition = Position2D;
+#endif
+
         foreach ( var motion in sequence ) {
             var from = motion.fromCurrent ? Position2D : motion.from;
 
@@ -107,4 +118,40 @@ public class MotionSequence : MotionBase2D {
             }
         }
     }
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// 軌跡の描画(Editor用)
+    /// </summary>
+    private void OnDrawGizmos() {
+        Vector2 prevTo = Vector2.zero;
+        bool isFirst = true;
+
+        foreach ( var motion in sequence ) {
+            if ( isFirst ) {
+                isFirst = false;
+                var initPos = Application.isPlaying ? initPosition : Position2D;
+                prevTo = motion.fromCurrent ? initPos : motion.from;
+            }
+
+            var from = motion.fromCurrent ? prevTo : motion.from;
+
+            switch ( motion.type ) {
+            case MotionType.Line:
+                // 直線移動
+                prevTo = DrawLineArrow(from, motion.to, false);
+                break;
+
+            case MotionType.Curve:
+                // 旋回移動
+                prevTo = DrawArcArrow(from, motion.fromAngle, motion.rotateAngle, motion.radius, false);
+                break;
+
+            default:
+                // 静止
+                break;
+            }
+        }
+    }
+#endif
 }
