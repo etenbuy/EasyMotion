@@ -65,35 +65,8 @@ public class SequenceMotionEditor : Editor {
 
             ++EditorGUI.indentLevel;
 
-            // モーション共通のGUI表示
-            EditorGUILayout.PropertyField(elem.FindPropertyRelative("type"));
-            EditorGUILayout.PropertyField(elem.FindPropertyRelative("delay"));
-            EditorGUILayout.PropertyField(elem.FindPropertyRelative("duration"));
-
-            var fromCurrent = elem.FindPropertyRelative("fromCurrent");
-            EditorGUILayout.PropertyField(fromCurrent);
-
-            EditorGUI.BeginDisabledGroup(fromCurrent.boolValue);
-            EditorGUILayout.PropertyField(elem.FindPropertyRelative("from"));
-            EditorGUI.EndDisabledGroup();
-
-            // モーション個別のGUI表示
-            switch ( (MotionSequence.MotionType)elem.FindPropertyRelative("type").enumValueIndex ) {
-            case MotionSequence.MotionType.Line:
-                // 直線
-                EditorGUILayout.PropertyField(elem.FindPropertyRelative("to"));
-                break;
-
-            case MotionSequence.MotionType.Curve:
-                // 旋回
-                EditorGUILayout.PropertyField(elem.FindPropertyRelative("fromAngle"));
-                EditorGUILayout.PropertyField(elem.FindPropertyRelative("rotateAngle"));
-                EditorGUILayout.PropertyField(elem.FindPropertyRelative("radius"));
-                break;
-
-            default:
-                break;
-            }
+            // モーション情報のGUI表示
+            SerializedMotionEditor.OnInspectorGUI(elem);
 
             --EditorGUI.indentLevel;
         }

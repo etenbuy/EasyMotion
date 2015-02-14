@@ -16,36 +16,6 @@ using System.Collections.Generic;
 /// </summary>
 public class MotionSequence : MotionBase2D {
     /// <summary>
-    /// モーションタイプ
-    /// </summary>
-    public enum MotionType {
-        Base,
-        Line,
-        Curve,
-    };
-
-    /// <summary>
-    /// シリアライズ済みモーション
-    /// </summary>
-    [Serializable]
-    public class SerializedMotion {
-        // 共通
-        public MotionType type;
-        public float delay;
-        public float duration;
-        public bool fromCurrent = true;
-        public Vector2 from;
-
-        // 直線移動用
-        public Vector2 to;
-
-        // 旋回移動用
-        public float fromAngle;
-        public float rotateAngle;
-        public float radius;
-    }
-
-    /// <summary>
     /// モーションの一連の流れ
     /// </summary>
     [SerializeField]
@@ -101,12 +71,12 @@ public class MotionSequence : MotionBase2D {
             var from = motion.fromCurrent ? Position2D : motion.from;
 
             switch ( motion.type ) {
-            case MotionType.Line:
+            case SerializedMotion.MotionType.Line:
                 // 直線移動
                 yield return StartCoroutine(Line(from, motion.to, motion.delay, motion.duration));
                 break;
 
-            case MotionType.Curve:
+            case SerializedMotion.MotionType.Curve:
                 // 旋回移動
                 yield return StartCoroutine(Curve(from, motion.fromAngle, motion.rotateAngle, motion.radius, motion.delay, motion.duration));
                 break;
@@ -137,12 +107,12 @@ public class MotionSequence : MotionBase2D {
             var from = motion.fromCurrent ? prevTo : motion.from;
 
             switch ( motion.type ) {
-            case MotionType.Line:
+            case SerializedMotion.MotionType.Line:
                 // 直線移動
                 prevTo = DrawLineArrow(from, motion.to, false);
                 break;
 
-            case MotionType.Curve:
+            case SerializedMotion.MotionType.Curve:
                 // 旋回移動
                 prevTo = DrawArcArrow(from, motion.fromAngle, motion.rotateAngle, motion.radius, false);
                 break;

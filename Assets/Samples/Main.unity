@@ -323,30 +323,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sequence:
-  - type: 1
+  - type: 0
     delay: 0
-    duration: 1
+    duration: 0
     fromCurrent: 1
     from: {x: 0, y: 0}
-    to: {x: 150, y: 0}
+    to: {x: 0, y: 0}
     fromAngle: 0
     rotateAngle: 0
     radius: 0
-  - type: 2
-    delay: 0
-    duration: .5
-    fromCurrent: 1
-    from: {x: 0, y: 0}
-    to: {x: 50, y: 50}
-    fromAngle: 0
-    rotateAngle: 180
-    radius: 100
   - type: 1
     delay: 0
     duration: 1
     fromCurrent: 1
     from: {x: 0, y: 0}
-    to: {x: 0, y: 200}
+    to: {x: 100, y: 100}
+    fromAngle: 0
+    rotateAngle: 0
+    radius: 0
+  - type: 0
+    delay: 0
+    duration: 0
+    fromCurrent: 1
+    from: {x: 0, y: 0}
+    to: {x: 0, y: 0}
     fromAngle: 0
     rotateAngle: 0
     radius: 0
