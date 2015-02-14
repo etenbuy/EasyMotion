@@ -169,20 +169,9 @@ public class MoveArc2D : LimitedMotion2D {
     }
 
     /// <summary>
-    /// 速さ補正ウィンドウを開く
-    /// </summary>
-    [ContextMenu("Set Speed")]
-    private void SetSpeed() {
-        // ウィンドウを開く
-        AdjustSpeed.Open(Speed, (speed) => {
-            Speed = speed;
-        });
-    }
-
-    /// <summary>
     /// 移動時の速さ
     /// </summary>
-    public float Speed {
+    public override float Speed {
         get {
             var length = radius * rotateAngle * Mathf.Deg2Rad;
             var curSpeed = 0f;
@@ -192,13 +181,48 @@ public class MoveArc2D : LimitedMotion2D {
             return curSpeed;
         }
         set {
-            if ( value == 0 ) {
-                duration = 0;
-            } else {
-                var length = radius * rotateAngle * Mathf.Deg2Rad;
-                duration = length / value;
-            }
+            SetSpeed(value, rotateAngle, radius, out duration);
         }
+    }
+
+    public static void SetSpeed(float speed, float rotateAngle, float radius, out float duration) {
+        if ( speed == 0 ) {
+            duration = 0;
+        } else {
+            var length = radius * rotateAngle * Mathf.Deg2Rad;
+            duration = length / speed;
+        }
+    }
+
+    public static Vector2 GetToPosition(Vector2 from, float fromAngle, float rotateAngle, float radius) {
+        // 角度情報
+        var fromAngleRad = fromAngle * Mathf.Deg2Rad;
+        var isRight = rotateAngle < 0;
+        if ( isRight ) {
+            // 右旋回の場合
+            fromAngleRad -= Mathf.PI;
+        }
+
+        var fromSin = Mathf.Sin(fromAngleRad);
+        var fromCos = Mathf.Cos(fromAngleRad);
+        var rotateAngleRad = rotateAngle * Mathf.Deg2Rad;
+        var toAngleRad = fromAngleRad + rotateAngleRad;
+
+        if ( isRight ) {
+            var tmp = toAngleRad;
+            toAngleRad = fromAngleRad;
+            fromAngleRad = tmp;
+        }
+
+        // 矢印の描画
+        Vector2 toPos;
+        if ( rotateAngle < 0 ) {
+            toPos = from + new Vector2(-fromSin + Mathf.Sin(fromAngleRad), fromCos - Mathf.Cos(fromAngleRad)) * radius;
+        } else {
+            toPos = from + new Vector2(-fromSin + Mathf.Sin(toAngleRad), fromCos - Mathf.Cos(toAngleRad)) * radius;
+        }
+
+        return toPos;
     }
 #endif
 }

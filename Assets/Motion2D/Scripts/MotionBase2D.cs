@@ -93,5 +93,24 @@ public class MotionBase2D : MonoBehaviour {
             return from;
         }
     }
+
+    /// <summary>
+    /// 移動時の速さ
+    /// </summary>
+    public virtual float Speed {
+        get { return 0; }
+        set {}
+    }
+
+    /// <summary>
+    /// 速さ補正ウィンドウを開く
+    /// </summary>
+    [ContextMenu("Set Speed")]
+    protected void OpenAdjustSpeedWindow() {
+        // ウィンドウを開く
+        AdjustSpeed.Open(Speed, (speed) => {
+            Speed = speed;
+        });
+    }
 #endif
 }

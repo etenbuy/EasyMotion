@@ -84,12 +84,18 @@ public class MoveTo2D : LimitedMotion2D {
         DrawArrow(FromPosition, ToPosition, GizmoColor);
     }
 
+    /// <summary>
+    /// 始点(Editor用)
+    /// </summary>
     private Vector2 FromPosition {
         get {
             return InitPosition2D;
         }
     }
 
+    /// <summary>
+    /// 終点(Editor用)
+    /// </summary>
     private Vector2 ToPosition {
         get {
             return relative ? to + InitPosition2D : to;
@@ -97,20 +103,9 @@ public class MoveTo2D : LimitedMotion2D {
     }
 
     /// <summary>
-    /// 速さ補正ウィンドウを開く
-    /// </summary>
-    [ContextMenu("Set Speed")]
-    private void SetSpeed() {
-        // ウィンドウを開く
-        AdjustSpeed.Open(Speed, (speed) => {
-            Speed = speed;
-        });
-    }
-
-    /// <summary>
     /// 移動時の速さ
     /// </summary>
-    public float Speed {
+    public override float Speed {
         get {
             var line = ToPosition - FromPosition;
             var curSpeed = 0f;
@@ -120,12 +115,16 @@ public class MoveTo2D : LimitedMotion2D {
             return curSpeed;
         }
         set {
-            var line = ToPosition - FromPosition;
-            if ( value == 0 ) {
-                duration = 0;
-            } else {
-                duration = line.magnitude / value;
-            }
+            SetSpeed(value, FromPosition, ToPosition, out duration);
+        }
+    }
+
+    public static void SetSpeed(float speed, Vector2 from, Vector2 to, out float duration) {
+        var line = to - from;
+        if ( speed == 0 ) {
+            duration = 0;
+        } else {
+            duration = line.magnitude / speed;
         }
     }
 #endif

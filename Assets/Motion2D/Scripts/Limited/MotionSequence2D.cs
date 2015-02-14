@@ -142,5 +142,48 @@ public class MotionSequence2D : LimitedMotion2D {
             }
         }
     }
+
+    /// <summary>
+    /// ˆÚ“®Žž‚Ì‘¬‚³
+    /// </summary>
+    public override float Speed {
+        get {
+            return 0;
+        }
+        set {
+            Vector2 prevTo = Vector2.zero;
+            bool isFirst = true;
+
+            for ( int i = 0 ; i < sequence.Length ; ++i ) {
+                var motion = sequence[i];
+
+                if ( isFirst ) {
+                    isFirst = false;
+                    prevTo = motion.fromCurrent ? GetInitPosition2D(motion.fromCurrent) : motion.from;
+                }
+
+                var from = motion.fromCurrent ? prevTo : motion.from;
+
+                switch ( motion.type ) {
+                case SerializedMotion2D.MotionType.MoveTo:
+                    prevTo = motion.relative ? motion.to + from : motion.to;
+                    MoveTo2D.SetSpeed(value, from, prevTo, out motion.duration);
+                    break;
+
+                case SerializedMotion2D.MotionType.MoveArc:
+                    prevTo = MoveArc2D.GetToPosition(from, motion.fromAngle, motion.rotateAngle, motion.radius);
+                    MoveArc2D.SetSpeed(value, motion.rotateAngle, motion.radius, out motion.duration);
+                    break;
+
+                case SerializedMotion2D.MotionType.Liner:
+                    LinerMotion2D.SetSpeed(value, ref motion.velocity);
+                    break;
+
+                default:
+                    break;
+                }
+            }
+        }
+    }
 #endif
 }
