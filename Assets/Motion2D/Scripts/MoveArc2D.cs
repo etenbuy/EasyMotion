@@ -125,7 +125,7 @@ public class MoveArc2D : LimitedMotion2D {
 
         // ‹OÕƒf[ƒ^‚Ìì¬
         var points = new List<Vector2>();
-        for ( int i = 0 ; i < POINT_NUM ; ++i ) {
+        for ( int i = 0 ; i < POINT_NUM + 1 ; ++i ) {
             // ‰~‰^“®‚ÌŠp“xŒvZ
             var angle = 2 * Mathf.PI * i / POINT_NUM + fromAngleRad;
 
@@ -149,11 +149,13 @@ public class MoveArc2D : LimitedMotion2D {
         Vector2 toPos;
         if ( isRight ) {
             toPos = from + new Vector2(-fromSin + Mathf.Sin(fromAngleRad), fromCos - Mathf.Cos(fromAngleRad)) * radius;
-            MotionGizmo.DrawArrow(points.ToArray(), true, false, fromAngleRad * Mathf.Rad2Deg + 180, 0);
+            MotionGizmo.DrawArrowCap(toPos, fromAngleRad * Mathf.Rad2Deg + 180);
         } else {
             toPos = from + new Vector2(-fromSin + Mathf.Sin(toAngleRad), fromCos - Mathf.Cos(toAngleRad)) * radius;
-            MotionGizmo.DrawArrow(points.ToArray(), false, true, 0, toAngleRad * Mathf.Rad2Deg);
+            MotionGizmo.DrawArrowCap(toPos, toAngleRad * Mathf.Rad2Deg);
         }
+
+        MotionGizmo.DrawArrow(points.ToArray(), false, false);
 
         return toPos;
     }

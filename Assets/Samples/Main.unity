@@ -260,7 +260,7 @@ MonoBehaviour:
   delay: 1
   duration: 1
   fromAngle: 90
-  rotateAngle: 90
+  rotateAngle: 300
   radius: 100
 --- !u!212 &894608411
 SpriteRenderer:
@@ -348,7 +348,7 @@ MonoBehaviour:
     from: {x: 0, y: 0}
     to: {x: 100, y: 100}
     fromAngle: 0
-    rotateAngle: 90
+    rotateAngle: 700
     radius: 100
 --- !u!212 &1285154868
 SpriteRenderer:
