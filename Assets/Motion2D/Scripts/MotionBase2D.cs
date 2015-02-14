@@ -30,17 +30,21 @@ public class MotionBase2D : MonoBehaviour {
     /// </summary>
     private Transform selfTrans;
 
+#if UNITY_EDITOR
     /// <summary>
     /// 自身の初期位置
     /// </summary>
     private Vector2 initPosition;
+#endif
 
     /// <summary>
     /// 初期化
     /// </summary>
     protected void Awake() {
         selfTrans = transform;
+#if UNITY_EDITOR
         initPosition = selfTrans.localPosition;
+#endif
     }
 
     /// <summary>
