@@ -90,8 +90,6 @@ public class SequenceMotionEditor : Editor {
     /// </summary>
     /// <param name="index">モーションのインデックス</param>
     private void OnUp(int index) {
-        Debug.Log("OnUp : " + index);
-
         if ( index == 0 ) {
             return;
         }
@@ -104,8 +102,6 @@ public class SequenceMotionEditor : Editor {
     /// </summary>
     /// <param name="index">モーションのインデックス</param>
     private void OnDown(int index) {
-        Debug.Log("OnDown : " + index);
-
         if ( index >= expansion.Length - 1 ) {
             return;
         }
@@ -118,8 +114,6 @@ public class SequenceMotionEditor : Editor {
     /// </summary>
     /// <param name="index">モーションのインデックス</param>
     private void OnInsertNew(int index) {
-        Debug.Log("OnInsertNew : " + index);
-
         (target as MotionSequence).InsertNew(index);
 
         var newExpansion = new List<bool>(expansion);
@@ -132,8 +126,6 @@ public class SequenceMotionEditor : Editor {
     /// </summary>
     /// <param name="index">モーションのインデックス</param>
     private void OnRemove(int index) {
-        Debug.Log("OnRemove : " + index);
-
         (target as MotionSequence).Remove(index);
 
         var newExpansion = new List<bool>(expansion);
