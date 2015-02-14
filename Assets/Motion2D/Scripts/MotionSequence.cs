@@ -89,7 +89,7 @@ public class MotionSequence : MotionBase2D {
         foreach ( var motion in sequence ) {
             if ( isFirst ) {
                 isFirst = false;
-                prevTo = motion.fromCurrent ? InitPosition2D : motion.from;
+                prevTo = motion.fromCurrent ? GetInitPosition2D(motion.fromCurrent) : motion.from;
             }
 
             var from = motion.fromCurrent ? prevTo : motion.from;

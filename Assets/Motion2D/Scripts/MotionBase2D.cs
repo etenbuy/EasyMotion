@@ -31,10 +31,16 @@ public class MotionBase2D : MonoBehaviour {
     private Transform selfTrans;
 
     /// <summary>
+    /// 自身の初期位置
+    /// </summary>
+    private Vector2 initPosition;
+
+    /// <summary>
     /// 初期化
     /// </summary>
     protected void Awake() {
         selfTrans = transform;
+        initPosition = selfTrans.localPosition;
     }
 
     /// <summary>
@@ -144,7 +150,22 @@ public class MotionBase2D : MonoBehaviour {
     /// </summary>
     protected Vector2 InitPosition2D {
         get {
-            return (fromCurrent && !Application.isPlaying) ? (Vector2)transform.localPosition : from;
+            return GetInitPosition2D(fromCurrent);
+        }
+    }
+
+    /// <summary>
+    /// 初期位置を取得する
+    /// </summary>
+    /// <param name="fromCurrent"></param>
+    /// <returns></returns>
+    protected Vector2 GetInitPosition2D(bool fromCurrent) {
+        if ( Application.isPlaying ) {
+            return initPosition;
+        } else if ( fromCurrent ) {
+            return transform.localPosition;
+        } else {
+            return from;
         }
     }
 #endif

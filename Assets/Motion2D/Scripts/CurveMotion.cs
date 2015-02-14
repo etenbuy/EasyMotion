@@ -8,6 +8,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 /// <summary>
 /// ê˘âÒÉÇÅ[ÉVÉáÉì
@@ -65,8 +66,6 @@ public class CurveMotion : MotionBase2D {
     /// <param name="fromCurrent"></param>
     /// <returns></returns>
     public static Vector2 DrawArrow(Vector2 from, float fromAngle, float rotateAngle, float radius, bool fromCurrent) {
-        Gizmos.color = Color.cyan;
-
         // â~ÇÃí∏ì_êî
         const int POINT_NUM = 45;
 
@@ -89,35 +88,36 @@ public class CurveMotion : MotionBase2D {
             fromAngleRad = tmp;
         }
 
-        // ãOê’ÇÃï`âÊ
+        // ãOê’ÉfÅ[É^ÇÃçÏê¨
+        var points = new List<Vector2>();
         for ( int i = 0 ; i < POINT_NUM ; ++i ) {
-            var curAngle = 2 * Mathf.PI * i / POINT_NUM + fromAngleRad;
-            var nextAngle = 2 * Mathf.PI * (i + 1) / POINT_NUM + fromAngleRad;
+            // â~â^ìÆéûÇÃäpìxåvéZ
+            var angle = 2 * Mathf.PI * i / POINT_NUM + fromAngleRad;
 
-            // ï`âÊîÕàÕäOÇÃäpìxÇ»ÇÁâΩÇ‡ÇµÇ»Ç¢
-            if ( curAngle > toAngleRad ) {
-                continue;
+            // â~ÇÃí[Ç‹Ç≈ìûíBÇµÇΩÇÁÅAí[ÇÃà íuÇí≤êÆÇ∑ÇÈ
+            bool isEnd = false;
+            if ( angle > toAngleRad ) {
+                angle = toAngleRad;
+                isEnd = true;
             }
 
-            // â~å ÇÃí[ÇÃÇ∏ÇÍï‚ê≥
-            if ( nextAngle > toAngleRad ) {
-                nextAngle = toAngleRad;
-            }
+            // í∏ì_ÉfÅ[É^í«â¡
+            points.Add(from + new Vector2(-fromSin + Mathf.Sin(angle), fromCos - Mathf.Cos(angle)) * radius);
 
-            // â~å ÇÃï`âÊ
-            Gizmos.DrawLine(
-                from + new Vector2(-fromSin + Mathf.Sin(curAngle), fromCos - Mathf.Cos(curAngle)) * radius,
-                from + new Vector2(-fromSin + Mathf.Sin(nextAngle), fromCos - Mathf.Cos(nextAngle)) * radius);
+            // í[Ç‹Ç≈ìûíBÇµÇΩÇÁbreak
+            if ( isEnd ) {
+                break;
+            }
         }
 
         // ñÓàÛÇÃï`âÊ
         Vector2 toPos;
         if ( isRight ) {
             toPos = from + new Vector2(-fromSin + Mathf.Sin(fromAngleRad), fromCos - Mathf.Cos(fromAngleRad)) * radius;
-            MotionGizmo.DrawArrowCap(toPos, fromAngleRad * Mathf.Rad2Deg + 180);
+            MotionGizmo.DrawArrow(points.ToArray(), true, false, fromAngleRad * Mathf.Rad2Deg + 180, 0);
         } else {
             toPos = from + new Vector2(-fromSin + Mathf.Sin(toAngleRad), fromCos - Mathf.Cos(toAngleRad)) * radius;
-            MotionGizmo.DrawArrowCap(toPos, toAngleRad * Mathf.Rad2Deg);
+            MotionGizmo.DrawArrow(points.ToArray(), false, true, 0, toAngleRad * Mathf.Rad2Deg);
         }
 
         return toPos;

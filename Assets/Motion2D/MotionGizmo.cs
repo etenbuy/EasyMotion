@@ -23,7 +23,40 @@ public class MotionGizmo {
     /// –îˆó‚Ì•`‰æ
     /// </summary>
     /// <param name="points"></param>
-    public static void DrawArrow(Vector2[] points) {
+    /// <param name="showStartCap"></param>
+    /// <param name="showEndCap"></param>
+    public static void DrawArrow(Vector2[] points, bool showStartCap = false, bool showEndCap = true) {
+        if ( points.Length < 2 ) {
+            // ü‚ª‘¶Ý‚µ‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
+            return;
+        }
+
+        // –îˆó‚Ì–î‚ÌŠp“xŒvŽZ
+        float startCapAngle = 0;
+        float endCapAngle = 0;
+
+        if ( showStartCap ) {
+            var dir = points[0] - points[1];
+            startCapAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        }
+        if ( showEndCap ) {
+            var dir = points[points.Length - 1] - points[points.Length - 2];
+            endCapAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        }
+
+        // –îˆó‚Ì–î‚Ì•`‰æ
+        DrawArrow(points, showStartCap, showEndCap, startCapAngle, endCapAngle);
+    }
+
+    /// <summary>
+    /// –îˆó‚Ì•`‰æ
+    /// </summary>
+    /// <param name="points"></param>
+    /// <param name="showStartCap"></param>
+    /// <param name="showEndCap"></param>
+    /// <param name="startCapAngle"></param>
+    /// <param name="endCapAngle"></param>
+    public static void DrawArrow(Vector2[] points, bool showStartCap, bool showEndCap, float startCapAngle, float endCapAngle) {
         if ( points.Length < 2 ) {
             // ü‚ª‘¶Ý‚µ‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
             return;
@@ -42,10 +75,14 @@ public class MotionGizmo {
         }
 
         // –îˆó‚Ì–î‚Ì•`‰æ
-        var dir = from - points[points.Length - 2];
-        var arrowAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        DrawArrowCap(from, arrowAngle);
+        if ( showStartCap ) {
+            DrawArrowCap(points[0], startCapAngle);
+        }
+        if ( showEndCap ) {
+            DrawArrowCap(from, endCapAngle);
+        }
     }
+
 
     /// <summary>
     /// –îˆó‚Ì–î‚Ì•”•ª‚ð•`‰æ‚·‚é
