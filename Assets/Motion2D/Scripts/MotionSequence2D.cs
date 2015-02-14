@@ -14,7 +14,7 @@ using System.Collections.Generic;
 /// <summary>
 /// 連続したモーション
 /// </summary>
-public class MotionSequence2D : MotionBase2D {
+public class MotionSequence2D : LimitedMotion2D {
     /// <summary>
     /// モーションの一連の流れ
     /// </summary>
@@ -62,12 +62,12 @@ public class MotionSequence2D : MotionBase2D {
             switch ( motion.type ) {
             case SerializedMotion2D.MotionType.MoveTo:
                 // 直線移動
-                yield return StartCoroutine(MoveTo2D.Move(this, from, motion.relative ? motion.to + from : motion.to, motion.delay, motion.duration));
+                yield return StartMotion(MoveTo2D.Move(this, from, motion.relative ? motion.to + from : motion.to, motion.duration));
                 break;
 
             case SerializedMotion2D.MotionType.MoveArc:
                 // 旋回移動
-                yield return StartCoroutine(MoveArc2D.Move(this, from, motion.fromAngle, motion.rotateAngle, motion.radius, motion.delay, motion.duration));
+                yield return StartMotion(MoveArc2D.Move(this, from, motion.fromAngle, motion.rotateAngle, motion.radius, motion.duration));
                 break;
 
             default:

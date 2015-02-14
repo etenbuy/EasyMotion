@@ -139,9 +139,9 @@ MonoBehaviour:
   fromCurrent: 1
   relative: 1
   from: {x: 100, y: 100}
-  to: {x: -100, y: -100}
   delay: 1
   duration: 1
+  to: {x: -100, y: -100}
 --- !u!1 &365669666
 GameObject:
   m_ObjectHideFlags: 0
@@ -257,11 +257,11 @@ MonoBehaviour:
   fromCurrent: 1
   relative: 0
   from: {x: 0, y: 0}
+  delay: 1
+  duration: 1
   fromAngle: 90
   rotateAngle: 90
   radius: 100
-  delay: 1
-  duration: 3
 --- !u!212 &894608411
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -327,6 +327,8 @@ MonoBehaviour:
   fromCurrent: 0
   relative: 0
   from: {x: 0, y: 0}
+  delay: 0
+  duration: 0
   sequence:
   - type: 1
     delay: 0

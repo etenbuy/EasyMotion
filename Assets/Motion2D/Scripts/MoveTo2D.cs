@@ -12,24 +12,12 @@ using System.Collections;
 /// <summary>
 /// 直線モーション
 /// </summary>
-public class MoveTo2D : MotionBase2D {
+public class MoveTo2D : LimitedMotion2D {
     /// <summary>
     /// 終点
     /// </summary>
     [SerializeField]
     private Vector2 to = Vector2.zero;
-
-    /// <summary>
-    /// 移動開始までの時間
-    /// </summary>
-    [SerializeField]
-    private float delay = 0;
-
-    /// <summary>
-    /// 移動時間
-    /// </summary>
-    [SerializeField]
-    private float duration = 0;
 
     /// <summary>
     /// 直線移動コルーチンを実行する
@@ -45,7 +33,7 @@ public class MoveTo2D : MotionBase2D {
             }
         }
 
-        StartCoroutine(Move(this, from, toPos, delay, duration));
+        StartMotion(Move(this, from, toPos, duration));
     }
 
     /// <summary>
@@ -54,17 +42,11 @@ public class MoveTo2D : MotionBase2D {
     /// <param name="motion">モーションオブジェクト</param>
     /// <param name="from">始点</param>
     /// <param name="to">終点</param>
-    /// <param name="delay">モーション開始までの時間</param>
     /// <param name="duration">モーション時間</param>
     /// <returns></returns>
-    public static IEnumerator Move(MotionBase2D motion, Vector2 from, Vector2 to, float delay, float duration) {
-        var startTime = Time.time + delay;
+    public static IEnumerator Move(MotionBase2D motion, Vector2 from, Vector2 to, float duration) {
+        var startTime = Time.time;
         var endTime = startTime + duration;
-
-        // 開始まで待機
-        while ( Time.time < startTime ) {
-            yield return 0;
-        }
 
         // 直線モーション実行
         while ( Time.time < endTime ) {

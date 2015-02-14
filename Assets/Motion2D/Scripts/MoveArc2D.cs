@@ -13,7 +13,7 @@ using System.Collections.Generic;
 /// <summary>
 /// 旋回モーション
 /// </summary>
-public class MoveArc2D : MotionBase2D {
+public class MoveArc2D : LimitedMotion2D {
     /// <summary>
     /// 初角度
     /// </summary>
@@ -33,18 +33,6 @@ public class MoveArc2D : MotionBase2D {
     private float radius = 0;
 
     /// <summary>
-    /// 移動開始までの時間
-    /// </summary>
-    [SerializeField]
-    private float delay = 0;
-
-    /// <summary>
-    /// 移動時間
-    /// </summary>
-    [SerializeField]
-    private float duration = 0;
-
-    /// <summary>
     /// 旋回移動コルーチンを実行する
     /// </summary>
     private void Start() {
@@ -52,7 +40,7 @@ public class MoveArc2D : MotionBase2D {
             from = Position2D;
         }
 
-        StartCoroutine(Move(this, from, fromAngle, rotateAngle, radius, delay, duration));
+        StartMotion(Move(this, from, fromAngle, rotateAngle, radius, duration));
     }
 
     /// <summary>
@@ -63,17 +51,11 @@ public class MoveArc2D : MotionBase2D {
     /// <param name="fromAngle">初角度</param>
     /// <param name="rotateAngle">旋回角度</param>
     /// <param name="radius">旋回半径</param>
-    /// <param name="delay">モーション開始までの時間</param>
     /// <param name="duration">モーション時間</param>
     /// <returns></returns>
-    public static IEnumerator Move(MotionBase2D motion, Vector2 from, float fromAngle, float rotateAngle, float radius, float delay, float duration) {
-        var startTime = Time.time + delay;
+    public static IEnumerator Move(MotionBase2D motion, Vector2 from, float fromAngle, float rotateAngle, float radius, float duration) {
+        var startTime = Time.time;
         var endTime = startTime + duration;
-
-        // 開始まで待機
-        while ( Time.time < startTime ) {
-            yield return 0;
-        }
 
         if ( rotateAngle < 0 ) {
             // 右旋回の場合
