@@ -71,13 +71,6 @@ public class SequenceMotion2DEditor : Editor {
             --EditorGUI.indentLevel;
         }
 
-        if ( sequence.arraySize == 0 ) {
-            // 動きが存在しない場合は新規追加ボタンのみ表示
-            if ( GUILayout.Button("Insert New", GUILayout.Width(80)) ) {
-                OnInsertNew(0);
-            }
-        }
-
         // 末尾への新規追加ボタン表示
         serializedObject.ApplyModifiedProperties();
         if ( GUILayout.Button("Add New", GUILayout.Width(80)) ) {

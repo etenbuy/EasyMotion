@@ -332,25 +332,25 @@ MonoBehaviour:
   sequence:
   - type: 1
     delay: 0
-    duration: 2
+    duration: 1
     fromCurrent: 1
     relative: 0
     from: {x: 0, y: 0}
-    to: {x: -100, y: 0}
+    to: {x: 100, y: 0}
     fromAngle: 0
     rotateAngle: 0
     radius: 0
   - type: 2
     delay: 0
-    duration: 2
+    duration: 1
     fromCurrent: 1
     relative: 0
     from: {x: 0, y: 0}
-    to: {x: 100, y: 100}
+    to: {x: 0, y: 0}
     fromAngle: 0
-    rotateAngle: 700
+    rotateAngle: 90
     radius: 100
-  - type: 0
+  - type: 1
     delay: 0
     duration: 1
     fromCurrent: 1
