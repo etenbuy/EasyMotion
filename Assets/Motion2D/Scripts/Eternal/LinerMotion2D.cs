@@ -45,4 +45,30 @@ public class LinerMotion2D : EternalMotion2D {
             yield return 0;
         }
     }
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// ãOìπÇé¶Ç∑ñÓàÛÇï`âÊÇ∑ÇÈ
+    /// </summary>
+    /// <param name="from"></param>
+    /// <param name="direction"></param>
+    /// <param name="color"></param>
+    /// <returns></returns>
+    public static Vector2 DrawArrow(Vector2 from, Vector2 direction, Color color) {
+        var to = from + direction.normalized * MotionGizmo.CameraScale * 300;
+        MotionGizmo.DrawArrowCap(to, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg, color);
+
+        to = from + direction.normalized * MotionGizmo.CameraScale * 10000;
+        MotionGizmo.DrawArrow(new Vector2[] { from, to }, color, false, false);
+
+        return direction;
+    }
+
+    /// <summary>
+    /// ãOê’ÇÃï`âÊ(Editoróp)
+    /// </summary>
+    private void OnDrawGizmos() {
+        DrawArrow(Position2D, velocity, GizmoColor);
+    }
+#endif
 }

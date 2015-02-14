@@ -93,8 +93,7 @@ public class MotionGizmo {
     /// <param name="angle"></param>
     /// <param name="color"></param>
     public static void DrawArrowCap(Vector2 from, float angle, Color color) {
-        var sceneCamera = SceneView.lastActiveSceneView.camera;
-        var scale = sceneCamera.orthographicSize / sceneCamera.pixelHeight;
+        var scale = CameraScale;
 
         // ÉÅÉbÉVÉÖê›íË
         Mesh mesh = new Mesh();
@@ -125,6 +124,13 @@ public class MotionGizmo {
         Graphics.DrawMeshNow(mesh, from, Quaternion.Euler(0, 0, angle));
 
         Object.DestroyImmediate(mesh);
+    }
+
+    public static float CameraScale {
+        get {
+            var sceneCamera = SceneView.lastActiveSceneView.camera;
+            return sceneCamera.orthographicSize / sceneCamera.pixelHeight;
+        }
     }
 }
 
