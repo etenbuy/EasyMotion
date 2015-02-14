@@ -19,25 +19,7 @@ public class CurveMotionEditor : Editor {
     /// </summary>
     public override void OnInspectorGUI() {
         serializedObject.Update();
-
-        var fromCurrent = serializedObject.FindProperty("fromCurrent");
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("fromCurrent"));
-
-        EditorGUI.BeginDisabledGroup(fromCurrent.boolValue);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("from"));
-        EditorGUI.EndDisabledGroup();
-
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("fromAngle"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("rotateAngle"));
-        var radius = serializedObject.FindProperty("radius");
-        radius.floatValue = EditorGUILayout.FloatField("Radius", radius.floatValue);
-        if ( radius.floatValue < 0 ) {
-            // ù‰ñ”¼Œa‚Íí‚É³
-            radius.floatValue = 0;
-        }
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("delay"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("duration"));
-
+        SerializedMotionEditor.OnInspectorGUI(serializedObject, SerializedMotion.MotionType.Curve);
         serializedObject.ApplyModifiedProperties();
     }
 }

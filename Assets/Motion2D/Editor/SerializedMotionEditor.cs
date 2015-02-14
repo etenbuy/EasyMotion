@@ -18,6 +18,39 @@ public class SerializedMotionEditor {
     /// <summary>
     /// SerializedMotionのインスペクタ上のレイアウト
     /// </summary>
+    /// <param name="obj"></param>
+    public static void OnInspectorGUI(SerializedObject obj, SerializedMotion.MotionType type) {
+        // モーション共通のGUI表示
+        EditorGUILayout.PropertyField(obj.FindProperty("delay"));
+        EditorGUILayout.PropertyField(obj.FindProperty("duration"));
+
+        var fromCurrent = obj.FindProperty("fromCurrent");
+        EditorGUILayout.PropertyField(fromCurrent);
+
+        EditorGUI.BeginDisabledGroup(fromCurrent.boolValue);
+        EditorGUILayout.PropertyField(obj.FindProperty("from"));
+        EditorGUI.EndDisabledGroup();
+
+        // モーション個別のGUI表示
+        switch ( type ) {
+        case SerializedMotion.MotionType.Line:
+            // 直線
+            EditorGUILayout.PropertyField(obj.FindProperty("to"));
+            break;
+
+        case SerializedMotion.MotionType.Curve:
+            // 旋回
+            EditorGUILayout.PropertyField(obj.FindProperty("fromAngle"));
+            EditorGUILayout.PropertyField(obj.FindProperty("rotateAngle"));
+            EditorGUILayout.PropertyField(obj.FindProperty("radius"));
+            break;
+        }
+    }
+
+    /// <summary>
+    /// SerializedMotionのインスペクタ上のレイアウト
+    /// </summary>
+    /// <param name="propery"></param>
     public static void OnInspectorGUI(SerializedProperty propery) {
         // モーション共通のGUI表示
         EditorGUILayout.PropertyField(propery.FindPropertyRelative("type"));

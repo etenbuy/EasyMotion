@@ -19,18 +19,7 @@ public class LinerMotionEditor : Editor {
     /// </summary>
     public override void OnInspectorGUI() {
         serializedObject.Update();
-
-        var fromCurrent = serializedObject.FindProperty("fromCurrent");
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("fromCurrent"));
-
-        EditorGUI.BeginDisabledGroup(fromCurrent.boolValue);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("from"));
-        EditorGUI.EndDisabledGroup();
-
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("to"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("delay"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("duration"));
-
+        SerializedMotionEditor.OnInspectorGUI(serializedObject, SerializedMotion.MotionType.Line);
         serializedObject.ApplyModifiedProperties();
     }
 }
