@@ -20,6 +20,12 @@ public class MotionBase2D : MonoBehaviour {
     protected bool fromCurrent = false;
 
     /// <summary>
+    /// 現在位置を基準位置とするかどうか
+    /// </summary>
+    [SerializeField]
+    protected bool relative = false;
+
+    /// <summary>
     /// 始点
     /// </summary>
     [SerializeField]

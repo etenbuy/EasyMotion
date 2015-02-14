@@ -27,6 +27,14 @@ public class SerializedMotionEditor {
         var fromCurrent = obj.FindProperty("fromCurrent");
         EditorGUILayout.PropertyField(fromCurrent);
 
+        EditorGUI.BeginDisabledGroup(!fromCurrent.boolValue);
+        var relative = obj.FindProperty("relative");
+        if ( !fromCurrent.boolValue ) {
+            relative.boolValue = false;
+        }
+        EditorGUILayout.PropertyField(relative);
+        EditorGUI.EndDisabledGroup();
+
         EditorGUI.BeginDisabledGroup(fromCurrent.boolValue);
         EditorGUILayout.PropertyField(obj.FindProperty("from"));
         EditorGUI.EndDisabledGroup();
@@ -59,6 +67,14 @@ public class SerializedMotionEditor {
 
         var fromCurrent = propery.FindPropertyRelative("fromCurrent");
         EditorGUILayout.PropertyField(fromCurrent);
+
+        EditorGUI.BeginDisabledGroup(!fromCurrent.boolValue);
+        var relative = propery.FindPropertyRelative("relative");
+        if ( !fromCurrent.boolValue ) {
+            relative.boolValue = false;
+        }
+        EditorGUILayout.PropertyField(relative);
+        EditorGUI.EndDisabledGroup();
 
         EditorGUI.BeginDisabledGroup(fromCurrent.boolValue);
         EditorGUILayout.PropertyField(propery.FindPropertyRelative("from"));

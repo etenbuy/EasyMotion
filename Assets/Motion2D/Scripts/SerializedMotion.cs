@@ -29,6 +29,7 @@ public class SerializedMotion {
     public float delay;
     public float duration;
     public bool fromCurrent = true;
+    public bool relative = false;
     public Vector2 from;
 
     // ’¼üˆÚ“®—p

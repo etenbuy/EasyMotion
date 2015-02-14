@@ -35,11 +35,17 @@ public class LinerMotion : MotionBase2D {
     /// 直線移動コルーチンを実行する
     /// </summary>
     private void Start() {
+        var toPos = to;
+
         if ( fromCurrent ) {
             from = Position2D;
+
+            if ( relative ) {
+                toPos += from;
+            }
         }
 
-        StartCoroutine(Move(this, from, to, delay, duration));
+        StartCoroutine(Move(this, from, toPos, delay, duration));
     }
 
     /// <summary>
@@ -92,7 +98,7 @@ public class LinerMotion : MotionBase2D {
     /// 軌跡の描画(Editor用)
     /// </summary>
     private void OnDrawGizmos() {
-        DrawArrow(InitPosition2D, to);
+        DrawArrow(InitPosition2D, relative ? to + InitPosition2D : to);
     }
 #endif
 }

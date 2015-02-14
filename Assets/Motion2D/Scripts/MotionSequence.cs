@@ -62,7 +62,7 @@ public class MotionSequence : MotionBase2D {
             switch ( motion.type ) {
             case SerializedMotion.MotionType.Line:
                 // íºê¸à⁄ìÆ
-                yield return StartCoroutine(LinerMotion.Move(this, from, motion.to, motion.delay, motion.duration));
+                yield return StartCoroutine(LinerMotion.Move(this, from, motion.relative ? motion.to + from : motion.to, motion.delay, motion.duration));
                 break;
 
             case SerializedMotion.MotionType.Curve:
@@ -97,7 +97,7 @@ public class MotionSequence : MotionBase2D {
             switch ( motion.type ) {
             case SerializedMotion.MotionType.Line:
                 // íºê¸à⁄ìÆ
-                prevTo = LinerMotion.DrawArrow(from, motion.to);
+                prevTo = LinerMotion.DrawArrow(from, motion.relative ? motion.to + from : motion.to);
                 break;
 
             case SerializedMotion.MotionType.Curve:
