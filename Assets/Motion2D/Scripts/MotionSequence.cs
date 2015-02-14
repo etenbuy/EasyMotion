@@ -60,14 +60,14 @@ public class MotionSequence : MotionBase2D {
             var from = motion.fromCurrent ? Position2D : motion.from;
 
             switch ( motion.type ) {
-            case SerializedMotion.MotionType.Line:
+            case SerializedMotion.MotionType.MoveTo:
                 // íºê¸à⁄ìÆ
-                yield return StartCoroutine(LinerMotion.Move(this, from, motion.relative ? motion.to + from : motion.to, motion.delay, motion.duration));
+                yield return StartCoroutine(MoveTo.Move(this, from, motion.relative ? motion.to + from : motion.to, motion.delay, motion.duration));
                 break;
 
-            case SerializedMotion.MotionType.Curve:
+            case SerializedMotion.MotionType.MoveArc:
                 // ê˘âÒà⁄ìÆ
-                yield return StartCoroutine(CurveMotion.Move(this, from, motion.fromAngle, motion.rotateAngle, motion.radius, motion.delay, motion.duration));
+                yield return StartCoroutine(MoveArc.Move(this, from, motion.fromAngle, motion.rotateAngle, motion.radius, motion.delay, motion.duration));
                 break;
 
             default:
@@ -95,14 +95,14 @@ public class MotionSequence : MotionBase2D {
             var from = motion.fromCurrent ? prevTo : motion.from;
 
             switch ( motion.type ) {
-            case SerializedMotion.MotionType.Line:
+            case SerializedMotion.MotionType.MoveTo:
                 // íºê¸à⁄ìÆ
-                prevTo = LinerMotion.DrawArrow(from, motion.relative ? motion.to + from : motion.to);
+                prevTo = MoveTo.DrawArrow(from, motion.relative ? motion.to + from : motion.to);
                 break;
 
-            case SerializedMotion.MotionType.Curve:
+            case SerializedMotion.MotionType.MoveArc:
                 // ê˘âÒà⁄ìÆ
-                prevTo = CurveMotion.DrawArrow(from, motion.fromAngle, motion.rotateAngle, motion.radius, false);
+                prevTo = MoveArc.DrawArrow(from, motion.fromAngle, motion.rotateAngle, motion.radius, false);
                 break;
 
             default:

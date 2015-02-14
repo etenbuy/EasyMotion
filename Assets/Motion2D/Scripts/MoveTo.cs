@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                               //
-//  File    :   LinerMotion.cs                                                                   //
+//  File    :   MotionMoveTo.cs                                                                  //
 //  Author  :   ftvoid                                                                           //
 //  Date    :   2015.02.01                                                                       //
 //  Desc    :   直線モーション。                                                                 //
@@ -12,7 +12,7 @@ using System.Collections;
 /// <summary>
 /// 直線モーション
 /// </summary>
-public class LinerMotion : MotionBase2D {
+public class MoveTo : MotionBase2D {
     /// <summary>
     /// 終点
     /// </summary>

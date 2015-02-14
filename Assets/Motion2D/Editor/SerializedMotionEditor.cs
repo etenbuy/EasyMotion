@@ -41,12 +41,12 @@ public class SerializedMotionEditor {
 
         // モーション個別のGUI表示
         switch ( type ) {
-        case SerializedMotion.MotionType.Line:
+        case SerializedMotion.MotionType.MoveTo:
             // 直線
             EditorGUILayout.PropertyField(obj.FindProperty("to"));
             break;
 
-        case SerializedMotion.MotionType.Curve:
+        case SerializedMotion.MotionType.MoveArc:
             // 旋回
             EditorGUILayout.PropertyField(obj.FindProperty("fromAngle"));
             EditorGUILayout.PropertyField(obj.FindProperty("rotateAngle"));
@@ -82,12 +82,12 @@ public class SerializedMotionEditor {
 
         // モーション個別のGUI表示
         switch ( (SerializedMotion.MotionType)propery.FindPropertyRelative("type").enumValueIndex ) {
-        case SerializedMotion.MotionType.Line:
+        case SerializedMotion.MotionType.MoveTo:
             // 直線
             EditorGUILayout.PropertyField(propery.FindPropertyRelative("to"));
             break;
 
-        case SerializedMotion.MotionType.Curve:
+        case SerializedMotion.MotionType.MoveArc:
             // 旋回
             EditorGUILayout.PropertyField(propery.FindPropertyRelative("fromAngle"));
             EditorGUILayout.PropertyField(propery.FindPropertyRelative("rotateAngle"));

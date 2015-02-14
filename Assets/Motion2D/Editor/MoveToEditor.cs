@@ -1,25 +1,25 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                               //
-//  File    :   CurveMotionEditor.cs                                                             //
+//  File    :   MoveToEditor.cs                                                                  //
 //  Author  :   ftvoid                                                                           //
 //  Date    :   2015.02.01                                                                       //
-//  Desc    :   旋回モーションエディタ拡張。                                                     //
+//  Desc    :   直線モーションエディタ拡張。                                                     //
 //                                                                                               //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 using UnityEngine;
 using UnityEditor;
 
 /// <summary>
-/// 旋回モーションエディタ拡張
+/// 直線モーションエディタ拡張
 /// </summary>
-[CustomEditor(typeof(CurveMotion))]
-public class CurveMotionEditor : Editor {
+[CustomEditor(typeof(MoveTo))]
+public class MoveToEditor : Editor {
     /// <summary>
-    /// CurveMotionのインスペクタ上のレイアウト
+    /// MoveToのインスペクタ上のレイアウト
     /// </summary>
     public override void OnInspectorGUI() {
         serializedObject.Update();
-        SerializedMotionEditor.OnInspectorGUI(serializedObject, SerializedMotion.MotionType.Curve);
+        SerializedMotionEditor.OnInspectorGUI(serializedObject, SerializedMotion.MotionType.MoveTo);
         serializedObject.ApplyModifiedProperties();
     }
 }

@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                               //
-//  File    :   CurveMotion.cs                                                                   //
+//  File    :   MoveArc.cs                                                                       //
 //  Author  :   ftvoid                                                                           //
 //  Date    :   2015.02.01                                                                       //
 //  Desc    :   旋回モーション。                                                                 //
@@ -13,7 +13,7 @@ using System.Collections.Generic;
 /// <summary>
 /// 旋回モーション
 /// </summary>
-public class CurveMotion : MotionBase2D {
+public class MoveArc : MotionBase2D {
     /// <summary>
     /// 初角度
     /// </summary>

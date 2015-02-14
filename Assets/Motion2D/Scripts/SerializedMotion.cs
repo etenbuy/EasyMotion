@@ -19,9 +19,9 @@ public class SerializedMotion {
     /// モーションタイプ
     /// </summary>
     public enum MotionType {
-        Base,
-        Line,
-        Curve,
+        Stop,
+        MoveTo,
+        MoveArc,
     };
 
     // 共通
