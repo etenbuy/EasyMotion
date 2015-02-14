@@ -167,5 +167,27 @@ public class MoveArc2D : LimitedMotion2D {
     private void OnDrawGizmos() {
         DrawArrow(InitPosition2D, fromAngle, rotateAngle, radius, fromCurrent, GizmoColor);
     }
+
+    /// <summary>
+    /// 速さ補正ウィンドウを開く
+    /// </summary>
+    [ContextMenu("Set Speed")]
+    private void SetSpeed() {
+        // 現在の速さ計算
+        var length = radius * rotateAngle * Mathf.Deg2Rad;
+        var curSpeed = 0f;
+        if ( duration != 0 ) {
+            curSpeed = length / duration;
+        }
+
+        // ウィンドウを開く
+        AdjustSpeed.Open(curSpeed, (speed) => {
+            if ( speed == 0 ) {
+                duration = 0;
+            } else {
+                duration = length / speed;
+            }
+        });
+    }
 #endif
 }
