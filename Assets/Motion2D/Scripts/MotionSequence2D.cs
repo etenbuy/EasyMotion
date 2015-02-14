@@ -21,6 +21,12 @@ public class MotionSequence2D : LimitedMotion2D {
     [SerializeField]
     public SerializedMotion2D[] sequence;
 
+#if UNITY_EDITOR
+    /// <summary>
+    /// 現在実行中のモーション
+    /// </summary>
+    private SerializedMotion2D current = null;
+
     /// <summary>
     /// モーションを入れ替える
     /// </summary>
@@ -51,6 +57,7 @@ public class MotionSequence2D : LimitedMotion2D {
         newSequence.RemoveAt(index);
         sequence = newSequence.ToArray();
     }
+#endif
 
     /// <summary>
     /// モーションシーケンスを実行する
@@ -58,6 +65,10 @@ public class MotionSequence2D : LimitedMotion2D {
     private IEnumerator Start() {
         foreach ( var motion in sequence ) {
             var from = motion.fromCurrent ? Position2D : motion.from;
+
+#if UNITY_EDITOR
+            current = motion;
+#endif
 
             switch ( motion.type ) {
             case SerializedMotion2D.MotionType.MoveTo:
@@ -76,6 +87,10 @@ public class MotionSequence2D : LimitedMotion2D {
                 break;
             }
         }
+
+#if UNITY_EDITOR
+        current = null;
+#endif
     }
 
 #if UNITY_EDITOR
@@ -94,15 +109,24 @@ public class MotionSequence2D : LimitedMotion2D {
 
             var from = motion.fromCurrent ? prevTo : motion.from;
 
+            Color color;
+            if ( !Application.isPlaying ) {
+                color = MotionGizmo.EditorColor;
+            } else if ( motion == current ) {
+                color = MotionGizmo.MovingColor;
+            } else {
+                color = MotionGizmo.DisableColor;
+            }
+
             switch ( motion.type ) {
             case SerializedMotion2D.MotionType.MoveTo:
                 // 直線移動
-                prevTo = MoveTo2D.DrawArrow(from, motion.relative ? motion.to + from : motion.to);
+                prevTo = MoveTo2D.DrawArrow(from, motion.relative ? motion.to + from : motion.to, color);
                 break;
 
             case SerializedMotion2D.MotionType.MoveArc:
                 // 旋回移動
-                prevTo = MoveArc2D.DrawArrow(from, motion.fromAngle, motion.rotateAngle, motion.radius, false);
+                prevTo = MoveArc2D.DrawArrow(from, motion.fromAngle, motion.rotateAngle, motion.radius, false, color);
                 break;
 
             default:

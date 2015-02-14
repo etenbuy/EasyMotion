@@ -16,18 +16,18 @@ using System.Collections;
 /// MotionŠÖ˜A‚ÌGizmo•\¦‚ğ‚Ü‚Æ‚ß‚½ƒNƒ‰ƒXB
 /// </summary>
 public class MotionGizmo {
-    /// <summary>
-    /// •\¦F
-    /// </summary>
-    public static Color color = Color.cyan;
+    public static Color EditorColor = Color.cyan;
+    public static Color MovingColor = Color.magenta;
+    public static Color DisableColor = Color.gray;
 
     /// <summary>
     /// –îˆó‚Ì•`‰æ
     /// </summary>
     /// <param name="points"></param>
+    /// <param name="color"></param>
     /// <param name="showStartCap"></param>
     /// <param name="showEndCap"></param>
-    public static void DrawArrow(Vector2[] points, bool showStartCap = false, bool showEndCap = true) {
+    public static void DrawArrow(Vector2[] points, Color color, bool showStartCap = false, bool showEndCap = true) {
         if ( points.Length < 2 ) {
             // ü‚ª‘¶İ‚µ‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
             return;
@@ -47,18 +47,19 @@ public class MotionGizmo {
         }
 
         // –îˆó‚Ì–î‚Ì•`‰æ
-        DrawArrow(points, showStartCap, showEndCap, startCapAngle, endCapAngle);
+        DrawArrow(points, color, showStartCap, showEndCap, startCapAngle, endCapAngle);
     }
 
     /// <summary>
     /// –îˆó‚Ì•`‰æ
     /// </summary>
     /// <param name="points"></param>
+    /// <param name="color"></param>
     /// <param name="showStartCap"></param>
     /// <param name="showEndCap"></param>
     /// <param name="startCapAngle"></param>
     /// <param name="endCapAngle"></param>
-    public static void DrawArrow(Vector2[] points, bool showStartCap, bool showEndCap, float startCapAngle, float endCapAngle) {
+    public static void DrawArrow(Vector2[] points, Color color, bool showStartCap, bool showEndCap, float startCapAngle, float endCapAngle) {
         if ( points.Length < 2 ) {
             // ü‚ª‘¶İ‚µ‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
             return;
@@ -78,20 +79,20 @@ public class MotionGizmo {
 
         // –îˆó‚Ì–î‚Ì•`‰æ
         if ( showStartCap ) {
-            DrawArrowCap(points[0], startCapAngle);
+            DrawArrowCap(points[0], startCapAngle, color);
         }
         if ( showEndCap ) {
-            DrawArrowCap(from, endCapAngle);
+            DrawArrowCap(from, endCapAngle, color);
         }
     }
-
 
     /// <summary>
     /// –îˆó‚Ì–î‚Ì•”•ª‚ğ•`‰æ‚·‚é
     /// </summary>
     /// <param name="from"></param>
     /// <param name="angle"></param>
-    public static void DrawArrowCap(Vector2 from, float angle) {
+    /// <param name="color"></param>
+    public static void DrawArrowCap(Vector2 from, float angle, Color color) {
         var sceneCamera = SceneView.lastActiveSceneView.camera;
         var scale = sceneCamera.orthographicSize / sceneCamera.pixelHeight;
 
@@ -125,7 +126,6 @@ public class MotionGizmo {
 
         Object.DestroyImmediate(mesh);
     }
-
 }
 
 #endif

@@ -99,8 +99,9 @@ public class MoveArc2D : LimitedMotion2D {
     /// <param name="rotateAngle"></param>
     /// <param name="radius"></param>
     /// <param name="fromCurrent"></param>
+    /// <param name="color"></param>
     /// <returns></returns>
-    public static Vector2 DrawArrow(Vector2 from, float fromAngle, float rotateAngle, float radius, bool fromCurrent) {
+    public static Vector2 DrawArrow(Vector2 from, float fromAngle, float rotateAngle, float radius, bool fromCurrent, Color color) {
         // â~ÇÃí∏ì_êî
         const int POINT_NUM = 45;
 
@@ -149,13 +150,13 @@ public class MoveArc2D : LimitedMotion2D {
         Vector2 toPos;
         if ( isRight ) {
             toPos = from + new Vector2(-fromSin + Mathf.Sin(fromAngleRad), fromCos - Mathf.Cos(fromAngleRad)) * radius;
-            MotionGizmo.DrawArrowCap(toPos, fromAngleRad * Mathf.Rad2Deg + 180);
+            MotionGizmo.DrawArrowCap(toPos, fromAngleRad * Mathf.Rad2Deg + 180, color);
         } else {
             toPos = from + new Vector2(-fromSin + Mathf.Sin(toAngleRad), fromCos - Mathf.Cos(toAngleRad)) * radius;
-            MotionGizmo.DrawArrowCap(toPos, toAngleRad * Mathf.Rad2Deg);
+            MotionGizmo.DrawArrowCap(toPos, toAngleRad * Mathf.Rad2Deg, color);
         }
 
-        MotionGizmo.DrawArrow(points.ToArray(), false, false);
+        MotionGizmo.DrawArrow(points.ToArray(), color, false, false);
 
         return toPos;
     }
@@ -164,7 +165,7 @@ public class MoveArc2D : LimitedMotion2D {
     /// ãOê’ÇÃï`âÊ(Editoróp)
     /// </summary>
     private void OnDrawGizmos() {
-        DrawArrow(InitPosition2D, fromAngle, rotateAngle, radius, fromCurrent);
+        DrawArrow(InitPosition2D, fromAngle, rotateAngle, radius, fromCurrent, GizmoColor);
     }
 #endif
 }

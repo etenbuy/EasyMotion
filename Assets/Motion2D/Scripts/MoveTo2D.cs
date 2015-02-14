@@ -70,9 +70,10 @@ public class MoveTo2D : LimitedMotion2D {
     /// </summary>
     /// <param name="from"></param>
     /// <param name="to"></param>
+    /// <param name="color"></param>
     /// <returns></returns>
-    public static Vector2 DrawArrow(Vector2 from, Vector2 to) {
-        MotionGizmo.DrawArrow(new Vector2[] { from, to });
+    public static Vector2 DrawArrow(Vector2 from, Vector2 to, Color color) {
+        MotionGizmo.DrawArrow(new Vector2[] { from, to }, color);
         return to;
     }
 
@@ -80,7 +81,7 @@ public class MoveTo2D : LimitedMotion2D {
     /// 軌跡の描画(Editor用)
     /// </summary>
     private void OnDrawGizmos() {
-        DrawArrow(InitPosition2D, relative ? to + InitPosition2D : to);
+        DrawArrow(InitPosition2D, relative ? to + InitPosition2D : to, GizmoColor);
     }
 #endif
 }

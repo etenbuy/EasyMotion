@@ -25,6 +25,10 @@ public class LimitedMotion2D : MotionBase2D {
     [SerializeField]
     protected float duration = 0;
 
+#if UNITY_EDITOR
+    private bool isMoving = false;
+#endif
+
     /// <summary>
     /// モーションを開始する
     /// </summary>
@@ -39,9 +43,34 @@ public class LimitedMotion2D : MotionBase2D {
     /// <param name="motion"></param>
     /// <returns></returns>
     private IEnumerator ExecuteMotion(IEnumerator motion) {
+#if UNITY_EDITOR
+        isMoving = true;
+#endif
+
         // 開始まで待機
         yield return new WaitForSeconds(delay);
         // モーション実行
         yield return StartCoroutine(motion);
+
+#if UNITY_EDITOR
+        isMoving = false;
+#endif
     }
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// Gizmo表示色
+    /// </summary>
+    protected Color GizmoColor {
+        get {
+            if ( !Application.isPlaying ) {
+                return MotionGizmo.EditorColor;
+            } else if ( isMoving ) {
+                return MotionGizmo.MovingColor;
+            } else {
+                return MotionGizmo.DisableColor;
+            }
+        }
+    }
+#endif
 }
