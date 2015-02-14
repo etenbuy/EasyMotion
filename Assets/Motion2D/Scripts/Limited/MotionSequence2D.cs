@@ -72,17 +72,18 @@ public class MotionSequence2D : LimitedMotion2D {
 
             switch ( motion.type ) {
             case SerializedMotion2D.MotionType.MoveTo:
-                // íºê¸à⁄ìÆ
                 yield return StartMotion(MoveTo2D.Move(this, from, motion.relative ? motion.to + from : motion.to, motion.duration));
                 break;
 
             case SerializedMotion2D.MotionType.MoveArc:
-                // ê˘âÒà⁄ìÆ
                 yield return StartMotion(MoveArc2D.Move(this, from, motion.fromAngle, motion.rotateAngle, motion.radius, motion.duration));
                 break;
 
+            case SerializedMotion2D.MotionType.Liner:
+                yield return StartMotion(LinerMotion2D.Move(this, from, motion.velocity));
+                break;
+
             default:
-                // ê√é~
                 yield return new WaitForSeconds(motion.delay + motion.duration);
                 break;
             }
@@ -120,17 +121,23 @@ public class MotionSequence2D : LimitedMotion2D {
 
             switch ( motion.type ) {
             case SerializedMotion2D.MotionType.MoveTo:
-                // íºê¸à⁄ìÆ
                 prevTo = MoveTo2D.DrawArrow(from, motion.relative ? motion.to + from : motion.to, color);
                 break;
 
             case SerializedMotion2D.MotionType.MoveArc:
-                // ê˘âÒà⁄ìÆ
                 prevTo = MoveArc2D.DrawArrow(from, motion.fromAngle, motion.rotateAngle, motion.radius, false, color);
                 break;
 
+            case SerializedMotion2D.MotionType.Liner:
+                prevTo = LinerMotion2D.DrawArrow(from, motion.velocity, color);
+                break;
+
             default:
-                // ê√é~
+                break;
+            }
+
+            if ( SerializedMotion2D.GetType(motion.type).IsSubclassOf(typeof(EternalMotion2D)) ) {
+                // ñ≥å¿ÉÇÅ[ÉVÉáÉìÇ»ÇÁÇªÇÍà»ç~Ç…êiÇﬂÇ»Ç¢ÇΩÇﬂèIóπ
                 break;
             }
         }

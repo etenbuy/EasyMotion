@@ -332,34 +332,59 @@ MonoBehaviour:
   sequence:
   - type: 1
     delay: 0
-    duration: 1
     fromCurrent: 1
     relative: 0
     from: {x: 0, y: 0}
+    duration: 1
     to: {x: 100, y: 0}
     fromAngle: 0
     rotateAngle: 0
     radius: 0
+    velocity: {x: 0, y: 0}
   - type: 2
     delay: 0
-    duration: 1
     fromCurrent: 1
     relative: 0
     from: {x: 0, y: 0}
+    duration: 1
     to: {x: 0, y: 0}
     fromAngle: 0
     rotateAngle: 90
     radius: 100
+    velocity: {x: 0, y: 0}
   - type: 1
     delay: 0
-    duration: 1
     fromCurrent: 1
     relative: 0
     from: {x: 0, y: 0}
+    duration: 1
     to: {x: 0, y: 0}
     fromAngle: 0
     rotateAngle: 0
     radius: 0
+    velocity: {x: 0, y: 0}
+  - type: 3
+    delay: 0
+    fromCurrent: 1
+    relative: 0
+    from: {x: 0, y: 0}
+    duration: 0
+    to: {x: 0, y: 0}
+    fromAngle: 0
+    rotateAngle: 0
+    radius: 0
+    velocity: {x: 0, y: 50}
+  - type: 1
+    delay: 0
+    fromCurrent: 1
+    relative: 0
+    from: {x: 0, y: 0}
+    duration: 0
+    to: {x: -100, y: 0}
+    fromAngle: 0
+    rotateAngle: 0
+    radius: 0
+    velocity: {x: 0, y: 0}
 --- !u!212 &1285154868
 SpriteRenderer:
   m_ObjectHideFlags: 0
