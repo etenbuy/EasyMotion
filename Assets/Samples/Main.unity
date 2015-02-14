@@ -450,7 +450,7 @@ MonoBehaviour:
   fromCurrent: 1
   from: {x: 100, y: 0}
   delay: 0
-  velocity: {x: 100, y: 100}
+  velocity: {x: 70.7106781, y: 70.7106781}
 --- !u!212 &1972769714
 SpriteRenderer:
   m_ObjectHideFlags: 0

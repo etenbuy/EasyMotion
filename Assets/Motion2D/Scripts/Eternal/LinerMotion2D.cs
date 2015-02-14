@@ -70,5 +70,15 @@ public class LinerMotion2D : EternalMotion2D {
     private void OnDrawGizmos() {
         DrawArrow(InitPosition2D, velocity, GizmoColor);
     }
+
+    /// <summary>
+    /// 速さ補正ウィンドウを開く
+    /// </summary>
+    [ContextMenu("Set Speed")]
+    private void SetSpeed() {
+        AdjustSpeed.Open(velocity.magnitude, (speed) => {
+            velocity = velocity.normalized * speed;
+        });
+    }
 #endif
 }
