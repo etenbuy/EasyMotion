@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                               //
-//  File    :   SerializedMotionEditor.cs                                                        //
+//  File    :   SerializedMotion2DEditor.cs                                                      //
 //  Author  :   ftvoid                                                                           //
 //  Date    :   2015.02.14                                                                       //
 //  Desc    :   シリアライズ済みモーションエディタ。                                             //
@@ -14,12 +14,12 @@ using System.Collections;
 /// <summary>
 /// シリアライズ済みモーションエディタ。
 /// </summary>
-public class SerializedMotionEditor {
+public class SerializedMotion2DEditor {
     /// <summary>
     /// SerializedMotionのインスペクタ上のレイアウト
     /// </summary>
     /// <param name="obj"></param>
-    public static void OnInspectorGUI(SerializedObject obj, SerializedMotion.MotionType type) {
+    public static void OnInspectorGUI(SerializedObject obj, SerializedMotion2D.MotionType type) {
         // モーション共通のGUI表示
         EditorGUILayout.PropertyField(obj.FindProperty("delay"));
         EditorGUILayout.PropertyField(obj.FindProperty("duration"));
@@ -41,12 +41,12 @@ public class SerializedMotionEditor {
 
         // モーション個別のGUI表示
         switch ( type ) {
-        case SerializedMotion.MotionType.MoveTo:
+        case SerializedMotion2D.MotionType.MoveTo:
             // 直線
             EditorGUILayout.PropertyField(obj.FindProperty("to"));
             break;
 
-        case SerializedMotion.MotionType.MoveArc:
+        case SerializedMotion2D.MotionType.MoveArc:
             // 旋回
             EditorGUILayout.PropertyField(obj.FindProperty("fromAngle"));
             EditorGUILayout.PropertyField(obj.FindProperty("rotateAngle"));
@@ -81,13 +81,13 @@ public class SerializedMotionEditor {
         EditorGUI.EndDisabledGroup();
 
         // モーション個別のGUI表示
-        switch ( (SerializedMotion.MotionType)propery.FindPropertyRelative("type").enumValueIndex ) {
-        case SerializedMotion.MotionType.MoveTo:
+        switch ( (SerializedMotion2D.MotionType)propery.FindPropertyRelative("type").enumValueIndex ) {
+        case SerializedMotion2D.MotionType.MoveTo:
             // 直線
             EditorGUILayout.PropertyField(propery.FindPropertyRelative("to"));
             break;
 
-        case SerializedMotion.MotionType.MoveArc:
+        case SerializedMotion2D.MotionType.MoveArc:
             // 旋回
             EditorGUILayout.PropertyField(propery.FindPropertyRelative("fromAngle"));
             EditorGUILayout.PropertyField(propery.FindPropertyRelative("rotateAngle"));

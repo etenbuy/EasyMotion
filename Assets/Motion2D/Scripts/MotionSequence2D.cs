@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                               //
-//  File    :   MotionSequence.cs                                                                //
+//  File    :   MotionSequence2D.cs                                                              //
 //  Author  :   ftvoid                                                                           //
 //  Date    :   2015.02.01                                                                       //
 //  Desc    :   連続したモーション。                                                             //
@@ -14,12 +14,12 @@ using System.Collections.Generic;
 /// <summary>
 /// 連続したモーション
 /// </summary>
-public class MotionSequence : MotionBase2D {
+public class MotionSequence2D : MotionBase2D {
     /// <summary>
     /// モーションの一連の流れ
     /// </summary>
     [SerializeField]
-    public SerializedMotion[] sequence;
+    public SerializedMotion2D[] sequence;
 
     /// <summary>
     /// モーションを入れ替える
@@ -37,8 +37,8 @@ public class MotionSequence : MotionBase2D {
     /// </summary>
     /// <param name="index"></param>
     public void InsertNew(int index) {
-        var newSequence = new List<SerializedMotion>(sequence);
-        newSequence.Insert(index, new SerializedMotion());
+        var newSequence = new List<SerializedMotion2D>(sequence);
+        newSequence.Insert(index, new SerializedMotion2D());
         sequence = newSequence.ToArray();
     }
 
@@ -47,7 +47,7 @@ public class MotionSequence : MotionBase2D {
     /// </summary>
     /// <param name="index"></param>
     public void Remove(int index) {
-        var newSequence = new List<SerializedMotion>(sequence);
+        var newSequence = new List<SerializedMotion2D>(sequence);
         newSequence.RemoveAt(index);
         sequence = newSequence.ToArray();
     }
@@ -60,14 +60,14 @@ public class MotionSequence : MotionBase2D {
             var from = motion.fromCurrent ? Position2D : motion.from;
 
             switch ( motion.type ) {
-            case SerializedMotion.MotionType.MoveTo:
+            case SerializedMotion2D.MotionType.MoveTo:
                 // 直線移動
-                yield return StartCoroutine(MoveTo.Move(this, from, motion.relative ? motion.to + from : motion.to, motion.delay, motion.duration));
+                yield return StartCoroutine(MoveTo2D.Move(this, from, motion.relative ? motion.to + from : motion.to, motion.delay, motion.duration));
                 break;
 
-            case SerializedMotion.MotionType.MoveArc:
+            case SerializedMotion2D.MotionType.MoveArc:
                 // 旋回移動
-                yield return StartCoroutine(MoveArc.Move(this, from, motion.fromAngle, motion.rotateAngle, motion.radius, motion.delay, motion.duration));
+                yield return StartCoroutine(MoveArc2D.Move(this, from, motion.fromAngle, motion.rotateAngle, motion.radius, motion.delay, motion.duration));
                 break;
 
             default:
@@ -95,14 +95,14 @@ public class MotionSequence : MotionBase2D {
             var from = motion.fromCurrent ? prevTo : motion.from;
 
             switch ( motion.type ) {
-            case SerializedMotion.MotionType.MoveTo:
+            case SerializedMotion2D.MotionType.MoveTo:
                 // 直線移動
-                prevTo = MoveTo.DrawArrow(from, motion.relative ? motion.to + from : motion.to);
+                prevTo = MoveTo2D.DrawArrow(from, motion.relative ? motion.to + from : motion.to);
                 break;
 
-            case SerializedMotion.MotionType.MoveArc:
+            case SerializedMotion2D.MotionType.MoveArc:
                 // 旋回移動
-                prevTo = MoveArc.DrawArrow(from, motion.fromAngle, motion.rotateAngle, motion.radius, false);
+                prevTo = MoveArc2D.DrawArrow(from, motion.fromAngle, motion.rotateAngle, motion.radius, false);
                 break;
 
             default:

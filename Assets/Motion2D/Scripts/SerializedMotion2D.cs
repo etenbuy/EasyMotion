@@ -14,7 +14,7 @@ using System.Collections;
 /// シリアライズ済みモーション情報。
 /// </summary>
 [Serializable]
-public class SerializedMotion {
+public class SerializedMotion2D {
     /// <summary>
     /// モーションタイプ
     /// </summary>

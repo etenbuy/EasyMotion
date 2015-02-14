@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                               //
-//  File    :   SequenceMotionEditor.cs                                                          //
+//  File    :   SequenceMotion2DEditor.cs                                                        //
 //  Author  :   ftvoid                                                                           //
 //  Date    :   2015.02.01                                                                       //
 //  Desc    :   連続したモーションのエディタ拡張。                                               //
@@ -15,8 +15,8 @@ using System.Collections.Generic;
 /// <summary>
 /// 連続したモーションのエディタ拡張。
 /// </summary>
-[CustomEditor(typeof(MotionSequence))]
-public class SequenceMotionEditor : Editor {
+[CustomEditor(typeof(MotionSequence2D))]
+public class SequenceMotion2DEditor : Editor {
     private bool[] expansion;
 
     /// <summary>
@@ -66,7 +66,7 @@ public class SequenceMotionEditor : Editor {
             ++EditorGUI.indentLevel;
 
             // モーション情報のGUI表示
-            SerializedMotionEditor.OnInspectorGUI(elem);
+            SerializedMotion2DEditor.OnInspectorGUI(elem);
 
             --EditorGUI.indentLevel;
         }
@@ -114,7 +114,7 @@ public class SequenceMotionEditor : Editor {
     /// </summary>
     /// <param name="index">モーションのインデックス</param>
     private void OnInsertNew(int index) {
-        (target as MotionSequence).InsertNew(index);
+        (target as MotionSequence2D).InsertNew(index);
 
         var newExpansion = new List<bool>(expansion);
         newExpansion.Insert(index, false);
@@ -126,7 +126,7 @@ public class SequenceMotionEditor : Editor {
     /// </summary>
     /// <param name="index">モーションのインデックス</param>
     private void OnRemove(int index) {
-        (target as MotionSequence).Remove(index);
+        (target as MotionSequence2D).Remove(index);
 
         var newExpansion = new List<bool>(expansion);
         newExpansion.RemoveAt(index);
@@ -139,7 +139,7 @@ public class SequenceMotionEditor : Editor {
     /// <param name="index1"></param>
     /// <param name="index2"></param>
     private void Replace(int index1, int index2) {
-        (target as MotionSequence).Replace(index1, index2);
+        (target as MotionSequence2D).Replace(index1, index2);
 
         var tmp = expansion[index1];
         expansion[index1] = expansion[index2];
