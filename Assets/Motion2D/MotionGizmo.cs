@@ -6,6 +6,8 @@
 //  Desc    :   Motion関連のGizmo表示をまとめたクラス。                                          //
 //                                                                                               //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+#if UNITY_EDITOR
+
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
@@ -125,3 +127,5 @@ public class MotionGizmo {
     }
 
 }
+
+#endif
