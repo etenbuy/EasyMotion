@@ -81,7 +81,41 @@ public class MoveTo2D : LimitedMotion2D {
     /// 軌跡の描画(Editor用)
     /// </summary>
     private void OnDrawGizmos() {
-        DrawArrow(InitPosition2D, relative ? to + InitPosition2D : to, GizmoColor);
+        DrawArrow(FromPosition, ToPosition, GizmoColor);
+    }
+
+    private Vector2 FromPosition {
+        get {
+            return InitPosition2D;
+        }
+    }
+
+    private Vector2 ToPosition {
+        get {
+            return relative ? to + InitPosition2D : to;
+        }
+    }
+
+    /// <summary>
+    /// 速さ補正ウィンドウを開く
+    /// </summary>
+    [ContextMenu("Set Speed")]
+    private void SetSpeed() {
+        // 現在の速さ計算
+        var line = ToPosition - FromPosition;
+        var curSpeed = 0f;
+        if ( duration != 0 ) {
+            curSpeed = line.magnitude / duration;
+        }
+
+        // ウィンドウを開く
+        AdjustSpeed.Open(curSpeed, (speed) => {
+            if ( speed == 0 ) {
+                duration = 0;
+            } else {
+                duration = line.magnitude / speed;
+            }
+        });
     }
 #endif
 }
