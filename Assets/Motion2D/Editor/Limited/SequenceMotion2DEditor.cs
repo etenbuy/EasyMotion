@@ -30,6 +30,9 @@ public class SequenceMotion2DEditor : Editor {
 
         if ( expansion == null ) {
             expansion = new bool[sequence.arraySize];
+            for ( int i = 0 ; i < expansion.Length ; ++i ) {
+                expansion[i] = true;
+            }
         }
 
         // ”z—ñUI‚ð“®“I•\Ž¦‚·‚é
