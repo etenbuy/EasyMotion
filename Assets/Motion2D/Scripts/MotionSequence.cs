@@ -62,12 +62,12 @@ public class MotionSequence : MotionBase2D {
             switch ( motion.type ) {
             case SerializedMotion.MotionType.Line:
                 // íºê¸à⁄ìÆ
-                yield return StartCoroutine(Line(from, motion.to, motion.delay, motion.duration));
+                yield return StartCoroutine(LinerMotion.Move(this, from, motion.to, motion.delay, motion.duration));
                 break;
 
             case SerializedMotion.MotionType.Curve:
                 // ê˘âÒà⁄ìÆ
-                yield return StartCoroutine(Curve(from, motion.fromAngle, motion.rotateAngle, motion.radius, motion.delay, motion.duration));
+                yield return StartCoroutine(CurveMotion.Move(this, from, motion.fromAngle, motion.rotateAngle, motion.radius, motion.delay, motion.duration));
                 break;
 
             default:
