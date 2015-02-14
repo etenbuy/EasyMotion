@@ -126,6 +126,9 @@ public class MotionGizmo {
         Object.DestroyImmediate(mesh);
     }
 
+    /// <summary>
+    /// カメラスケール
+    /// </summary>
     public static float CameraScale {
         get {
             var sceneCamera = SceneView.lastActiveSceneView.camera;
