@@ -1,34 +1,18 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                               //
-//  File    :   LimitedMotion2D.cs                                                               //
+//  File    :   EternalMotion2D.cs                                                               //
 //  Author  :   ftvoid                                                                           //
 //  Date    :   2015.02.14                                                                       //
-//  Desc    :   時限モーション。                                                                 //
+//  Desc    :   無限モーション。                                                                 //
 //                                                                                               //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// 時限モーション。
+/// 無限モーションの基底クラス
 /// </summary>
-public class LimitedMotion2D : MotionBase2D {
-    /// <summary>
-    /// 現在位置を基準位置とするかどうか
-    /// </summary>
-    [SerializeField]
-    protected bool relative = false;
-
-    /// <summary>
-    /// 移動時間
-    /// </summary>
-    [SerializeField]
-    protected float duration = 0;
-
-#if UNITY_EDITOR
-    private bool isMoving = false;
-#endif
-
+public class EternalMotion2D : MotionBase2D {
     /// <summary>
     /// モーションを開始する
     /// </summary>
@@ -43,18 +27,10 @@ public class LimitedMotion2D : MotionBase2D {
     /// <param name="motion"></param>
     /// <returns></returns>
     private IEnumerator ExecuteMotion(IEnumerator motion) {
-#if UNITY_EDITOR
-        isMoving = true;
-#endif
-
         // 開始まで待機
         yield return new WaitForSeconds(delay);
         // モーション実行
         yield return StartCoroutine(motion);
-
-#if UNITY_EDITOR
-        isMoving = false;
-#endif
     }
 
 #if UNITY_EDITOR
@@ -65,10 +41,8 @@ public class LimitedMotion2D : MotionBase2D {
         get {
             if ( !Application.isPlaying ) {
                 return MotionGizmo.EditorColor;
-            } else if ( isMoving ) {
-                return MotionGizmo.MovingColor;
             } else {
-                return MotionGizmo.DisableColor;
+                return MotionGizmo.MovingColor;
             }
         }
     }

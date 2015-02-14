@@ -20,16 +20,16 @@ public class MotionBase2D : MonoBehaviour {
     protected bool fromCurrent = false;
 
     /// <summary>
-    /// 現在位置を基準位置とするかどうか
-    /// </summary>
-    [SerializeField]
-    protected bool relative = false;
-
-    /// <summary>
     /// 始点
     /// </summary>
     [SerializeField]
     protected Vector2 from = Vector2.zero;
+
+    /// <summary>
+    /// 移動開始までの時間
+    /// </summary>
+    [SerializeField]
+    protected float delay = 0;
 
     /// <summary>
     /// 自身のtransform
