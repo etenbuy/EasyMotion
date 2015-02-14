@@ -101,21 +101,32 @@ public class MoveTo2D : LimitedMotion2D {
     /// </summary>
     [ContextMenu("Set Speed")]
     private void SetSpeed() {
-        // 現在の速さ計算
-        var line = ToPosition - FromPosition;
-        var curSpeed = 0f;
-        if ( duration != 0 ) {
-            curSpeed = line.magnitude / duration;
-        }
-
         // ウィンドウを開く
-        AdjustSpeed.Open(curSpeed, (speed) => {
-            if ( speed == 0 ) {
+        AdjustSpeed.Open(Speed, (speed) => {
+            Speed = speed;
+        });
+    }
+
+    /// <summary>
+    /// 移動時の速さ
+    /// </summary>
+    public float Speed {
+        get {
+            var line = ToPosition - FromPosition;
+            var curSpeed = 0f;
+            if ( duration != 0 ) {
+                curSpeed = line.magnitude / duration;
+            }
+            return curSpeed;
+        }
+        set {
+            var line = ToPosition - FromPosition;
+            if ( value == 0 ) {
                 duration = 0;
             } else {
-                duration = line.magnitude / speed;
+                duration = line.magnitude / value;
             }
-        });
+        }
     }
 #endif
 }

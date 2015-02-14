@@ -76,9 +76,21 @@ public class LinerMotion2D : EternalMotion2D {
     /// </summary>
     [ContextMenu("Set Speed")]
     private void SetSpeed() {
-        AdjustSpeed.Open(velocity.magnitude, (speed) => {
-            velocity = velocity.normalized * speed;
+        AdjustSpeed.Open(Speed, (speed) => {
+            Speed = speed;
         });
+    }
+
+    /// <summary>
+    /// ˆÚ“®Žž‚Ì‘¬‚³
+    /// </summary>
+    public float Speed {
+        get {
+            return velocity.magnitude;
+        }
+        set {
+            velocity = velocity.normalized * value;
+        }
     }
 #endif
 }

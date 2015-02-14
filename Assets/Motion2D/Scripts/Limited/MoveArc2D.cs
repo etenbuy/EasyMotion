@@ -173,21 +173,32 @@ public class MoveArc2D : LimitedMotion2D {
     /// </summary>
     [ContextMenu("Set Speed")]
     private void SetSpeed() {
-        // 現在の速さ計算
-        var length = radius * rotateAngle * Mathf.Deg2Rad;
-        var curSpeed = 0f;
-        if ( duration != 0 ) {
-            curSpeed = length / duration;
-        }
-
         // ウィンドウを開く
-        AdjustSpeed.Open(curSpeed, (speed) => {
-            if ( speed == 0 ) {
+        AdjustSpeed.Open(Speed, (speed) => {
+            Speed = speed;
+        });
+    }
+
+    /// <summary>
+    /// 移動時の速さ
+    /// </summary>
+    public float Speed {
+        get {
+            var length = radius * rotateAngle * Mathf.Deg2Rad;
+            var curSpeed = 0f;
+            if ( duration != 0 ) {
+                curSpeed = length / duration;
+            }
+            return curSpeed;
+        }
+        set {
+            if ( value == 0 ) {
                 duration = 0;
             } else {
-                duration = length / speed;
+                var length = radius * rotateAngle * Mathf.Deg2Rad;
+                duration = length / value;
             }
-        });
+        }
     }
 #endif
 }
