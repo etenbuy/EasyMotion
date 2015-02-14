@@ -142,17 +142,11 @@ public class MotionBase2D : MonoBehaviour {
     /// <param name="fromCurrent"></param>
     /// <returns></returns>
     protected Vector2 DrawLineArrow(Vector2 from, Vector2 to, bool fromCurrent) {
-        Gizmos.color = Color.cyan;
-
         // 始点計算
         var fromPos = (fromCurrent && !Application.isPlaying) ? (Vector2)transform.localPosition : from;
 
         // 直線の描画
-        Gizmos.DrawLine(fromPos, to);
-
-        // 矢印の描画
-        var dir = to - fromPos;
-        DrawArrowCap(to, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
+        MotionGizmo.DrawArrow(new Vector2[] { fromPos, to });
 
         return to;
     }
@@ -219,51 +213,13 @@ public class MotionBase2D : MonoBehaviour {
         Vector2 toPos;
         if ( isRight ) {
             toPos = fromPos + new Vector2(-fromSin + Mathf.Sin(fromAngleRad), fromCos - Mathf.Cos(fromAngleRad)) * radius;
-            DrawArrowCap(toPos, fromAngleRad * Mathf.Rad2Deg + 180);
+            MotionGizmo.DrawArrowCap(toPos, fromAngleRad * Mathf.Rad2Deg + 180);
         } else {
             toPos = fromPos + new Vector2(-fromSin + Mathf.Sin(toAngleRad), fromCos - Mathf.Cos(toAngleRad)) * radius;
-            DrawArrowCap(toPos, toAngleRad * Mathf.Rad2Deg);
+            MotionGizmo.DrawArrowCap(toPos, toAngleRad * Mathf.Rad2Deg);
         }
 
         return toPos;
-    }
-
-    /// <summary>
-    /// 矢印の矢の部分の描画
-    /// </summary>
-    /// <param name="from"></param>
-    /// <param name="angle"></param>
-    protected void DrawArrowCap(Vector2 from, float angle) {
-        var sceneCamera = UnityEditor.SceneView.lastActiveSceneView.camera;
-        var scale = sceneCamera.orthographicSize / sceneCamera.pixelHeight;
-
-        Mesh mesh = new Mesh();
-
-        mesh.vertices = new Vector3[3] {
-            new Vector3( 0, -10) * scale,
-            new Vector3( 0,  10) * scale,
-            new Vector3( 20, 0 ) * scale,
-        };
-
-        mesh.triangles = new int[] {
-            0, 1, 2
-        };
-
-        mesh.normals = new Vector3[] {
-            Vector3.forward,
-            Vector3.forward,
-            Vector3.forward,
-        };
-
-        mesh.colors = new Color[] {
-            Color.cyan,
-            Color.cyan,
-            Color.cyan,
-        };
-
-        Graphics.DrawMeshNow(mesh, from, Quaternion.Euler(0, 0, angle));
-
-        DestroyImmediate(mesh);
     }
 #endif
 }
