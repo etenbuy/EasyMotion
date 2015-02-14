@@ -21,13 +21,6 @@ public class MotionSequence : MotionBase2D {
     [SerializeField]
     public SerializedMotion[] sequence;
 
-#if UNITY_EDITOR
-    /// <summary>
-    /// 初期位置
-    /// </summary>
-    private Vector2 initPosition;
-#endif
-
     /// <summary>
     /// モーションを入れ替える
     /// </summary>
@@ -63,10 +56,6 @@ public class MotionSequence : MotionBase2D {
     /// モーションシーケンスを実行する
     /// </summary>
     private IEnumerator Start() {
-#if UNITY_EDITOR
-        initPosition = Position2D;
-#endif
-
         foreach ( var motion in sequence ) {
             var from = motion.fromCurrent ? Position2D : motion.from;
 
@@ -100,8 +89,7 @@ public class MotionSequence : MotionBase2D {
         foreach ( var motion in sequence ) {
             if ( isFirst ) {
                 isFirst = false;
-                var initPos = Application.isPlaying ? initPosition : Position2D;
-                prevTo = motion.fromCurrent ? initPos : motion.from;
+                prevTo = motion.fromCurrent ? InitPosition2D : motion.from;
             }
 
             var from = motion.fromCurrent ? prevTo : motion.from;
@@ -109,12 +97,12 @@ public class MotionSequence : MotionBase2D {
             switch ( motion.type ) {
             case SerializedMotion.MotionType.Line:
                 // 直線移動
-                prevTo = DrawLineArrow(from, motion.to, false);
+                prevTo = LinerMotion.DrawArrow(from, motion.to);
                 break;
 
             case SerializedMotion.MotionType.Curve:
                 // 旋回移動
-                prevTo = DrawArcArrow(from, motion.fromAngle, motion.rotateAngle, motion.radius, false);
+                prevTo = CurveMotion.DrawArrow(from, motion.fromAngle, motion.rotateAngle, motion.radius, false);
                 break;
 
             default:

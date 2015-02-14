@@ -14,18 +14,6 @@ using System.Collections;
 /// </summary>
 public class LinerMotion : MotionBase2D {
     /// <summary>
-    /// 現在位置を始点とするかどうか
-    /// </summary>
-    [SerializeField]
-    private bool fromCurrent = false;
-
-    /// <summary>
-    /// 始点
-    /// </summary>
-    [SerializeField]
-    private Vector2 from = Vector2.zero;
-
-    /// <summary>
     /// 終点
     /// </summary>
     [SerializeField]
@@ -56,10 +44,21 @@ public class LinerMotion : MotionBase2D {
 
 #if UNITY_EDITOR
     /// <summary>
+    /// 軌道を示す矢印を描画する
+    /// </summary>
+    /// <param name="from"></param>
+    /// <param name="to"></param>
+    /// <returns></returns>
+    public static Vector2 DrawArrow(Vector2 from, Vector2 to) {
+        MotionGizmo.DrawArrow(new Vector2[] { from, to });
+        return to;
+    }
+
+    /// <summary>
     /// 軌跡の描画(Editor用)
     /// </summary>
     private void OnDrawGizmos() {
-        DrawLineArrow(from, to, fromCurrent);
+        DrawArrow(InitPosition2D, to);
     }
 #endif
 }

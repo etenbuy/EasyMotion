@@ -322,34 +322,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff8ef5636c75e0a42a623baaf66378cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fromCurrent: 0
+  from: {x: 0, y: 0}
   sequence:
-  - type: 0
+  - type: 1
     delay: 0
-    duration: 0
+    duration: 1
     fromCurrent: 1
     from: {x: 0, y: 0}
-    to: {x: 0, y: 0}
+    to: {x: -100, y: 0}
     fromAngle: 0
     rotateAngle: 0
     radius: 0
-  - type: 1
+  - type: 2
     delay: 0
     duration: 1
     fromCurrent: 1
     from: {x: 0, y: 0}
     to: {x: 100, y: 100}
     fromAngle: 0
-    rotateAngle: 0
-    radius: 0
-  - type: 0
-    delay: 0
-    duration: 0
-    fromCurrent: 1
-    from: {x: 0, y: 0}
-    to: {x: 0, y: 0}
-    fromAngle: 0
-    rotateAngle: 0
-    radius: 0
+    rotateAngle: 90
+    radius: 100
 --- !u!212 &1285154868
 SpriteRenderer:
   m_ObjectHideFlags: 0
