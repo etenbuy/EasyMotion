@@ -58,15 +58,9 @@ public class MotionBase2D : MonoBehaviour {
     /// </summary>
     public Vector2 Position2D {
         get {
-#if UNITY_EDITOR
-            selfTrans = transform;
-#endif
             return (Vector2)selfTrans.localPosition;
         }
         set {
-#if UNITY_EDITOR
-            selfTrans = transform;
-#endif
             selfTrans.localPosition = new Vector3(
                 value.x,
                 value.y,

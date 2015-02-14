@@ -68,15 +68,7 @@ public class LinerMotion2D : EternalMotion2D {
     /// ãOê’ÇÃï`âÊ(Editoróp)
     /// </summary>
     private void OnDrawGizmos() {
-        Vector2 fromPos;
-
-        if ( !fromCurrent && !Application.isPlaying ) {
-            fromPos = from;
-        } else {
-            fromPos = Position2D;
-        }
-
-        DrawArrow(fromPos, velocity, GizmoColor);
+        DrawArrow(InitPosition2D, velocity, GizmoColor);
     }
 #endif
 }
