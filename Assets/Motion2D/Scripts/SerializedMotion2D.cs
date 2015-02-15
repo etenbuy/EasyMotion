@@ -45,12 +45,26 @@ public class SerializedMotion2D {
         return typeAssoc[type];
     }
 
+    /// <summary>
+    /// ‰ñ“]‚ÌŽí—Þ
+    /// </summary>
+    public enum RotateType {
+        None,
+        Forward,
+        To,
+    };
+
     // ‹¤’Ê
     public MotionType type;
     public float delay;
     public bool fromCurrent = true;
     public bool relative = false;
     public Vector2 from;
+
+    public RotateType rotateType;
+    public float rotateOffset = 0;
+    public bool rotateImmediate = true;
+    public float rotateSpeed = 360;
 
     // LimitedMotion‹¤’Ê
     public float duration;

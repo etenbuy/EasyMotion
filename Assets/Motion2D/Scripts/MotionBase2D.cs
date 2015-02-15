@@ -32,9 +32,43 @@ public class MotionBase2D : MonoBehaviour {
     protected float delay = 0;
 
     /// <summary>
+    /// 回転の種類
+    /// </summary>
+    [SerializeField]
+    private SerializedMotion2D.RotateType rotateType;
+
+    /// <summary>
+    /// 回転角度の基準位置
+    /// </summary>
+    [SerializeField]
+    private float rotateOffset = 0;
+
+    /// <summary>
+    /// 即座に目標角度に回転するかどうか
+    /// </summary>
+    [SerializeField]
+    private bool rotateImmediate = true;
+
+    /// <summary>
+    /// 回転速度(rotateImmediate=false時有効)
+    /// </summary>
+    [SerializeField]
+    private float rotateSpeed = 360;
+
+    /// <summary>
     /// 自身のtransform
     /// </summary>
     private Transform selfTrans;
+
+    /// <summary>
+    /// 1フレーム前の位置
+    /// </summary>
+    private Vector2 prevPosition;
+
+    /// <summary>
+    /// 1フレーム前の回転角度
+    /// </summary>
+    private float prevForward;
 
 #if UNITY_EDITOR
     /// <summary>
@@ -48,9 +82,16 @@ public class MotionBase2D : MonoBehaviour {
     /// </summary>
     protected void Awake() {
         selfTrans = transform;
+        prevPosition = Position2D;
 #if UNITY_EDITOR
-        initPosition = selfTrans.localPosition;
+        initPosition = prevPosition;
 #endif
+
+        if ( rotateType != SerializedMotion2D.RotateType.None ) {
+            prevForward = selfTrans.localRotation.eulerAngles.z - rotateOffset;
+            UpdateRotation();
+            StartCoroutine(RotationCoroutine());
+        }
     }
 
     /// <summary>
@@ -67,6 +108,89 @@ public class MotionBase2D : MonoBehaviour {
                 selfTrans.localPosition.z
             );
         }
+    }
+
+    /// <summary>
+    /// 前方の向き
+    /// </summary>
+    protected virtual float Forward {
+        get {
+            var pos = Position2D;
+            var diff = pos - prevPosition;
+            prevPosition = pos;
+            if ( diff != Vector2.zero ) {
+                prevForward = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
+            }
+            return prevForward;
+        }
+    }
+
+    /// <summary>
+    /// 回転処理用コルーチン
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator RotationCoroutine() {
+        while ( true ) {
+            UpdateRotation();
+            yield return 0;
+        }
+    }
+
+    /// <summary>
+    /// 回転角度を更新する
+    /// </summary>
+    private void UpdateRotation() {
+        float curRotation = selfTrans.localRotation.eulerAngles.z - rotateOffset;
+        float toRotation = curRotation;
+
+        switch ( rotateType ) {
+        case SerializedMotion2D.RotateType.Forward:
+            toRotation = Forward;
+            break;
+        case SerializedMotion2D.RotateType.To:
+            // TODO 実装
+            break;
+        default:
+            return;
+        }
+
+        float nextRotation = toRotation;
+        if ( !rotateImmediate ) {
+            // 向きの回転
+            var diffRotation = AdjustAngleRange(toRotation - curRotation, -180);
+            var rot = rotateSpeed * Time.deltaTime;
+            if ( Mathf.Abs(diffRotation) > rot ) {
+                if ( diffRotation < 0 ) {
+                    rot = -rot;
+                }
+                nextRotation = curRotation + rot;
+            }
+        }
+
+        selfTrans.localRotation = Quaternion.Euler(0, 0, nextRotation + rotateOffset);
+    }
+
+    /// <summary>
+    /// 角度を指定範囲に補正する
+    /// </summary>
+    /// <param name="angle">補正対象の角度</param>
+    /// <param name="minAngle">角度範囲の最小値</param>
+    /// <returns>補正された角度</returns>
+    protected static float AdjustAngleRange(float angle, float minAngle) {
+        var maxAngle = minAngle + 360f;
+
+        if ( angle >= minAngle && angle < maxAngle ) {
+            return angle;
+        }
+
+        angle -= minAngle;
+        angle = angle % 360f;
+        if ( angle < 0 ) {
+            angle += 360f;
+        }
+        angle += minAngle;
+
+        return angle;
     }
 
 #if UNITY_EDITOR

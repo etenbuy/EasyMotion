@@ -27,6 +27,8 @@ public class SerializedMotion2DEditor {
             EditorGUILayout.PropertyField(obj.FindProperty("duration"));
         }
 
+        ShowRotateGUI(obj);
+
         var fromCurrent = obj.FindProperty("fromCurrent");
         EditorGUILayout.PropertyField(fromCurrent);
 
@@ -66,27 +68,28 @@ public class SerializedMotion2DEditor {
     /// <summary>
     /// SerializedMotionのインスペクタ上のレイアウト
     /// </summary>
-    /// <param name="propery"></param>
-    public static void OnInspectorGUI(SerializedProperty propery) {
-        var typeProp = propery.FindPropertyRelative("type");
+    /// <param name="property"></param>
+    public static void OnInspectorGUI(SerializedProperty property) {
+        var typeProp = property.FindPropertyRelative("type");
         var type = (SerializedMotion2D.MotionType)typeProp.enumValueIndex;
 
         // モーション共通のGUI表示
-        EditorGUILayout.PropertyField(propery.FindPropertyRelative("type"));
-        EditorGUILayout.PropertyField(propery.FindPropertyRelative("delay"));
+        EditorGUILayout.PropertyField(property.FindPropertyRelative("type"));
+        EditorGUILayout.PropertyField(property.FindPropertyRelative("delay"));
+        ShowRotateGUI(property);
 
         var objType = SerializedMotion2D.GetType(type);
         if ( !objType.IsSubclassOf(typeof(EternalMotion2D)) ) {
-            EditorGUILayout.PropertyField(propery.FindPropertyRelative("duration"));
+            EditorGUILayout.PropertyField(property.FindPropertyRelative("duration"));
         }
 
-        var fromCurrent = propery.FindPropertyRelative("fromCurrent");
+        var fromCurrent = property.FindPropertyRelative("fromCurrent");
         EditorGUILayout.PropertyField(fromCurrent);
 
 
         if ( !objType.IsSubclassOf(typeof(EternalMotion2D)) ) {
             EditorGUI.BeginDisabledGroup(!fromCurrent.boolValue);
-            var relative = propery.FindPropertyRelative("relative");
+            var relative = property.FindPropertyRelative("relative");
             if ( !fromCurrent.boolValue ) {
                 relative.boolValue = false;
             }
@@ -94,7 +97,7 @@ public class SerializedMotion2DEditor {
             EditorGUI.EndDisabledGroup();
 
             EditorGUI.BeginDisabledGroup(fromCurrent.boolValue);
-            EditorGUILayout.PropertyField(propery.FindPropertyRelative("from"));
+            EditorGUILayout.PropertyField(property.FindPropertyRelative("from"));
             EditorGUI.EndDisabledGroup();
         }
 
@@ -102,20 +105,69 @@ public class SerializedMotion2DEditor {
         switch ( type ) {
         case SerializedMotion2D.MotionType.MoveTo:
             // MoveTo
-            EditorGUILayout.PropertyField(propery.FindPropertyRelative("to"));
+            EditorGUILayout.PropertyField(property.FindPropertyRelative("to"));
             break;
 
         case SerializedMotion2D.MotionType.MoveArc:
             // MoveArc
-            EditorGUILayout.PropertyField(propery.FindPropertyRelative("fromAngle"));
-            EditorGUILayout.PropertyField(propery.FindPropertyRelative("rotateAngle"));
-            EditorGUILayout.PropertyField(propery.FindPropertyRelative("radius"));
+            EditorGUILayout.PropertyField(property.FindPropertyRelative("fromAngle"));
+            EditorGUILayout.PropertyField(property.FindPropertyRelative("rotateAngle"));
+            EditorGUILayout.PropertyField(property.FindPropertyRelative("radius"));
             break;
 
         case SerializedMotion2D.MotionType.Liner:
             // LinerMotion
-            EditorGUILayout.PropertyField(propery.FindPropertyRelative("velocity"));
+            EditorGUILayout.PropertyField(property.FindPropertyRelative("velocity"));
             break;
         }
     }
+
+    /// <summary>
+    /// 回転設定GUI
+    /// </summary>
+    /// <param name="obj"></param>
+    public static void ShowRotateGUI(SerializedObject obj) {
+        var rotateType = obj.FindProperty("rotateType");
+        EditorGUILayout.PropertyField(rotateType);
+        EditorGUILayout.PropertyField(obj.FindProperty("rotateOffset"));
+
+        switch ( (SerializedMotion2D.RotateType)rotateType.enumValueIndex ) {
+        case SerializedMotion2D.RotateType.Forward:
+        case SerializedMotion2D.RotateType.To:
+            var rotateImmediate = obj.FindProperty("rotateImmediate");
+            EditorGUILayout.PropertyField(rotateImmediate);
+
+            EditorGUI.BeginDisabledGroup(rotateImmediate.boolValue);
+            EditorGUILayout.PropertyField(obj.FindProperty("rotateSpeed"));
+            EditorGUI.EndDisabledGroup();
+
+            break;
+
+        }
+    }
+
+    /// <summary>
+    /// 回転設定GUI
+    /// </summary>
+    /// <param name="property"></param>
+    public static void ShowRotateGUI(SerializedProperty property) {
+        var rotateType = property.FindPropertyRelative("rotateType");
+        EditorGUILayout.PropertyField(rotateType);
+        EditorGUILayout.PropertyField(property.FindPropertyRelative("rotateOffset"));
+
+        switch ( (SerializedMotion2D.RotateType)rotateType.enumValueIndex ) {
+        case SerializedMotion2D.RotateType.Forward:
+        case SerializedMotion2D.RotateType.To:
+            var rotateImmediate = property.FindPropertyRelative("rotateImmediate");
+            EditorGUILayout.PropertyField(rotateImmediate);
+
+            EditorGUI.BeginDisabledGroup(rotateImmediate.boolValue);
+            EditorGUILayout.PropertyField(property.FindPropertyRelative("rotateSpeed"));
+            EditorGUI.EndDisabledGroup();
+
+            break;
+
+        }
+    }
+
 }

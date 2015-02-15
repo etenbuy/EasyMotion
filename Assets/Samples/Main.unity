@@ -139,6 +139,10 @@ MonoBehaviour:
   fromCurrent: 1
   from: {x: 100, y: 100}
   delay: 1
+  rotateType: 1
+  rotateOffset: -90
+  rotateImmediate: 0
+  rotateSpeed: 360
   relative: 1
   duration: 1.41421354
   to: {x: -100, y: -100}
@@ -257,6 +261,10 @@ MonoBehaviour:
   fromCurrent: 1
   from: {x: 0, y: 0}
   delay: 2
+  rotateType: 0
+  rotateOffset: 0
+  rotateImmediate: 1
+  rotateSpeed: 360
   relative: 0
   duration: 2.61799383
   fromAngle: 90
@@ -327,6 +335,10 @@ MonoBehaviour:
   fromCurrent: 0
   from: {x: 0, y: 0}
   delay: 0
+  rotateType: 0
+  rotateOffset: 0
+  rotateImmediate: 1
+  rotateSpeed: 360
   relative: 0
   duration: 0
   sequence:
@@ -335,6 +347,9 @@ MonoBehaviour:
     fromCurrent: 1
     relative: 0
     from: {x: 0, y: 0}
+    rotateType: 0
+    rotateImmediate: 1
+    rotateSpeed: 360
     duration: 2.54724407
     to: {x: 100, y: 0}
     fromAngle: 0
@@ -346,6 +361,9 @@ MonoBehaviour:
     fromCurrent: 1
     relative: 0
     from: {x: 0, y: 0}
+    rotateType: 0
+    rotateImmediate: 1
+    rotateSpeed: 360
     duration: 3.14159274
     to: {x: 0, y: 0}
     fromAngle: 0
@@ -357,6 +375,9 @@ MonoBehaviour:
     fromCurrent: 1
     relative: 0
     from: {x: 0, y: 0}
+    rotateType: 0
+    rotateImmediate: 1
+    rotateSpeed: 360
     duration: 4.47213602
     to: {x: 0, y: 0}
     fromAngle: 0
@@ -368,6 +389,9 @@ MonoBehaviour:
     fromCurrent: 1
     relative: 0
     from: {x: 0, y: 0}
+    rotateType: 0
+    rotateImmediate: 1
+    rotateSpeed: 360
     duration: 0
     to: {x: 0, y: 0}
     fromAngle: 0
@@ -379,6 +403,9 @@ MonoBehaviour:
     fromCurrent: 1
     relative: 0
     from: {x: 0, y: 0}
+    rotateType: 0
+    rotateImmediate: 1
+    rotateSpeed: 360
     duration: 2
     to: {x: -100, y: 0}
     fromAngle: 0
@@ -450,6 +477,10 @@ MonoBehaviour:
   fromCurrent: 1
   from: {x: 100, y: 0}
   delay: 0
+  rotateType: 0
+  rotateOffset: 0
+  rotateImmediate: 1
+  rotateSpeed: 360
   velocity: {x: 141.421356, y: 141.421356}
 --- !u!212 &1972769714
 SpriteRenderer:
