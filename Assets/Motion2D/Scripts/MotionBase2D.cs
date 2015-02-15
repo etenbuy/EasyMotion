@@ -2,239 +2,59 @@
 //                                                                                               //
 //  File    :   MotionBase2D.cs                                                                  //
 //  Author  :   ftvoid                                                                           //
-//  Date    :   2015.02.01                                                                       //
-//  Desc    :   2Dãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³åŸºåº•ã‚¯ãƒ©ã‚¹ã‚’å®šç¾©ã™ã‚‹ã€‚                                               //
+//  Date    :   2015.02.15                                                                       //
+//  Desc    :   2Dƒ‚[ƒVƒ‡ƒ“Šî’êB                                                               //
 //                                                                                               //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// 2Dãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³åŸºåº•ã‚¯ãƒ©ã‚¹
+/// 2Dƒ‚[ƒVƒ‡ƒ“Šî’êB
 /// </summary>
-public class MotionBase2D : MonoBehaviour {
+[System.Serializable]
+public class MotionBase2D {
     /// <summary>
-    /// ç¾åœ¨ä½ç½®ã‚’å§‹ç‚¹ã¨ã™ã‚‹ã‹ã©ã†ã‹
+    /// ƒ‚[ƒVƒ‡ƒ“‚ğŠJn‚·‚é‚Ü‚Å‚ÌŠÔ
     /// </summary>
     [SerializeField]
-    protected bool fromCurrent = false;
+    private float delay = 0;
 
     /// <summary>
-    /// å§‹ç‚¹
+    /// ƒ‚[ƒVƒ‡ƒ“‚ÌÀs‚ğŠJn‚·‚éB
     /// </summary>
-    [SerializeField]
-    protected Vector2 from = Vector2.zero;
-
-    /// <summary>
-    /// ç§»å‹•é–‹å§‹ã¾ã§ã®æ™‚é–“
-    /// </summary>
-    [SerializeField]
-    protected float delay = 0;
-
-    /// <summary>
-    /// å›è»¢ã®ç¨®é¡
-    /// </summary>
-    [SerializeField]
-    private SerializedMotion2D.RotateType rotateType;
-
-    /// <summary>
-    /// å›è»¢è§’åº¦ã®åŸºæº–ä½ç½®
-    /// </summary>
-    [SerializeField]
-    private float rotateOffset = 0;
-
-    /// <summary>
-    /// å³åº§ã«ç›®æ¨™è§’åº¦ã«å›è»¢ã™ã‚‹ã‹ã©ã†ã‹
-    /// </summary>
-    [SerializeField]
-    private bool rotateImmediate = true;
-
-    /// <summary>
-    /// å›è»¢é€Ÿåº¦(rotateImmediate=falseæ™‚æœ‰åŠ¹)
-    /// </summary>
-    [SerializeField]
-    private float rotateSpeed = 360;
-
-    /// <summary>
-    /// è‡ªèº«ã®transform
-    /// </summary>
-    private Transform selfTrans;
-
-    /// <summary>
-    /// 1ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®ä½ç½®
-    /// </summary>
-    private Vector2 prevPosition;
-
-    /// <summary>
-    /// 1ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®å›è»¢è§’åº¦
-    /// </summary>
-    private float prevForward;
-
-#if UNITY_EDITOR
-    /// <summary>
-    /// è‡ªèº«ã®åˆæœŸä½ç½®
-    /// </summary>
-    private Vector2 initPosition;
-#endif
-
-    /// <summary>
-    /// åˆæœŸåŒ–
-    /// </summary>
-    protected void Awake() {
-        selfTrans = transform;
-        prevPosition = Position2D;
-#if UNITY_EDITOR
-        initPosition = prevPosition;
-#endif
-
-        if ( rotateType != SerializedMotion2D.RotateType.None ) {
-            prevForward = selfTrans.localRotation.eulerAngles.z - rotateOffset;
-            UpdateRotation();
-            StartCoroutine(RotationCoroutine());
-        }
+    /// <param name="behav">ƒXƒNƒŠƒvƒg</param>
+    public void StartMotion(MonoBehaviour behav) {
+        behav.StartCoroutine(ExecuteMotion());
     }
 
     /// <summary>
-    /// ä½ç½®åº§æ¨™(æœ¬ã‚¯ãƒ©ã‚¹ã‚ˆã‚Šä½ç½®æƒ…å ±ã«ã‚¢ã‚¯ã‚»ã‚¹ã™ã‚‹éš›ã«ä½¿ç”¨ã™ã‚‹)
+    /// ƒ‚[ƒVƒ‡ƒ“‚Ì‰Šú‰»ˆ—(”h¶ƒNƒ‰ƒX‚ÅÀ‘•‚·‚é)
     /// </summary>
-    public Vector2 Position2D {
-        get {
-            return (Vector2)selfTrans.localPosition;
-        }
-        set {
-            selfTrans.localPosition = new Vector3(
-                value.x,
-                value.y,
-                selfTrans.localPosition.z
-            );
-        }
+    /// <returns>true:ƒ‚[ƒVƒ‡ƒ“Œp‘± / false:ˆÈ~‚Ìƒ‚[ƒVƒ‡ƒ“‚ğŒp‘±‚µ‚È‚¢</returns>
+    protected virtual bool OnStart() {
+        return false;
     }
 
     /// <summary>
-    /// å‰æ–¹ã®å‘ã
+    /// ƒ‚[ƒVƒ‡ƒ“‚ÌXVˆ—(”h¶ƒNƒ‰ƒX‚ÅÀ‘•‚·‚é)
     /// </summary>
-    protected virtual float Forward {
-        get {
-            var pos = Position2D;
-            var diff = pos - prevPosition;
-            prevPosition = pos;
-            if ( diff != Vector2.zero ) {
-                prevForward = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
-            }
-            return prevForward;
-        }
+    /// <returns>true:ƒ‚[ƒVƒ‡ƒ“Œp‘± / false:ˆÈ~‚Ìƒ‚[ƒVƒ‡ƒ“‚ğŒp‘±‚µ‚È‚¢</returns>
+    protected virtual bool OnUpdate() {
+        return false;
     }
 
-    /// <summary>
-    /// å›è»¢å‡¦ç†ç”¨ã‚³ãƒ«ãƒ¼ãƒãƒ³
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator RotationCoroutine() {
-        while ( true ) {
-            UpdateRotation();
-            yield return 0;
-        }
-    }
-
-    /// <summary>
-    /// å›è»¢è§’åº¦ã‚’æ›´æ–°ã™ã‚‹
-    /// </summary>
-    private void UpdateRotation() {
-        float curRotation = selfTrans.localRotation.eulerAngles.z - rotateOffset;
-        float toRotation = curRotation;
-
-        switch ( rotateType ) {
-        case SerializedMotion2D.RotateType.Forward:
-            toRotation = Forward;
-            break;
-        case SerializedMotion2D.RotateType.To:
-            // TODO å®Ÿè£…
-            break;
-        default:
-            return;
+    private IEnumerator ExecuteMotion() {
+        // ŠJn‚Ü‚Å‚Ìˆê’èŠÔ‘Ò‹@
+        if ( delay != 0 ) {
+            yield return new WaitForSeconds(delay);
         }
 
-        float nextRotation = toRotation;
-        if ( !rotateImmediate ) {
-            // å‘ãã®å›è»¢
-            var diffRotation = AdjustAngleRange(toRotation - curRotation, -180);
-            var rot = rotateSpeed * Time.deltaTime;
-            if ( Mathf.Abs(diffRotation) > rot ) {
-                if ( diffRotation < 0 ) {
-                    rot = -rot;
-                }
-                nextRotation = curRotation + rot;
+        // ƒ‚[ƒVƒ‡ƒ“Às
+        if ( OnStart() ) {
+            while ( OnUpdate() ) {
+                yield return 0;
             }
         }
-
-        selfTrans.localRotation = Quaternion.Euler(0, 0, nextRotation + rotateOffset);
     }
-
-    /// <summary>
-    /// è§’åº¦ã‚’æŒ‡å®šç¯„å›²ã«è£œæ­£ã™ã‚‹
-    /// </summary>
-    /// <param name="angle">è£œæ­£å¯¾è±¡ã®è§’åº¦</param>
-    /// <param name="minAngle">è§’åº¦ç¯„å›²ã®æœ€å°å€¤</param>
-    /// <returns>è£œæ­£ã•ã‚ŒãŸè§’åº¦</returns>
-    protected static float AdjustAngleRange(float angle, float minAngle) {
-        var maxAngle = minAngle + 360f;
-
-        if ( angle >= minAngle && angle < maxAngle ) {
-            return angle;
-        }
-
-        angle -= minAngle;
-        angle = angle % 360f;
-        if ( angle < 0 ) {
-            angle += 360f;
-        }
-        angle += minAngle;
-
-        return angle;
-    }
-
-#if UNITY_EDITOR
-    /// <summary>
-    /// åˆæœŸä½ç½®
-    /// </summary>
-    protected Vector2 InitPosition2D {
-        get {
-            return GetInitPosition2D(fromCurrent);
-        }
-    }
-
-    /// <summary>
-    /// åˆæœŸä½ç½®ã‚’å–å¾—ã™ã‚‹
-    /// </summary>
-    /// <param name="fromCurrent"></param>
-    /// <returns></returns>
-    protected Vector2 GetInitPosition2D(bool fromCurrent) {
-        if ( Application.isPlaying ) {
-            return initPosition;
-        } else if ( fromCurrent ) {
-            return transform.localPosition;
-        } else {
-            return from;
-        }
-    }
-
-    /// <summary>
-    /// ç§»å‹•æ™‚ã®é€Ÿã•
-    /// </summary>
-    public virtual float Speed {
-        get { return 0; }
-        set {}
-    }
-
-    /// <summary>
-    /// é€Ÿã•è£œæ­£ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
-    /// </summary>
-    [ContextMenu("Set Speed")]
-    protected void OpenAdjustSpeedWindow() {
-        // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
-        AdjustSpeed.Open(Speed, (speed) => {
-            Speed = speed;
-        });
-    }
-#endif
 }
