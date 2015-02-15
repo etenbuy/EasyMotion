@@ -21,10 +21,21 @@ public class MotionBase2D {
     private float delay = 0;
 
     /// <summary>
+    /// 現在位置
+    /// </summary>
+    public Vector2 position { get; protected set; }
+
+    /// <summary>
+    /// 初期位置
+    /// </summary>
+    protected Vector2 initPosition { get; private set; }
+
+    /// <summary>
     /// モーションの実行を開始する。
     /// </summary>
     /// <param name="behav">スクリプト</param>
     public void StartMotion(MonoBehaviour behav) {
+        position = initPosition = behav.transform.localPosition;
         behav.StartCoroutine(ExecuteMotion());
     }
 
