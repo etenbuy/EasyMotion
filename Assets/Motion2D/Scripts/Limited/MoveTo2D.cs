@@ -7,7 +7,9 @@
 //                                                                                               //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 using UnityEngine;
+using System;
 using System.Collections;
+using System.Linq;
 
 /// <summary>
 /// 指定位置に移動するモーション。
@@ -25,5 +27,33 @@ public class MoveTo2D : LimitedMotion2D {
     /// <param name="progress">進捗率</param>
     protected override void OnLimitedUpdate(float progress) {
         position = (1 - progress) * initPosition + progress * to;
+    }
+
+    /// <summary>
+    /// シリアライズ
+    /// </summary>
+    /// <returns>シリアライズされたバイナリ配列</returns>
+    public override byte[] Serialize() {
+        var result = base.Serialize();
+
+        return result
+            .Concat(BitConverter.GetBytes(to.x))
+            .Concat(BitConverter.GetBytes(to.y)).ToArray();
+    }
+
+    /// <summary>
+    /// デシリアライズ
+    /// </summary>
+    /// <param name="bytes"></param>
+    /// <returns>デシリアライズに使用したバイトサイズ</returns>
+    public override int Deserialize(byte[] bytes) {
+        var offset = base.Deserialize(bytes);
+
+        to.x = BitConverter.ToSingle(bytes, offset);
+        offset += sizeof(float);
+        to.y = BitConverter.ToSingle(bytes, offset);
+        offset += sizeof(float);
+
+        return offset;
     }
 }

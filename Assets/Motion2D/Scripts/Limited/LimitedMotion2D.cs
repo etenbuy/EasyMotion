@@ -7,7 +7,9 @@
 //                                                                                               //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 using UnityEngine;
+using System;
 using System.Collections;
+using System.Linq;
 
 /// <summary>
 /// 時限モーション。
@@ -16,8 +18,7 @@ public class LimitedMotion2D : MotionBase2D {
     /// <summary>
     /// 移動時間
     /// </summary>
-    [SerializeField]
-    protected float duration = 0;
+    public float duration { get; protected set; }
 
     /// <summary>
     /// 終了時刻
@@ -59,5 +60,29 @@ public class LimitedMotion2D : MotionBase2D {
     /// </summary>
     /// <param name="progress">進捗率</param>
     protected virtual void OnLimitedUpdate(float progress) {
+    }
+
+    /// <summary>
+    /// シリアライズ
+    /// </summary>
+    /// <returns>シリアライズされたバイナリ配列</returns>
+    public override byte[] Serialize() {
+        var result = base.Serialize();
+
+        return result.Concat(BitConverter.GetBytes(duration)).ToArray();
+    }
+
+    /// <summary>
+    /// デシリアライズ
+    /// </summary>
+    /// <param name="bytes"></param>
+    /// <returns>デシリアライズに使用したバイトサイズ</returns>
+    public override int Deserialize(byte[] bytes) {
+        var offset = base.Deserialize(bytes);
+
+        duration = BitConverter.ToSingle(bytes, offset);
+        offset += sizeof(float);
+
+        return offset;
     }
 }
