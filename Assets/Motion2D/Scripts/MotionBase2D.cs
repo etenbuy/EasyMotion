@@ -99,4 +99,13 @@ public class MotionBase2D {
         delay = BitConverter.ToSingle(bytes, 0);
         return sizeof(float);
     }
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// インスペクタ上のGUIを描画する
+    /// </summary>
+    public virtual void DrawGUI() {
+        delay = UnityEditor.EditorGUILayout.FloatField("Delay", delay);
+    }
+#endif
 }

@@ -85,4 +85,14 @@ public class LimitedMotion2D : MotionBase2D {
 
         return offset;
     }
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// インスペクタ上のGUIを描画する
+    /// </summary>
+    public override void DrawGUI() {
+        base.DrawGUI();
+        duration = UnityEditor.EditorGUILayout.FloatField("Duration", duration);
+    }
+#endif
 }

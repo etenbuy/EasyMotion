@@ -17,12 +17,6 @@ using System.Collections.Generic;
 /// </summary>
 [CustomEditor(typeof(EasyMotion2D))]
 public class EasyMotion2DEditor : Editor {
-    private delegate void DrawGUI(MotionBase2D motion);
-    private static Dictionary<EasyMotion2D.MotionType, DrawGUI> drawGui = new Dictionary<EasyMotion2D.MotionType, DrawGUI>() {
-        { EasyMotion2D.MotionType.Stop, MotionBase2DEditor.DrawGUI },
-        { EasyMotion2D.MotionType.MoveTo, MoveTo2DEditor.DrawGUI },
-    };
-
     /// <summary>
     /// 初期化。
     /// </summary>
@@ -60,17 +54,14 @@ public class EasyMotion2DEditor : Editor {
             script.motion = motion;
         }
 
-        // モーションの各GUI描画
-        drawGui[newType](motion);
-
-        // TODO 削除
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("serializedMotion"), true);
+        // モーション設定用のGUI描画
+        motion.DrawGUI();
 
         EditorGUI.EndDisabledGroup();
 
         if ( GUI.changed ) {
+            // 値が編集されたらシリアライズデータを更新
             script.serializedMotion = motion.Serialize();
-            script.UpdateDeserializedMotion();
         }
 
         serializedObject.ApplyModifiedProperties();

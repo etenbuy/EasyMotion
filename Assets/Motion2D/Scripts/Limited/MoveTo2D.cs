@@ -55,4 +55,14 @@ public class MoveTo2D : LimitedMotion2D {
 
         return offset;
     }
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// インスペクタ上のGUIを描画する
+    /// </summary>
+    public override void DrawGUI() {
+        base.DrawGUI();
+        to = UnityEditor.EditorGUILayout.Vector2Field("To", to);
+    }
+#endif
 }
