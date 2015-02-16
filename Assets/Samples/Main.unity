@@ -204,7 +204,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1531142179}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 54.7000008, y: 32, z: 0}
+  m_LocalPosition: {x: 77.6999969, y: 73.9000015, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -221,4 +221,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
-  serializedMotion: 0000000000000000
+  serializedMotion: 000000000000803f0000c8420000c8c2
+  motion:
+    delay: 0

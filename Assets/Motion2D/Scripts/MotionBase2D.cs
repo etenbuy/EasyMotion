@@ -18,7 +18,7 @@ public class MotionBase2D {
     /// <summary>
     /// モーションを開始するまでの時間
     /// </summary>
-    public float delay { get; private set; }
+    public float delay;
 
     /// <summary>
     /// 現在位置
@@ -36,7 +36,7 @@ public class MotionBase2D {
     /// <param name="behav">スクリプト</param>
     public void StartMotion(MonoBehaviour behav) {
         position = initPosition = behav.transform.localPosition;
-        behav.StartCoroutine(ExecuteMotion());
+        behav.StartCoroutine(ExecuteMotion(behav.transform));
     }
 
     /// <summary>
@@ -58,8 +58,9 @@ public class MotionBase2D {
     /// <summary>
     /// モーションを実行するコルーチン
     /// </summary>
+    /// <param name="trans">モーション結果を反映する対象のトランスフォーム</param>
     /// <returns></returns>
-    private IEnumerator ExecuteMotion() {
+    private IEnumerator ExecuteMotion(Transform trans) {
         // 開始までの一定時間待機
         if ( delay != 0 ) {
             yield return new WaitForSeconds(delay);
@@ -67,8 +68,15 @@ public class MotionBase2D {
 
         // モーション実行
         if ( OnStart() ) {
-            while ( OnUpdate() ) {
+            while ( true ) {
+                var nextUpdate = OnUpdate();
+                // 位置更新
+                trans.localPosition = position;
                 yield return 0;
+
+                if ( !nextUpdate ) {
+                    break;
+                }
             }
         }
     }

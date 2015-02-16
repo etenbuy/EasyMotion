@@ -28,7 +28,7 @@ public class EasyMotion2D : MonoBehaviour {
     /// <summary>
     /// 実行時型の定義
     /// </summary>
-    private Dictionary<MotionType, Type> runtimeType = new Dictionary<MotionType, Type>() {
+    private static Dictionary<MotionType, Type> runtimeType = new Dictionary<MotionType, Type>() {
         { MotionType.Stop, typeof(MotionBase2D) },
         { MotionType.MoveTo, typeof(MoveTo2D) },
     };
@@ -36,28 +36,24 @@ public class EasyMotion2D : MonoBehaviour {
     /// <summary>
     /// モーションの種類
     /// </summary>
-    [SerializeField]
-    private MotionType type;
+    public MotionType type = MotionType.Stop;
 
     /// <summary>
     /// シリアライズ済みモーションデータ
     /// </summary>
-    [SerializeField]
-    private byte[] serializedMotion;
+    public byte[] serializedMotion = null;
 
     /// <summary>
     /// 実行時のモーションオブジェクト(デシリアライズされたモーションデータ)
     /// </summary>
-    private MotionBase2D motion;
+    public MotionBase2D motion;
 
     /// <summary>
     /// シリアライズされたモーションデータからインスタンスを生成する
     /// </summary>
     private void Awake() {
-        // モーションオブジェクト作成
-        motion = Activator.CreateInstance(runtimeType[type]) as MotionBase2D;
-        // モーションデータのデシリアライズ
-        motion.Deserialize(serializedMotion);
+        // デシリアライズされたモーションデータを更新
+        UpdateDeserializedMotion();
     }
 
     /// <summary>
@@ -66,5 +62,35 @@ public class EasyMotion2D : MonoBehaviour {
     private void Start() {
         // モーション実行開始
         motion.StartMotion(this);
+    }
+
+    /// <summary>
+    /// デシリアライズされたモーションデータを更新する
+    /// </summary>
+    public void UpdateDeserializedMotion() {
+        // モーションオブジェクト作成
+        motion = GetDeserializedMotion(type, serializedMotion);
+    }
+
+    /// <summary>
+    /// デシリアライズされたモーションオブジェクトを取得する
+    /// </summary>
+    /// <param name="type">モーション型</param>
+    /// <returns>実行時モーションオブジェクト</returns>
+    public static MotionBase2D GetDeserializedMotion(EasyMotion2D.MotionType type, byte[] bytes) {
+        // モーションオブジェクト作成
+        var motion = CreateInstance(type);
+        // モーションデータのデシリアライズ
+        motion.Deserialize(bytes);
+        return motion;
+    }
+
+    /// <summary>
+    /// 新規の実行時モーションオブジェクトを生成する
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public static MotionBase2D CreateInstance(EasyMotion2D.MotionType type) {
+        return Activator.CreateInstance(runtimeType[type]) as MotionBase2D;
     }
 }

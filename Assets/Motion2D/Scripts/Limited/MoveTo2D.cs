@@ -18,8 +18,7 @@ public class MoveTo2D : LimitedMotion2D {
     /// <summary>
     /// 移動先の位置
     /// </summary>
-    [SerializeField]
-    private Vector2 to;
+    public Vector2 to;
 
     /// <summary>
     /// 時限モーションの更新処理

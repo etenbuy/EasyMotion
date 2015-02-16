@@ -18,7 +18,7 @@ public class LimitedMotion2D : MotionBase2D {
     /// <summary>
     /// ˆÚ“®ŠÔ
     /// </summary>
-    public float duration { get; protected set; }
+    public float duration;
 
     /// <summary>
     /// I—¹

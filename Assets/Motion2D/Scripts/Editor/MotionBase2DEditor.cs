@@ -16,8 +16,8 @@ public class MotionBase2DEditor : Editor {
     /// <summary>
     /// インスペクタ上のGUIを描画する
     /// </summary>
-    /// <param name="motion">モーションオブジェクト</param>
-    public static void DrawGUI(MotionBase2D motion) {
-        EditorGUILayout.FloatField("Delay", motion.delay);
+    /// <param name="motionBase">モーションオブジェクト</param>
+    public static void DrawGUI(MotionBase2D motionBase) {
+        motionBase.delay = EditorGUILayout.FloatField("Delay", motionBase.delay);
     }
 }

@@ -8,20 +8,29 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 using UnityEditor;
 using UnityEngine;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 
 /// <summary>
 /// EasyMotion2Dクラスのエディタ拡張。
 /// </summary>
-//[CustomEditor(typeof(EasyMotion2D))]
+[CustomEditor(typeof(EasyMotion2D))]
 public class EasyMotion2DEditor : Editor {
-    private int currentType;
+    private delegate void DrawGUI(MotionBase2D motion);
+    private static Dictionary<EasyMotion2D.MotionType, DrawGUI> drawGui = new Dictionary<EasyMotion2D.MotionType, DrawGUI>() {
+        { EasyMotion2D.MotionType.Stop, MotionBase2DEditor.DrawGUI },
+        { EasyMotion2D.MotionType.MoveTo, MoveTo2DEditor.DrawGUI },
+    };
 
     /// <summary>
     /// 初期化。
     /// </summary>
     public void Awake() {
-        currentType = serializedObject.FindProperty("type").enumValueIndex;
+        var type = (EasyMotion2D.MotionType)serializedObject.FindProperty("type").enumValueIndex;
+
+        var script = target as EasyMotion2D;
+        script.motion = EasyMotion2D.GetDeserializedMotion(type, script.serializedMotion);
     }
 
     /// <summary>
@@ -30,28 +39,39 @@ public class EasyMotion2DEditor : Editor {
     public override void OnInspectorGUI() {
         serializedObject.Update();
 
+        EditorGUI.BeginDisabledGroup(Application.isPlaying);
+
+        var script = target as EasyMotion2D;
+
         // モーション型選択描画
-        var type = serializedObject.FindProperty("type");
-        var newType = type.enumValueIndex;
-        EditorGUILayout.PropertyField(type);
+        var currentType = script.type;
+        var newType = script.type = (EasyMotion2D.MotionType)EditorGUILayout.EnumPopup("Motion Type", currentType);
 
-        //var script = target as EasyMotion2D;
+        var motion = script.motion;
+        if ( motion == null ) {
+            motion = EasyMotion2D.GetDeserializedMotion(currentType, script.serializedMotion);
+        }
 
-        //if ( newType != currentType ) {
-        //    // モーション型が変更された
-        //    script.motion = new MoveTo2D();
-            
-        //    currentType = newType;
-        //}
+        if ( newType != currentType ) {
+            // モーション型が変更された
+            motion = EasyMotion2D.CreateInstance(newType);
+            script.serializedMotion = motion.Serialize();
 
-        //var motion = script.motion;
+            script.motion = motion;
+        }
 
-        //// モーションの各GUI描画
-        //MotionBase2DEditor.DrawGUI(motion);
+        // モーションの各GUI描画
+        drawGui[newType](motion);
 
-        //if ( motion is LimitedMotion2D ) {
-        //    LimitedMotion2DEditor.DrawGUI(motion as LimitedMotion2D);
-        //}
+        // TODO 削除
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("serializedMotion"), true);
+
+        EditorGUI.EndDisabledGroup();
+
+        if ( GUI.changed ) {
+            script.serializedMotion = motion.Serialize();
+            script.UpdateDeserializedMotion();
+        }
 
         serializedObject.ApplyModifiedProperties();
     }

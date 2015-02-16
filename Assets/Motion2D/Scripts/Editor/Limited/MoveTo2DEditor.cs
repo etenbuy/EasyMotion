@@ -17,8 +17,10 @@ public class MoveTo2DEditor : Editor {
     /// インスペクタ上のGUIを描画する
     /// </summary>
     /// <param name="editor">呼び出し元のエディタスクリプト</param>
-    /// <param name="motion">モーションオブジェクト</param>
-    public static void DrawGUI(Editor editor, MoveTo2D motion) {
-        EditorGUILayout.PropertyField(editor.serializedObject.FindProperty("to"));
+    /// <param name="motionBase">モーションオブジェクト</param>
+    public static void DrawGUI(MotionBase2D motionBase) {
+        var motion = motionBase as MoveTo2D;
+        LimitedMotion2DEditor.DrawGUI(motion);
+        motion.to = EditorGUILayout.Vector2Field("To", motion.to);
     }
 }

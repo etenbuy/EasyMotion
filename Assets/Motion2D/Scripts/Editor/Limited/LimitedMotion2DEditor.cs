@@ -16,8 +16,10 @@ public class LimitedMotion2DEditor : Editor {
     /// <summary>
     /// インスペクタ上のGUIを描画する
     /// </summary>
-    /// <param name="motion">モーションオブジェクト</param>
-    public static void DrawGUI(LimitedMotion2D motion) {
-        EditorGUILayout.FloatField("Duration", motion.duration);
+    /// <param name="motionBase">モーションオブジェクト</param>
+    public static void DrawGUI(MotionBase2D motionBase) {
+        var motion = motionBase as LimitedMotion2D;
+        MotionBase2DEditor.DrawGUI(motion);
+        motion.duration = EditorGUILayout.FloatField("Duration", motion.duration);
     }
 }
