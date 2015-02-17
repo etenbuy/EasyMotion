@@ -46,7 +46,8 @@ public class EasyMotion2D : MonoBehaviour {
     /// <summary>
     /// 実行時のモーションオブジェクト(デシリアライズされたモーションデータ)
     /// </summary>
-    public MotionBase2D motion;
+    [HideInInspector]
+    public MotionBase2D motion = null;
 
     /// <summary>
     /// シリアライズされたモーションデータからインスタンスを生成する
@@ -93,4 +94,23 @@ public class EasyMotion2D : MonoBehaviour {
     public static MotionBase2D CreateInstance(EasyMotion2D.MotionType type) {
         return Activator.CreateInstance(runtimeType[type]) as MotionBase2D;
     }
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// 初回描画かどうか
+    /// </summary>
+    private bool isFirstDraw = true;
+
+    /// <summary>
+    /// モーションのGizmo描画
+    /// </summary>
+    private void OnDrawGizmos() {
+        if ( isFirstDraw || motion == null ) {
+            motion = GetDeserializedMotion(type, serializedMotion);
+            isFirstDraw = false;
+        }
+
+        motion.DrawGizmos(transform);
+    }
+#endif
 }

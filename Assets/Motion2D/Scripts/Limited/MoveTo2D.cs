@@ -64,5 +64,14 @@ public class MoveTo2D : LimitedMotion2D {
         base.DrawGUI();
         to = UnityEditor.EditorGUILayout.Vector2Field("To", to);
     }
+
+    /// <summary>
+    /// Gizmo‚ð•`‰æ‚·‚é
+    /// </summary>
+    protected override void DrawGizmos() {
+        DrawLine(initPosition, to);
+        var dir = to - initPosition;
+        DrawArrowCap(to, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
+    }
 #endif
 }
