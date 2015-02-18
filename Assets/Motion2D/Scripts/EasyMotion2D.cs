@@ -31,6 +31,7 @@ public class EasyMotion2D : MonoBehaviour {
     private static Dictionary<MotionType, Type> runtimeType = new Dictionary<MotionType, Type>() {
         { MotionType.Stop, typeof(MotionBase2D) },
         { MotionType.MoveTo, typeof(MoveTo2D) },
+        { MotionType.MoveArc, typeof(MoveArc2D) },
     };
 
     /// <summary>

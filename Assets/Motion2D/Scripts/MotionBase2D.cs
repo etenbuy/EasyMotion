@@ -97,7 +97,7 @@ public class MotionBase2D {
             while ( true ) {
                 var nextUpdate = OnUpdate();
                 // à íuçXêV
-                trans.localPosition = position;
+                trans.localPosition = new Vector3(position.x, position.y, trans.localPosition.z);
                 yield return 0;
 
                 if ( !nextUpdate ) {
@@ -220,6 +220,17 @@ public class MotionBase2D {
     protected void DrawLine(Vector2 from, Vector2 to) {
         Gizmos.color = gizmoColor;
         Gizmos.DrawLine(from, to);
+    }
+
+    /// <summary>
+    /// ê¸Çï`âÊÇ∑ÇÈ
+    /// </summary>
+    /// <param name="points"></param>
+    protected void DrawLine(Vector2[] points) {
+        Gizmos.color = gizmoColor;
+        for ( int i = 1 ; i < points.Length ; ++i ) {
+            Gizmos.DrawLine(points[i - 1], points[i]);
+        }
     }
 
     /// <summary>
