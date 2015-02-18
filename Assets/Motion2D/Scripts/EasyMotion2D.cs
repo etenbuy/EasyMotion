@@ -105,8 +105,10 @@ public class EasyMotion2D : MonoBehaviour {
     /// ÉÇÅ[ÉVÉáÉìÇÃGizmoï`âÊ
     /// </summary>
     private void OnDrawGizmos() {
-        if ( isFirstDraw || motion == null ) {
-            motion = GetDeserializedMotion(type, serializedMotion);
+        if ( isFirstDraw ) {
+            if ( !Application.isPlaying ) {
+                motion = GetDeserializedMotion(type, serializedMotion);
+            }
             isFirstDraw = false;
         }
 
