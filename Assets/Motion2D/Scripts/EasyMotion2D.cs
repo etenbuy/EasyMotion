@@ -10,6 +10,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// 2D上のモーション管理。
@@ -23,6 +24,7 @@ public class EasyMotion2D : MonoBehaviour {
         MoveTo,
         MoveArc,
         MoveLiner,
+        Sequence,
     };
 
     /// <summary>
@@ -33,6 +35,7 @@ public class EasyMotion2D : MonoBehaviour {
         { MotionType.MoveTo, typeof(MoveTo2D) },
         { MotionType.MoveArc, typeof(MoveArc2D) },
         { MotionType.MoveLiner, typeof(MoveLiner2D) },
+        { MotionType.Sequence, typeof(MotionSequence2D) },
     };
 
     /// <summary>
@@ -52,6 +55,11 @@ public class EasyMotion2D : MonoBehaviour {
     public MotionBase2D motion = null;
 
     /// <summary>
+    /// モーションは終了したかどうか
+    /// </summary>
+    private bool motionEnd = false;
+
+    /// <summary>
     /// シリアライズされたモーションデータからインスタンスを生成する
     /// </summary>
     private void Awake() {
@@ -60,11 +68,27 @@ public class EasyMotion2D : MonoBehaviour {
     }
 
     /// <summary>
-    /// 初期化。
+    /// 初期化
     /// </summary>
     private void Start() {
         // モーション実行開始
-        motion.StartMotion(this);
+        motion.StartMotion(transform);
+    }
+
+    /// <summary>
+    /// フレーム毎の更新処理
+    /// </summary>
+    private void Update() {
+        if ( motionEnd ) {
+            // モーションが終了していたら何もしない
+            return;
+        }
+
+        // モーションの状態更新
+        if ( !motion.UpdateMotion() ) {
+            // 終了なら何もしない
+            motionEnd = true;
+        }
     }
 
     /// <summary>
@@ -79,6 +103,7 @@ public class EasyMotion2D : MonoBehaviour {
     /// デシリアライズされたモーションオブジェクトを取得する
     /// </summary>
     /// <param name="type">モーション型</param>
+    /// <param name="bytes">シリアライズ済みモーションデータ</param>
     /// <returns>実行時モーションオブジェクト</returns>
     public static MotionBase2D GetDeserializedMotion(EasyMotion2D.MotionType type, byte[] bytes) {
         // モーションオブジェクト作成
@@ -89,12 +114,36 @@ public class EasyMotion2D : MonoBehaviour {
     }
 
     /// <summary>
+    /// デシリアライズされたモーションオブジェクトを取得する
+    /// </summary>
+    /// <param name="type">モーション型</param>
+    /// <param name="bytes">シリアライズ済みモーションデータ</param>
+    /// <param name="usedBytes">使用されたシリアライズ済みモーションデータ</param>
+    /// <returns>実行時モーションオブジェクト</returns>
+    public static MotionBase2D GetDeserializedMotion(EasyMotion2D.MotionType type, byte[] bytes, out int usedBytes) {
+        // モーションオブジェクト作成
+        var motion = CreateInstance(type);
+        // モーションデータのデシリアライズ
+        usedBytes = motion.Deserialize(bytes);
+        return motion;
+    }
+
+    /// <summary>
     /// 新規の実行時モーションオブジェクトを生成する
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
     public static MotionBase2D CreateInstance(EasyMotion2D.MotionType type) {
         return Activator.CreateInstance(runtimeType[type]) as MotionBase2D;
+    }
+
+    /// <summary>
+    /// シリアライズ済みモーション型を取得する
+    /// </summary>
+    /// <param name="type">実行時モーション型</param>
+    /// <returns>シリアライズ済みモーション型</returns>
+    public static MotionType GetSerializedType(Type type) {
+        return runtimeType.First(x => x.Value == type).Key;
     }
 
 #if UNITY_EDITOR

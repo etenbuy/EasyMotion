@@ -45,17 +45,86 @@ public class MotionBase2D {
 #else
     protected Vector2 initPosition { get; private set; }
 #endif
+    /// <summary>
+    /// 実行時のモーション状態定義
+    /// </summary>
+    private enum State {
+        Disable,
+        Waiting,
+        Running,
+    }
+
+    /// <summary>
+    /// 実行時のモーション状態
+    /// </summary>
+    private State state = State.Disable;
+
+    /// <summary>
+    /// GameObjectのTransform
+    /// </summary>
+    protected Transform transform;
+
+    /// <summary>
+    /// 開始時刻
+    /// </summary>
+    private float startTime;
+
+    /// <summary>
+    /// OnStart()は呼び出されたかどうか
+    /// </summary>
+    private bool onStartCalled = false;
 
     /// <summary>
     /// モーションの実行を開始する。
     /// </summary>
-    /// <param name="behav">スクリプト</param>
-    public void StartMotion(MonoBehaviour behav) {
-#if UNITY_EDITOR
-        state = State.Disable;
-#endif
-        initPosition = behav.transform.localPosition;
-        behav.StartCoroutine(ExecuteMotion(behav.transform));
+    /// <param name="objTrans">GameObjectのTransform</param>
+    public void StartMotion(Transform objTrans) {
+        state = State.Waiting;
+        transform = objTrans.transform;
+        startTime = Time.time;
+        position = initPosition = transform.localPosition;
+    }
+
+    /// <summary>
+    /// モーションの状態を更新する
+    /// <param name="updateTransform"></param>
+    /// </summary>
+    public bool UpdateMotion(bool updateTransform = true) {
+        switch ( state ) {
+        case State.Waiting:
+            // 開始までの一定時間待機
+            if ( Time.time - startTime >= delay ) {
+                // モーション実行に遷移
+                state = State.Running;
+            }
+            return true;
+
+        case State.Running:
+            // モーション実行
+            if ( !onStartCalled ) {
+                onStartCalled = true;
+                if ( !OnStart() ) {
+                    return false;
+                }
+            }
+
+            // 更新動作
+            var nextUpdate = OnUpdate();
+
+            if ( updateTransform ) {
+                // 位置更新
+                transform.position = new Vector3(position.x, position.y, transform.localPosition.z);
+            }
+
+            if ( !nextUpdate ) {
+                // モーション終了なら無効状態に遷移
+                state = State.Disable;
+            }
+
+            return nextUpdate;
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -72,42 +141,6 @@ public class MotionBase2D {
     /// <returns>true:モーション継続 / false:以降のモーションを継続しない</returns>
     protected virtual bool OnUpdate() {
         return false;
-    }
-
-    /// <summary>
-    /// モーションを実行するコルーチン
-    /// </summary>
-    /// <param name="trans">モーション結果を反映する対象のトランスフォーム</param>
-    /// <returns></returns>
-    private IEnumerator ExecuteMotion(Transform trans) {
-#if UNITY_EDITOR
-        state = State.Waiting;
-#endif
-
-        // 開始までの一定時間待機
-        if ( delay != 0 ) {
-            yield return new WaitForSeconds(delay);
-        }
-
-        // モーション実行
-        if ( OnStart() ) {
-#if UNITY_EDITOR
-            state = State.Running;
-#endif
-            while ( true ) {
-                var nextUpdate = OnUpdate();
-                // 位置更新
-                trans.localPosition = new Vector3(position.x, position.y, trans.localPosition.z);
-                yield return 0;
-
-                if ( !nextUpdate ) {
-                    break;
-                }
-            }
-        }
-#if UNITY_EDITOR
-        state = State.Disable;
-#endif
     }
 
     /// <summary>
@@ -130,20 +163,6 @@ public class MotionBase2D {
     }
 
 #if UNITY_EDITOR
-    /// <summary>
-    /// 実行時のモーション状態定義
-    /// </summary>
-    private enum State {
-        Disable,
-        Waiting,
-        Running,
-    }
-
-    /// <summary>
-    /// 実行時のモーション状態
-    /// </summary>
-    private State state = State.Disable;
-
     /// <summary>
     /// エディタに表示するGizmo色
     /// </summary>
