@@ -22,7 +22,7 @@ public class EasyMotion2D : MonoBehaviour {
         Stop,
         MoveTo,
         MoveArc,
-        Liner,
+        MoveLiner,
     };
 
     /// <summary>
@@ -32,6 +32,7 @@ public class EasyMotion2D : MonoBehaviour {
         { MotionType.Stop, typeof(MotionBase2D) },
         { MotionType.MoveTo, typeof(MoveTo2D) },
         { MotionType.MoveArc, typeof(MoveArc2D) },
+        { MotionType.MoveLiner, typeof(MoveLiner2D) },
     };
 
     /// <summary>
