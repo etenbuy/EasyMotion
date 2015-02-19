@@ -160,6 +160,9 @@ public class MotionSequence2D : MotionBase2D {
 
             var currentType = EasyMotion2D.GetSerializedType(motions[i].GetType());
             var newType = (EasyMotion2D.MotionType)UnityEditor.EditorGUILayout.EnumPopup("Motion Type", currentType);
+            if ( newType == EasyMotion2D.MotionType.Sequence ) {
+                newType = currentType;
+            }
 
             if ( newType != currentType ) {
                 motions[i] = EasyMotion2D.CreateInstance(newType);
