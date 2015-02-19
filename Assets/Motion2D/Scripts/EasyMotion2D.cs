@@ -157,13 +157,20 @@ public class EasyMotion2D : MonoBehaviour {
     /// モーションのGizmo描画
     /// </summary>
     private void OnDrawGizmos() {
+        if ( !enabled ) {
+            // スクリプト無効時は描画しない
+            return;
+        }
+
         if ( isFirstDraw ) {
             if ( !Application.isPlaying ) {
+                // エディタ上での初期化時はモーションデータをデシリアライズ
                 motion = GetDeserializedMotion(type, serializedMotion);
             }
             isFirstDraw = false;
         }
 
+        // Gizmo描画
         motion.DrawGizmos(transform);
     }
 #endif
