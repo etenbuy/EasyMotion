@@ -21,6 +21,9 @@ public class EasyMotion2DEditor : Editor {
     /// èâä˙âªÅB
     /// </summary>
     public void Awake() {
+        if ( Application.isPlaying ) {
+            return;
+        }
         var script = target as EasyMotion2D;
         script.motion = EasyMotion2D.GetDeserializedMotion(script.type, script.serializedMotion);
     }
