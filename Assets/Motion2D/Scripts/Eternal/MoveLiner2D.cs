@@ -45,10 +45,11 @@ public class MoveLiner2D : EternalMotion2D {
     /// <summary>
     /// デシリアライズ
     /// </summary>
-    /// <param name="bytes"></param>
-    /// <returns>デシリアライズに使用したバイトサイズ</returns>
-    public override int Deserialize(byte[] bytes) {
-        var offset = base.Deserialize(bytes);
+    /// <param name="bytes">シリアライズ済みモーションデータ</param>
+    /// <param name="offset">モーションデータの開始位置</param>
+    /// <returns>デシリアライズに使用したバイトサイズにoffsetを加算した値</returns>
+    public override int Deserialize(byte[] bytes, int offset) {
+        offset = base.Deserialize(bytes, offset);
 
         velocity.x = BitConverter.ToSingle(bytes, offset);
         offset += sizeof(float);

@@ -155,11 +155,12 @@ public class MotionBase2D {
     /// <summary>
     /// デシリアライズ
     /// </summary>
-    /// <param name="bytes"></param>
-    /// <returns>デシリアライズに使用したバイトサイズ</returns>
-    public virtual int Deserialize(byte[] bytes) {
-        delay = BitConverter.ToSingle(bytes, 0);
-        return sizeof(float);
+    /// <param name="bytes">シリアライズ済みモーションデータ</param>
+    /// <param name="offset">モーションデータの開始位置</param>
+    /// <returns>デシリアライズに使用したバイトサイズにoffsetを加算した値</returns>
+    public virtual int Deserialize(byte[] bytes, int offset) {
+        delay = BitConverter.ToSingle(bytes, offset);
+        return offset + sizeof(float);
     }
 
 #if UNITY_EDITOR

@@ -109,7 +109,7 @@ public class EasyMotion2D : MonoBehaviour {
         // モーションオブジェクト作成
         var motion = CreateInstance(type);
         // モーションデータのデシリアライズ
-        motion.Deserialize(bytes);
+        motion.Deserialize(bytes, 0);
         return motion;
     }
 
@@ -118,13 +118,14 @@ public class EasyMotion2D : MonoBehaviour {
     /// </summary>
     /// <param name="type">モーション型</param>
     /// <param name="bytes">シリアライズ済みモーションデータ</param>
-    /// <param name="usedBytes">使用されたシリアライズ済みモーションデータ</param>
+    /// <param name="offset">モーションデータの開始位置</param>
+    /// <param name="nextOffset">次のモーションデータの開始位置</param>
     /// <returns>実行時モーションオブジェクト</returns>
-    public static MotionBase2D GetDeserializedMotion(EasyMotion2D.MotionType type, byte[] bytes, out int usedBytes) {
+    public static MotionBase2D GetDeserializedMotion(EasyMotion2D.MotionType type, byte[] bytes, int offset, out int nextOffset) {
         // モーションオブジェクト作成
         var motion = CreateInstance(type);
         // モーションデータのデシリアライズ
-        usedBytes = motion.Deserialize(bytes);
+        nextOffset = motion.Deserialize(bytes, offset);
         return motion;
     }
 

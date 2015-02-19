@@ -98,10 +98,11 @@ public class MotionSequence2D : MotionBase2D {
     /// <summary>
     /// デシリアライズ
     /// </summary>
-    /// <param name="bytes"></param>
-    /// <returns>デシリアライズに使用したバイトサイズ</returns>
-    public override int Deserialize(byte[] bytes) {
-        var offset = base.Deserialize(bytes);
+    /// <param name="bytes">シリアライズ済みモーションデータ</param>
+    /// <param name="offset">モーションデータの開始位置</param>
+    /// <returns>デシリアライズに使用したバイトサイズにoffsetを加算した値</returns>
+    public override int Deserialize(byte[] bytes, int offset) {
+        offset = base.Deserialize(bytes, offset);
 
         // モーション数
         var motionNum = BitConverter.ToInt32(bytes, offset);
@@ -112,12 +113,7 @@ public class MotionSequence2D : MotionBase2D {
         for ( int i = 0 ; i < motionNum ; ++i ) {
             var type = (EasyMotion2D.MotionType)BitConverter.ToInt32(bytes, offset);
             offset += sizeof(int);
-
-            var tmpBytes = new byte[bytes.Length - offset];
-            Array.Copy(bytes, offset, tmpBytes, 0, tmpBytes.Length);
-            int usedBytes;
-            motions[i] = EasyMotion2D.GetDeserializedMotion(type, tmpBytes, out usedBytes);
-            offset += usedBytes;
+            motions[i] = EasyMotion2D.GetDeserializedMotion(type, bytes, offset, out offset);
         }
 
         return offset;
