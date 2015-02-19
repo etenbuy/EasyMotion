@@ -68,10 +68,14 @@ public class MoveTo2D : LimitedMotion2D {
     /// <summary>
     /// Gizmo‚ğ•`‰æ‚·‚é
     /// </summary>
-    protected override void DrawGizmos() {
-        DrawLine(initPosition, to);
-        var dir = to - initPosition;
+    /// <param name="from">Œ»İˆÊ’u</param>
+    /// <returns>ˆÚ“®Œã‚ÌˆÊ’u</returns>
+    public override Vector2 DrawGizmos(Vector2 from) {
+        DrawLine(from, to);
+        var dir = to - from;
         DrawArrowCap(to, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
+
+        return to;
     }
 #endif
 }

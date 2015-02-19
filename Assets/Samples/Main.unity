@@ -190,6 +190,7 @@ MonoBehaviour:
   serializedMotion: 00000000000000400000b4420000b4430000c842
   motion:
     delay: 0
+    position: {x: 100, y: 0}
 --- !u!212 &815020231
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -256,6 +257,7 @@ MonoBehaviour:
   serializedMotion: 0000803f0000c8420000c8c2
   motion:
     delay: 1
+    position: {x: -100, y: 100}
 --- !u!212 &948301467
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -356,6 +358,7 @@ MonoBehaviour:
   serializedMotion: 0000803f0000803f0000c8c20000c8c2
   motion:
     delay: 1
+    position: {x: 100, y: 100}
 --- !u!1 &1857078441
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,6 +391,7 @@ MonoBehaviour:
   serializedMotion: 000000000500000001000000000000000000803f0000c8420000c8c201000000000000000000803f0000c8420000c84201000000000000000000003f000000000000c84202000000000000000000803f00003443000034430000c84201000000000000000000803f0000c8420000c8c2
   motion:
     delay: 0
+    position: {x: -100, y: -100}
 --- !u!212 &1857078443
 SpriteRenderer:
   m_ObjectHideFlags: 0

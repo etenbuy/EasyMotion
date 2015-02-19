@@ -233,15 +233,20 @@ public class MotionSequence2D : MotionBase2D {
     /// <summary>
     /// Gizmoを描画する
     /// </summary>
-    protected override void DrawGizmos() {
+    /// <param name="from">現在位置</param>
+    /// <returns>移動後の位置</returns>
+    public override Vector2 DrawGizmos(Vector2 from) {
         if ( motions == null ) {
-            return;
+            return initPosition;
         }
 
         // 各モーションのGizmoを描画
         foreach ( var motion in motions ) {
-            // TODO Gizmoの描画処理実装
+            // Gizmoの描画
+            from = motion.DrawGizmos(from);
         }
+
+        return from;
     }
 #endif
 }

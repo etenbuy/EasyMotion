@@ -70,10 +70,14 @@ public class MoveLiner2D : EternalMotion2D {
     /// <summary>
     /// GizmoÇï`âÊÇ∑ÇÈ
     /// </summary>
-    protected override void DrawGizmos() {
-        var to = initPosition + velocity;
-        DrawLine(initPosition, to);
+    /// <param name="from">åªç›à íu</param>
+    /// <returns>à⁄ìÆå„ÇÃà íu</returns>
+    public override Vector2 DrawGizmos(Vector2 from) {
+        var to = from + velocity;
+        DrawLine(from, to);
         DrawArrowCap(to, Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg);
+
+        return from + velocity * float.MaxValue;
     }
 #endif
 }

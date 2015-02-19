@@ -104,7 +104,9 @@ public class MoveArc2D : LimitedMotion2D {
     /// <summary>
     /// Gizmoを描画する
     /// </summary>
-    protected override void DrawGizmos() {
+    /// <param name="from">現在位置</param>
+    /// <returns>移動後の位置</returns>
+    public override Vector2 DrawGizmos(Vector2 from) {
         // 円の頂点数
         const int POINT_NUM = 45;
 
@@ -141,7 +143,7 @@ public class MoveArc2D : LimitedMotion2D {
             }
 
             // 頂点データ追加
-            points.Add(initPosition + new Vector2(-fromSin + Mathf.Sin(angle), fromCos - Mathf.Cos(angle)) * radius);
+            points.Add(from + new Vector2(-fromSin + Mathf.Sin(angle), fromCos - Mathf.Cos(angle)) * radius);
 
             // 端まで到達したらbreak
             if ( isEnd ) {
@@ -153,13 +155,16 @@ public class MoveArc2D : LimitedMotion2D {
         DrawLine(points.ToArray());
 
         // 矢印の描画
+        Vector2 to;
         if ( isRight ) {
-            var toPos = initPosition + new Vector2(-fromSin + Mathf.Sin(fromAngleRad), fromCos - Mathf.Cos(fromAngleRad)) * radius;
-            DrawArrowCap(toPos, fromAngleRad * Mathf.Rad2Deg + 180);
+            to = from + new Vector2(-fromSin + Mathf.Sin(fromAngleRad), fromCos - Mathf.Cos(fromAngleRad)) * radius;
+            DrawArrowCap(to, fromAngleRad * Mathf.Rad2Deg + 180);
         } else {
-            var toPos = initPosition + new Vector2(-fromSin + Mathf.Sin(toAngleRad), fromCos - Mathf.Cos(toAngleRad)) * radius;
-            DrawArrowCap(toPos, toAngleRad * Mathf.Rad2Deg);
+            to = from + new Vector2(-fromSin + Mathf.Sin(toAngleRad), fromCos - Mathf.Cos(toAngleRad)) * radius;
+            DrawArrowCap(to, toAngleRad * Mathf.Rad2Deg);
         }
+
+        return to;
     }
 #endif
 }

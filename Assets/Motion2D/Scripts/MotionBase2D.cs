@@ -23,7 +23,7 @@ public class MotionBase2D {
     /// <summary>
     /// 現在位置
     /// </summary>
-    public Vector2 position { get; protected set; }
+    public Vector2 position;
 
     /// <summary>
     /// 初期位置
@@ -79,7 +79,7 @@ public class MotionBase2D {
     /// </summary>
     /// <param name="objTrans">GameObjectのTransform</param>
     public void StartMotion(Transform objTrans) {
-        state = State.Waiting;
+        state = delay > 0 ? State.Waiting : State.Running;
         transform = objTrans.transform;
         startTime = Time.time;
         position = initPosition = transform.localPosition;
@@ -198,13 +198,16 @@ public class MotionBase2D {
         if ( !Application.isPlaying ) {
             position = trans.localPosition;
         }
-        DrawGizmos();
+        DrawGizmos(initPosition);
     }
 
     /// <summary>
-    /// Gizmoを描画する
+    /// Gizmoを描画する(派生クラスで実装する)
     /// </summary>
-    protected virtual void DrawGizmos() {
+    /// <param name="from">現在位置</param>
+    /// <returns>移動後の位置</returns>
+    public virtual Vector2 DrawGizmos(Vector2 from) {
+        return from;
     }
 
     /// <summary>
