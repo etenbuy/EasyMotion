@@ -78,5 +78,33 @@ public class MoveTo2D : LimitedMotion2D {
 
         return to;
     }
+
+    /// <summary>
+    /// 速さ取得
+    /// </summary>
+    /// <param name="from">開始位置</param>
+    /// <returns>設定された速さ</returns>
+    public override float GetSpeed(Vector2 from) {
+        var line = to - from;
+        var curSpeed = 0f;
+        if ( duration != 0 ) {
+            curSpeed = line.magnitude / duration;
+        }
+        return curSpeed;
+    }
+
+    /// <summary>
+    /// 速さ設定
+    /// </summary>
+    /// <param name="from">開始位置</param>
+    /// <param name="speed">速さ</param>
+    public override void SetSpeed(Vector2 from, float speed) {
+        if ( speed == 0 ) {
+            duration = 0;
+        } else {
+            var line = to - from;
+            duration = line.magnitude / speed;
+        }
+    }
 #endif
 }

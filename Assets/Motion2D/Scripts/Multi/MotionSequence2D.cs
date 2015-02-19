@@ -247,5 +247,43 @@ public class MotionSequence2D : MotionBase2D {
 
         return from;
     }
+
+    /// <summary>
+    /// 速さ取得
+    /// </summary>
+    /// <param name="from">開始位置</param>
+    /// <returns>設定された速さ</returns>
+    public override float GetSpeed(Vector2 from) {
+        if ( motions.Length == 0 ) {
+            return 0;
+        }
+
+        float avgSpeed = 0;
+
+        drawGizmos = false;
+        foreach ( var motion in motions ) {
+            var to = motion.DrawGizmos(from);
+            avgSpeed += motion.GetSpeed(from);
+            from = to;
+        }
+        drawGizmos = true;
+
+        return avgSpeed / motions.Length;
+    }
+
+    /// <summary>
+    /// 速さ設定
+    /// </summary>
+    /// <param name="from">開始位置</param>
+    /// <param name="speed">速さ</param>
+    public override void SetSpeed(Vector2 from, float speed) {
+        drawGizmos = false;
+        foreach ( var motion in motions ) {
+            var to = motion.DrawGizmos(from);
+            motion.SetSpeed(from, speed);
+            from = to;
+        }
+        drawGizmos = true;
+    }
 #endif
 }

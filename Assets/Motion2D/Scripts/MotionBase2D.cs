@@ -236,11 +236,20 @@ public class MotionBase2D {
     }
 
     /// <summary>
+    /// Gizmoを描画するかどうか
+    /// </summary>
+    protected static bool drawGizmos = true;
+
+    /// <summary>
     /// 線を描画する
     /// </summary>
     /// <param name="from"></param>
     /// <param name="to"></param>
     protected void DrawLine(Vector2 from, Vector2 to) {
+        if ( !drawGizmos ) {
+            return;
+        }
+
         Gizmos.color = gizmoColor;
         Gizmos.DrawLine(from, to);
     }
@@ -250,6 +259,10 @@ public class MotionBase2D {
     /// </summary>
     /// <param name="points"></param>
     protected void DrawLine(Vector2[] points) {
+        if ( !drawGizmos ) {
+            return;
+        }
+
         Gizmos.color = gizmoColor;
         for ( int i = 1 ; i < points.Length ; ++i ) {
             Gizmos.DrawLine(points[i - 1], points[i]);
@@ -263,6 +276,10 @@ public class MotionBase2D {
     /// <param name="angle"></param>
     /// <param name="color"></param>
     protected void DrawArrowCap(Vector2 from, float angle) {
+        if ( !drawGizmos ) {
+            return;
+        }
+
         var scale = CameraScale;
 
         // メッシュ設定
@@ -305,6 +322,23 @@ public class MotionBase2D {
             var sceneCamera = UnityEditor.SceneView.lastActiveSceneView.camera;
             return sceneCamera.orthographicSize / sceneCamera.pixelHeight;
         }
+    }
+
+    /// <summary>
+    /// 速さ取得
+    /// </summary>
+    /// <param name="from">開始位置</param>
+    /// <returns>設定された速さ</returns>
+    public virtual float GetSpeed(Vector2 from) {
+        return 0;
+    }
+
+    /// <summary>
+    /// 速さ設定
+    /// </summary>
+    /// <param name="from">開始位置</param>
+    /// <param name="speed">速さ</param>
+    public virtual void SetSpeed(Vector2 from, float speed) {
     }
 #endif
 }

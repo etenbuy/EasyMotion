@@ -173,5 +173,16 @@ public class EasyMotion2D : MonoBehaviour {
         // Gizmo描画
         motion.DrawGizmos(transform);
     }
+
+    /// <summary>
+    /// 速さ調整ウィンドウを開く
+    /// </summary>
+    [ContextMenu("Adjust Speed")]
+    private void OpenAdjustSpeedWindow() {
+        AdjustSpeedWindow.Open(motion.GetSpeed(motion.position), (speed) => {
+            motion.SetSpeed(motion.position, speed);
+            serializedMotion = motion.Serialize();
+        });
+    }
 #endif
 }

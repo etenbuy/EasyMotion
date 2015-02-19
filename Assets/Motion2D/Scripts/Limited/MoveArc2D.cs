@@ -167,5 +167,33 @@ public class MoveArc2D : LimitedMotion2D {
 
         return to;
     }
+
+    /// <summary>
+    /// 速さ取得
+    /// </summary>
+    /// <param name="from">開始位置</param>
+    /// <returns>設定された速さ</returns>
+    public override float GetSpeed(Vector2 from) {
+        var length = radius * rotateAngle * Mathf.Deg2Rad;
+        var curSpeed = 0f;
+        if ( duration != 0 ) {
+            curSpeed = length / duration;
+        }
+        return curSpeed;
+    }
+
+    /// <summary>
+    /// 速さ設定
+    /// </summary>
+    /// <param name="from">開始位置</param>
+    /// <param name="speed">速さ</param>
+    public override void SetSpeed(Vector2 from, float speed) {
+        if ( speed == 0 ) {
+            duration = 0;
+        } else {
+            var length = radius * rotateAngle * Mathf.Deg2Rad;
+            duration = length / speed;
+        }
+    }
 #endif
 }

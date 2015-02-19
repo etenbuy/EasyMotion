@@ -80,5 +80,23 @@ public class MoveLiner2D : EternalMotion2D {
 
         return from + velocity * float.MaxValue;
     }
+
+    /// <summary>
+    /// 速さ取得
+    /// </summary>
+    /// <param name="from">開始位置</param>
+    /// <returns>設定された速さ</returns>
+    public override float GetSpeed(Vector2 from) {
+        return velocity.magnitude;
+    }
+
+    /// <summary>
+    /// 速さ設定
+    /// </summary>
+    /// <param name="from">開始位置</param>
+    /// <param name="speed">速さ</param>
+    public override void SetSpeed(Vector2 from, float speed) {
+        velocity = velocity.normalized * speed;
+    }
 #endif
 }
