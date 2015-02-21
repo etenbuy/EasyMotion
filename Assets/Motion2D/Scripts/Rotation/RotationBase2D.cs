@@ -76,7 +76,7 @@ public class RotationBase2D {
     /// <summary>
     /// ŠJn
     /// </summary>
-    protected float startTime { get; private set; }
+    private float startTime;
 
     /// <summary>
     /// OnStart()‚ÍŒÄ‚Ño‚³‚ê‚½‚©‚Ç‚¤‚©

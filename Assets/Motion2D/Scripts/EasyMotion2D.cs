@@ -88,8 +88,9 @@ public class EasyMotion2D : MonoBehaviour {
     /// シリアライズされたモーションデータからインスタンスを生成する
     /// </summary>
     private void Awake() {
-        // デシリアライズされたモーションデータを更新
-        UpdateDeserializedMotion();
+        // データのデシリアライズ
+        motion = GetDeserializedMotion(type, serializedMotion);
+        rotation = RotationBase2D.GetDeserializedRotation(rotationType, serializedRotation);
     }
 
     /// <summary>
@@ -97,7 +98,9 @@ public class EasyMotion2D : MonoBehaviour {
     /// </summary>
     private void Start() {
         // モーション実行開始
-        motion.StartMotion(transform);
+        var trans = transform;
+        motion.StartMotion(trans);
+        rotation.StartRotation(trans);
     }
 
     /// <summary>
@@ -112,21 +115,13 @@ public class EasyMotion2D : MonoBehaviour {
             }
         }
 
-        //if ( !rotationEnd ) {
-        //    // 回転動作の状態更新
-        //    if ( !rotation.UpdateRotation() ) {
-        //        // 終了なら何もしない
-        //        rotationEnd = true;
-        //    }
-        //}
-    }
-
-    /// <summary>
-    /// デシリアライズされたモーションデータを更新する
-    /// </summary>
-    public void UpdateDeserializedMotion() {
-        // モーションオブジェクト作成
-        motion = GetDeserializedMotion(type, serializedMotion);
+        if ( !rotationEnd ) {
+            // 回転動作の状態更新
+            if ( !rotation.UpdateRotation() ) {
+                // 終了なら何もしない
+                rotationEnd = true;
+            }
+        }
     }
 
     /// <summary>

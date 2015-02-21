@@ -26,11 +26,17 @@ public class Rotate2D : RotationBase2D {
     private float initAngle;
 
     /// <summary>
+    /// ŠJn
+    /// </summary>
+    private float startTime;
+
+    /// <summary>
     /// ‰ñ“]“®ì‚Ì‰Šú‰»ˆ—
     /// </summary>
     /// <returns>true:‰ñ“]“®ìŒp‘± / false:ˆÈ~‚Ì‰ñ“]“®ì‚ğŒp‘±‚µ‚È‚¢</returns>
     protected override bool OnStart() {
         initAngle = angle;
+        startTime = Time.time;
         return true;
     }
 
