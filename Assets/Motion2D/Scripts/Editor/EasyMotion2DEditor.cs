@@ -60,6 +60,10 @@ public class EasyMotion2DEditor : Editor {
         motion.DrawGUI();
 
 
+        // セパレータ描画
+        EditorGUILayout.Space();
+
+
         // 回転動作型選択描画
         var currentRotType = script.rotationType;
         var newRotType = script.rotationType = (RotationBase2D.RotationType)EditorGUILayout.EnumPopup("Rotation Type", currentRotType);
