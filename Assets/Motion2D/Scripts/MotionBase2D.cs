@@ -13,7 +13,7 @@ using System;
 /// <summary>
 /// 2Dモーション基底。
 /// </summary>
-[System.Serializable]
+[Serializable]
 public class MotionBase2D {
     /// <summary>
     /// モーションを開始するまでの時間
