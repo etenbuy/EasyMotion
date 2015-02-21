@@ -26,6 +26,7 @@ public class EternalMotion2D : MotionBase2D {
     /// <returns>true:ƒ‚[ƒVƒ‡ƒ“Œp‘± / false:ˆÈ~‚Ìƒ‚[ƒVƒ‡ƒ“‚ğŒp‘±‚µ‚È‚¢</returns>
     protected override bool OnStart() {
         startTime = Time.time;
+        OnEternalStart();
         return true;
     }
 
