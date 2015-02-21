@@ -129,7 +129,7 @@ public class LimitedMotion2D : MotionBase2D {
         var prevType = progFuncType;
         progFuncType = (ProgFuncBase.FuncType)UnityEditor.EditorGUILayout.EnumPopup("Function", progFuncType);
 
-        if ( progFuncType != prevType ) {
+        if ( progFuncType != prevType || progFunc == null ) {
             // å^Ç™ïœçXÇ≥ÇÍÇΩ
             progFunc = ProgFuncBase.CreateInstance(progFuncType);
             serializedProgFunc = progFunc.Serialize();

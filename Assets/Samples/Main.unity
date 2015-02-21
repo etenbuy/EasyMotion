@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
-  serializedMotion: 000000000000803f01000000000000000000b4420000b4430000c842
+  serializedMotion: 0000000000000040000000000000b4420000b4430000c842
   motion:
     delay: 0
     position: {x: 100, y: 0}
@@ -243,6 +243,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 948301468}
   - 212: {fileID: 948301467}
+  - 114: {fileID: 948301466}
   m_Layer: 0
   m_Name: MoveLiner
   m_TagString: Untagged
@@ -250,6 +251,31 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &948301466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 948301465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cecb22c7ac68bb489e33c1f982d1b6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 4
+  serializedMotion: 000000000000c8420000c8c2
+  motion:
+    delay: 0
+    position: {x: -100, y: 100}
+  rotationType: 2
+  serializedRotation: 000000000000b4430000b4c2
+  rotation:
+    delay: 0
+    angle: 0
+    motion:
+      delay: 0
+      position: {x: 0, y: 0}
+    type: 0
 --- !u!212 &948301467
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -347,7 +373,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
-  serializedMotion: 000000000000000001000000000000000000c8c20000c8c2
+  serializedMotion: 0000000000000040010000008fc2f53c0000c8c20000c8c2
   motion:
     delay: 0
     position: {x: 100, y: 100}
@@ -369,6 +395,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1857078444}
   - 212: {fileID: 1857078443}
+  - 114: {fileID: 1857078442}
   m_Layer: 0
   m_Name: MotionSequence
   m_TagString: Untagged
@@ -376,6 +403,31 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1857078442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1857078441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cecb22c7ac68bb489e33c1f982d1b6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 5
+  serializedMotion: 000000000500000002000000000000000000803f010000000000003f000048430000000002000000000000000000803f010000000000003f000000000000484302000000000000000000003f000000000000c8c2000000000300000000000000db0fc93f00000000000034c3000034430000c84201000000000000000100003f000000000000c8420000c8c2
+  motion:
+    delay: 0
+    position: {x: -100, y: -100}
+  rotationType: 2
+  serializedRotation: 000000000000b4430000b4c2
+  rotation:
+    delay: 0
+    angle: 0
+    motion:
+      delay: 0
+      position: {x: 0, y: 0}
+    type: 0
 --- !u!212 &1857078443
 SpriteRenderer:
   m_ObjectHideFlags: 0
