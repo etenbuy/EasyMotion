@@ -31,6 +31,18 @@ public class MoveArc2D : LimitedMotion2D {
     private float radius = 0;
 
     /// <summary>
+    /// 現在の向き
+    /// </summary>
+    private float curAngle;
+
+    /// <summary>
+    /// 時限モーションの初期化処理
+    /// </summary>
+    protected override void OnLimitedStart() {
+        curAngle = fromAngle;
+    }
+
+    /// <summary>
     /// 時限モーションの更新処理
     /// </summary>
     /// <param name="progress">進捗率</param>
@@ -51,7 +63,7 @@ public class MoveArc2D : LimitedMotion2D {
         var fromCos = Mathf.Cos(fromAngleRad);
 
         // 現在位置計算
-        var curAngle = fromAngleRad + progress * rotateAngleRad;
+        curAngle = fromAngleRad + progress * rotateAngleRad;
 
         position = initPosition + new Vector2(
             -fromSin + Mathf.Sin(curAngle),
@@ -89,6 +101,15 @@ public class MoveArc2D : LimitedMotion2D {
         offset += sizeof(float);
 
         return offset;
+    }
+
+    /// <summary>
+    /// 現在の向き
+    /// </summary>
+    public override float direction {
+        get {
+            return curAngle;
+        }
     }
 
 #if UNITY_EDITOR

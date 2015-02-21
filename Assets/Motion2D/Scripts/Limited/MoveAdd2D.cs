@@ -21,6 +21,19 @@ public class MoveAdd2D : LimitedMotion2D {
     private Vector2 move;
 
     /// <summary>
+    /// 現在の向き
+    /// </summary>
+    private float curAngle;
+
+    /// <summary>
+    /// 時限モーションの初期化処理
+    /// </summary>
+    /// <param name="progress">進捗率</param>
+    protected override void OnLimitedStart() {
+        curAngle = Mathf.Atan2(move.y, move.x) * Mathf.Rad2Deg;
+    }
+
+    /// <summary>
     /// 時限モーションの更新処理
     /// </summary>
     /// <param name="progress">進捗率</param>
@@ -55,6 +68,15 @@ public class MoveAdd2D : LimitedMotion2D {
         offset += sizeof(float);
 
         return offset;
+    }
+
+    /// <summary>
+    /// 現在の向き
+    /// </summary>
+    public override float direction {
+        get {
+            return curAngle;
+        }
     }
 
 #if UNITY_EDITOR

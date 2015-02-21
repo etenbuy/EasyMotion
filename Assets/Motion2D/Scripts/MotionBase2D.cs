@@ -163,6 +163,15 @@ public class MotionBase2D {
         return offset + sizeof(float);
     }
 
+    /// <summary>
+    /// 現在の向き
+    /// </summary>
+    public virtual float direction {
+        get {
+            return 0;
+        }
+    }
+
 #if UNITY_EDITOR
     /// <summary>
     /// エディタに表示するGizmo色

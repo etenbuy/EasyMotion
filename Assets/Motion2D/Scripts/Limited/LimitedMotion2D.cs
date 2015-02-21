@@ -31,6 +31,7 @@ public class LimitedMotion2D : MotionBase2D {
     /// <returns>true:モーション継続 / false:以降のモーションを継続しない</returns>
     protected override bool OnStart() {
         endTime = Time.time + duration;
+        OnLimitedStart();
         return true;
     }
 
@@ -53,6 +54,12 @@ public class LimitedMotion2D : MotionBase2D {
         OnLimitedUpdate(progress);
 
         return updateNext;
+    }
+
+    /// <summary>
+    /// 時限モーションの初期化処理(派生クラスで実装する)
+    /// </summary>
+    protected virtual void OnLimitedStart() {
     }
 
     /// <summary>

@@ -27,6 +27,11 @@ public class MotionSequence2D : MotionBase2D {
     private int current;
 
     /// <summary>
+    /// 現在の向き
+    /// </summary>
+    private float curAngle;
+
+    /// <summary>
     /// モーションの初期化処理
     /// </summary>
     /// <returns>true:モーション継続 / false:以降のモーションを継続しない</returns>
@@ -37,6 +42,7 @@ public class MotionSequence2D : MotionBase2D {
 
         current = 0;
         motions[0].StartMotion(transform);
+        curAngle = motions[0].direction;
 
         return true;
     }
@@ -55,6 +61,9 @@ public class MotionSequence2D : MotionBase2D {
         var nextUpdate = motions[current].UpdateMotion(false);
         position = motions[current].position;
 
+        // 向きの更新
+        curAngle = motions[current].direction;
+
         if ( !nextUpdate ) {
             // 次のモーションに遷移
             if ( ++current >= motions.Length ) {
@@ -65,6 +74,9 @@ public class MotionSequence2D : MotionBase2D {
             // 次のモーション初期化
             transform.localPosition = new Vector3(position.x, position.y, transform.localPosition.z);
             motions[current].StartMotion(transform);
+
+            // 向きの更新
+            curAngle = motions[current].direction;
         }
 
         return true;
@@ -117,6 +129,15 @@ public class MotionSequence2D : MotionBase2D {
         }
 
         return offset;
+    }
+
+    /// <summary>
+    /// 現在の向き
+    /// </summary>
+    public override float direction {
+        get {
+            return curAngle;
+        }
     }
 
 #if UNITY_EDITOR

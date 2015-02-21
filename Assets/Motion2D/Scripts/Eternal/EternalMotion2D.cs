@@ -39,6 +39,12 @@ public class EternalMotion2D : MotionBase2D {
     }
 
     /// <summary>
+    /// 永久モーションの初期化処理(派生クラスで実装する)
+    /// </summary>
+    protected virtual void OnEternalStart() {
+    }
+
+    /// <summary>
     /// 永久モーションの更新処理(派生クラスで実装する)
     /// </summary>
     /// <param name="time">経過時間</param>

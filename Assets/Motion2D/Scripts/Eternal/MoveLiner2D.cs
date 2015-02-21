@@ -21,6 +21,18 @@ public class MoveLiner2D : EternalMotion2D {
     private Vector2 velocity;
 
     /// <summary>
+    /// 現在の向き
+    /// </summary>
+    private float curAngle;
+
+    /// <summary>
+    /// 永久モーションの初期化処理
+    /// </summary>
+    protected override void OnEternalStart() {
+        curAngle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
+    }
+
+    /// <summary>
     /// 永久モーションの更新処理
     /// </summary>
     /// <param name="time">経過時間</param>
@@ -57,6 +69,15 @@ public class MoveLiner2D : EternalMotion2D {
         offset += sizeof(float);
 
         return offset;
+    }
+
+    /// <summary>
+    /// 現在の向き
+    /// </summary>
+    public override float direction {
+        get {
+            return curAngle;
+        }
     }
 
 #if UNITY_EDITOR
