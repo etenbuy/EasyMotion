@@ -377,10 +377,10 @@ MonoBehaviour:
   motion:
     delay: 1
     position: {x: 100, y: 100}
-  rotationType: 1
-  serializedRotation: 0000c03f00003443
+  rotationType: 2
+  serializedRotation: 00000000000034430000b4c2
   rotation:
-    delay: 1.5
+    delay: 0
     angle: 0
     motion:
       delay: 0

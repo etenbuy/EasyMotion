@@ -166,9 +166,26 @@ public class MotionBase2D {
     /// <summary>
     /// Œ»İ‚ÌŒü‚«
     /// </summary>
-    public virtual float direction {
+    public float direction {
         get {
-            return 0;
+            if ( state != State.Running ) {
+                return NO_DIRECTION;
+            }
+            return currentDirection;
+        }
+    }
+
+    /// <summary>
+    /// Œü‚«‚ª‘¶İ‚µ‚È‚¢‚±‚Æ‚ğ•\‚·’è”
+    /// </summary>
+    public const float NO_DIRECTION = float.MaxValue;
+
+    /// <summary>
+    /// Œ»İ‚ÌŒü‚«(”h¶ƒNƒ‰ƒX‚ÅÀ‘•‚·‚é)
+    /// </summary>
+    public virtual float currentDirection {
+        get {
+            return NO_DIRECTION;
         }
     }
 

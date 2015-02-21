@@ -73,7 +73,7 @@ public class MoveAdd2D : LimitedMotion2D {
     /// <summary>
     /// Œ»İ‚ÌŒü‚«
     /// </summary>
-    public override float direction {
+    public override float currentDirection {
         get {
             return curAngle;
         }

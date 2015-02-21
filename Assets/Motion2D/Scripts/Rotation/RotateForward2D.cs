@@ -39,7 +39,15 @@ public class RotateForward2D : RotationBase2D {
     /// <returns>true:‰ñ“]“®ìŒp‘± / false:ˆÈ~‚Ì‰ñ“]“®ì‚ğŒp‘±‚µ‚È‚¢</returns>
     protected override bool OnUpdate() {
         // Œ»İ‚ÌŒü‚«æ“¾
-        var toAngle = motion.direction + angleOffset;
+        var toAngle = motion.direction;
+
+        if ( toAngle == MotionBase2D.NO_DIRECTION ) {
+            // Œü‚«‚ª‘¶İ‚µ‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
+            return true;
+        }
+
+        // ‚¸‚ç‚µŠp“x‰ÁZ
+        toAngle += angleOffset;
 
         // ‰ñ“]—ÊŒvZ
         float diffAngle = AdjustAngleRange(toAngle - angle, -180);
