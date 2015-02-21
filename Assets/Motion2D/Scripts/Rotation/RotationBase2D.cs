@@ -9,12 +9,31 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 /// <summary>
 /// 2D回転動作の基底クラス。
 /// </summary>
 [Serializable]
 public class RotationBase2D {
+    /// <summary>
+    /// 回転動作の種類
+    /// </summary>
+    public enum RotationType {
+        None,
+        Rotate,
+        Forward,
+    };
+
+    /// <summary>
+    /// 実行時型の定義
+    /// </summary>
+    private static Dictionary<RotationType, Type> runtimeType = new Dictionary<RotationType, Type>() {
+        { RotationType.None, typeof(RotationBase2D) },
+        { RotationType.Rotate, typeof(Rotate2D) },
+        { RotationType.Forward, typeof(RotationBase2D) },   // TODO 後でクラス差し替え
+    };
+
     /// <summary>
     /// 回転を開始するまでの時間
     /// </summary>
@@ -29,15 +48,6 @@ public class RotationBase2D {
     /// モーション
     /// </summary>
     public MotionBase2D motion;
-
-    /// <summary>
-    /// 回転動作の種類
-    /// </summary>
-    public enum RotationType {
-        None,
-        Rotate,
-        Forward,
-    };
 
     /// <summary>
     /// 回転動作の種類
@@ -162,4 +172,36 @@ public class RotationBase2D {
         delay = BitConverter.ToSingle(bytes, offset);
         return offset + sizeof(float);
     }
+
+    /// <summary>
+    /// 新規の実行時回転動作オブジェクトを生成する
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public static RotationBase2D CreateInstance(RotationBase2D.RotationType type) {
+        return Activator.CreateInstance(runtimeType[type]) as RotationBase2D;
+    }
+
+    /// <summary>
+    /// デシリアライズされた回転動作オブジェクトを取得する
+    /// </summary>
+    /// <param name="type">回転動作型</param>
+    /// <param name="bytes">シリアライズ済み回転動作データ</param>
+    /// <returns>実行時回転動作オブジェクト</returns>
+    public static RotationBase2D GetDeserializedRotation(RotationType type, byte[] bytes) {
+        // 回転動作オブジェクト作成
+        var rotation = CreateInstance(type);
+        // 回転動作データのデシリアライズ
+        rotation.Deserialize(bytes, 0);
+        return rotation;
+    }
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// インスペクタ上のGUIを描画する
+    /// </summary>
+    public virtual void DrawGUI() {
+        delay = UnityEditor.EditorGUILayout.FloatField("Delay", delay);
+    }
+#endif
 }

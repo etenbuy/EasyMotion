@@ -67,4 +67,15 @@ public class Rotate2D : RotationBase2D {
 
         return offset;
     }
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// インスペクタ上のGUIを描画する
+    /// </summary>
+    public override void DrawGUI() {
+        base.DrawGUI();
+
+        speed = UnityEditor.EditorGUILayout.FloatField("Speed", speed);
+    }
+#endif
 }

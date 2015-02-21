@@ -191,6 +191,15 @@ MonoBehaviour:
   motion:
     delay: 0
     position: {x: 100, y: 0}
+  rotationType: 0
+  serializedRotation: 00000000
+  rotation:
+    delay: 0
+    angle: 0
+    motion:
+      delay: 0
+      position: {x: 0, y: 0}
+    type: 0
 --- !u!212 &815020231
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -258,6 +267,15 @@ MonoBehaviour:
   motion:
     delay: 2
     position: {x: -100, y: 100}
+  rotationType: 0
+  serializedRotation: 00000000
+  rotation:
+    delay: 0
+    angle: 0
+    motion:
+      delay: 0
+      position: {x: 0, y: 0}
+    type: 0
 --- !u!212 &948301467
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -359,6 +377,15 @@ MonoBehaviour:
   motion:
     delay: 1
     position: {x: 100, y: 100}
+  rotationType: 1
+  serializedRotation: a4709d3fa470b540
+  rotation:
+    delay: 1.23000002
+    angle: 0
+    motion:
+      delay: 0
+      position: {x: 0, y: 0}
+    type: 0
 --- !u!1 &1857078441
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,6 +419,15 @@ MonoBehaviour:
   motion:
     delay: 0
     position: {x: -100, y: -100}
+  rotationType: 0
+  serializedRotation: 00000000
+  rotation:
+    delay: 0
+    angle: 0
+    motion:
+      delay: 0
+      position: {x: 0, y: 0}
+    type: 0
 --- !u!212 &1857078443
 SpriteRenderer:
   m_ObjectHideFlags: 0

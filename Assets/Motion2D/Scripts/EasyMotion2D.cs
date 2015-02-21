@@ -48,6 +48,7 @@ public class EasyMotion2D : MonoBehaviour {
     /// <summary>
     /// シリアライズ済みモーションデータ
     /// </summary>
+    [HideInInspector]
     public byte[] serializedMotion = null;
 
     /// <summary>
@@ -60,6 +61,28 @@ public class EasyMotion2D : MonoBehaviour {
     /// モーションは終了したかどうか
     /// </summary>
     private bool motionEnd = false;
+
+    /// <summary>
+    /// 回転動作の種類
+    /// </summary>
+    public RotationBase2D.RotationType rotationType = RotationBase2D.RotationType.None;
+
+    /// <summary>
+    /// シリアライズ済み回転動作データ
+    /// </summary>
+    [HideInInspector]
+    public byte[] serializedRotation = null;
+
+    /// <summary>
+    /// 実行時の回転動作オブジェクト(デシリアライズされた回転動作データ)
+    /// </summary>
+    [HideInInspector]
+    public RotationBase2D rotation = null;
+
+    /// <summary>
+    /// 回転動作は終了したかどうか
+    /// </summary>
+    private bool rotationEnd = false;
 
     /// <summary>
     /// シリアライズされたモーションデータからインスタンスを生成する
@@ -81,16 +104,21 @@ public class EasyMotion2D : MonoBehaviour {
     /// フレーム毎の更新処理
     /// </summary>
     private void Update() {
-        if ( motionEnd ) {
-            // モーションが終了していたら何もしない
-            return;
+        if ( !motionEnd ) {
+            // モーションの状態更新
+            if ( !motion.UpdateMotion() ) {
+                // 終了なら何もしない
+                motionEnd = true;
+            }
         }
 
-        // モーションの状態更新
-        if ( !motion.UpdateMotion() ) {
-            // 終了なら何もしない
-            motionEnd = true;
-        }
+        //if ( !rotationEnd ) {
+        //    // 回転動作の状態更新
+        //    if ( !rotation.UpdateRotation() ) {
+        //        // 終了なら何もしない
+        //        rotationEnd = true;
+        //    }
+        //}
     }
 
     /// <summary>

@@ -26,6 +26,7 @@ public class EasyMotion2DEditor : Editor {
         }
         var script = target as EasyMotion2D;
         script.motion = EasyMotion2D.GetDeserializedMotion(script.type, script.serializedMotion);
+        script.rotation = RotationBase2D.GetDeserializedRotation(script.rotationType, script.serializedRotation);
     }
 
     /// <summary>
@@ -58,11 +59,34 @@ public class EasyMotion2DEditor : Editor {
         // モーション設定用のGUI描画
         motion.DrawGUI();
 
+
+        // 回転動作型選択描画
+        var currentRotType = script.rotationType;
+        var newRotType = script.rotationType = (RotationBase2D.RotationType)EditorGUILayout.EnumPopup("Rotation Type", currentRotType);
+
+        var rotation = script.rotation;
+        if ( rotation == null ) {
+            rotation = RotationBase2D.GetDeserializedRotation(currentRotType, script.serializedRotation);
+        }
+
+        if ( newRotType != currentRotType ) {
+            // 回転動作型が変更された
+            rotation = RotationBase2D.CreateInstance(newRotType);
+            script.serializedRotation = rotation.Serialize();
+
+            script.rotation = rotation;
+        }
+
+        // 回転動作回転動作設定用のGUI描画
+        rotation.DrawGUI();
+
+
         EditorGUI.EndDisabledGroup();
 
         if ( GUI.changed ) {
             // 値が編集されたらシリアライズデータを更新
             script.serializedMotion = motion.Serialize();
+            script.serializedRotation = script.rotation.Serialize();
         }
 
         serializedObject.ApplyModifiedProperties();
