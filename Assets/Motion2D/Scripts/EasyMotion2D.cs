@@ -22,6 +22,7 @@ public class EasyMotion2D : MonoBehaviour {
     public enum MotionType {
         Stop,
         MoveTo,
+        MoveAdd,
         MoveArc,
         MoveLiner,
         Sequence,
@@ -33,6 +34,7 @@ public class EasyMotion2D : MonoBehaviour {
     private static Dictionary<MotionType, Type> runtimeType = new Dictionary<MotionType, Type>() {
         { MotionType.Stop, typeof(MotionBase2D) },
         { MotionType.MoveTo, typeof(MoveTo2D) },
+        { MotionType.MoveAdd, typeof(MoveAdd2D) },
         { MotionType.MoveArc, typeof(MoveArc2D) },
         { MotionType.MoveLiner, typeof(MoveLiner2D) },
         { MotionType.Sequence, typeof(MotionSequence2D) },
