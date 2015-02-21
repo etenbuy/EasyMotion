@@ -91,6 +91,7 @@ public class EasyMotion2D : MonoBehaviour {
         // データのデシリアライズ
         motion = GetDeserializedMotion(type, serializedMotion);
         rotation = RotationBase2D.GetDeserializedRotation(rotationType, serializedRotation);
+        rotation.motion = motion;
     }
 
     /// <summary>

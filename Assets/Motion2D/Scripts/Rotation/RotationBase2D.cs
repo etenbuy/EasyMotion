@@ -31,7 +31,7 @@ public class RotationBase2D {
     private static Dictionary<RotationType, Type> runtimeType = new Dictionary<RotationType, Type>() {
         { RotationType.None, typeof(RotationBase2D) },
         { RotationType.Rotate, typeof(Rotate2D) },
-        { RotationType.Forward, typeof(RotationBase2D) },   // TODO 後でクラス差し替え
+        { RotationType.Forward, typeof(RotateForward2D) },
     };
 
     /// <summary>
@@ -194,6 +194,29 @@ public class RotationBase2D {
         // 回転動作データのデシリアライズ
         rotation.Deserialize(bytes, 0);
         return rotation;
+    }
+
+    /// <summary>
+    /// 角度を指定範囲に補正する
+    /// </summary>
+    /// <param name="angle">補正対象の角度</param>
+    /// <param name="minAngle">角度範囲の最小値</param>
+    /// <returns>補正された角度</returns>
+    protected static float AdjustAngleRange(float angle, float minAngle) {
+        var maxAngle = minAngle + 360f;
+
+        if ( angle >= minAngle && angle < maxAngle ) {
+            return angle;
+        }
+
+        angle -= minAngle;
+        angle = angle % 360f;
+        if ( angle < 0 ) {
+            angle += 360f;
+        }
+        angle += minAngle;
+
+        return angle;
     }
 
 #if UNITY_EDITOR

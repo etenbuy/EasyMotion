@@ -1,9 +1,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                               //
-//  File    :   Rotate2D.cs                                                                      //
+//  File    :   RotateForward2D.cs                                                               //
 //  Author  :   ftvoid                                                                           //
 //  Date    :   2015.02.21                                                                       //
-//  Desc    :   “™‘¬‰ñ“]“®ìB                                                                   //
+//  Desc    :   ‘O•û‚É‰ñ“]‚·‚é“®ìB                                                             //
 //                                                                                               //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 using UnityEngine;
@@ -12,31 +12,24 @@ using System.Collections;
 using System.Linq;
 
 /// <summary>
-/// “™‘¬‰ñ“]“®ìB
+/// ‘O•û‚É‰ñ“]‚·‚é“®ìB
 /// </summary>
-public class Rotate2D : RotationBase2D {
+public class RotateForward2D : RotationBase2D {
     /// <summary>
     /// ‰ñ“]Šp‘¬“x
     /// </summary>
     private float speed;
 
     /// <summary>
-    /// ‰ŠúŠp“x
+    /// Œü‚«‚Ì‚¸‚ç‚µŠp“x
     /// </summary>
-    private float initAngle;
-
-    /// <summary>
-    /// ŠJn
-    /// </summary>
-    private float startTime;
+    private float angleOffset;
 
     /// <summary>
     /// ‰ñ“]“®ì‚Ì‰Šú‰»ˆ—
     /// </summary>
     /// <returns>true:‰ñ“]“®ìŒp‘± / false:ˆÈ~‚Ì‰ñ“]“®ì‚ğŒp‘±‚µ‚È‚¢</returns>
     protected override bool OnStart() {
-        initAngle = angle;
-        startTime = Time.time;
         return true;
     }
 
@@ -45,7 +38,22 @@ public class Rotate2D : RotationBase2D {
     /// </summary>
     /// <returns>true:‰ñ“]“®ìŒp‘± / false:ˆÈ~‚Ì‰ñ“]“®ì‚ğŒp‘±‚µ‚È‚¢</returns>
     protected override bool OnUpdate() {
-        angle = initAngle + speed * (Time.time - startTime);
+        // Œ»İ‚ÌŒü‚«æ“¾
+        var toAngle = motion.direction + angleOffset;
+
+        // ‰ñ“]—ÊŒvZ
+        float diffAngle = AdjustAngleRange(toAngle - angle, -180);
+        var rotAngle = speed * Time.deltaTime;
+
+        // Œü‚«XV
+        if ( rotAngle > Mathf.Abs(diffAngle) ) {
+            // –Ú•WŠp“x‚ğ’´‚¦‚Ä‰ñ“]‚·‚éê‡‚Í–Ú•WŠp“x‚Éˆê’v
+            angle = toAngle;
+        } else {
+            // –Ú•WŠp“x‚ğ’´‚¦‚È‚¢ê‡‚Í‚»‚Ì•ûŒü‚É‰ñ“]
+            angle += diffAngle < 0 ? -rotAngle : rotAngle;
+        }
+
         return true;
     }
 
@@ -56,7 +64,9 @@ public class Rotate2D : RotationBase2D {
     public override byte[] Serialize() {
         var result = base.Serialize();
 
-        return result.Concat(BitConverter.GetBytes(speed)).ToArray();
+        return result
+            .Concat(BitConverter.GetBytes(speed))
+            .Concat(BitConverter.GetBytes(angleOffset)).ToArray();
     }
 
     /// <summary>
@@ -70,6 +80,8 @@ public class Rotate2D : RotationBase2D {
 
         speed = BitConverter.ToSingle(bytes, offset);
         offset += sizeof(float);
+        angleOffset = BitConverter.ToSingle(bytes, offset);
+        offset += sizeof(float);
 
         return offset;
     }
@@ -82,6 +94,7 @@ public class Rotate2D : RotationBase2D {
         base.DrawGUI();
 
         speed = UnityEditor.EditorGUILayout.FloatField("Speed", speed);
+        angleOffset = UnityEditor.EditorGUILayout.FloatField("Angle Offset", angleOffset);
     }
 #endif
 }
