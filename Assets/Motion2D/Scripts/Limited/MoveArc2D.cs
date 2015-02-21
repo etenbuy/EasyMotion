@@ -33,14 +33,7 @@ public class MoveArc2D : LimitedMotion2D {
     /// <summary>
     /// 現在の向き
     /// </summary>
-    private float curAngle;
-
-    /// <summary>
-    /// 時限モーションの初期化処理
-    /// </summary>
-    protected override void OnLimitedStart() {
-        curAngle = fromAngle;
-    }
+    private float curAngle = MotionBase2D.NO_DIRECTION;
 
     /// <summary>
     /// 時限モーションの更新処理
@@ -63,12 +56,14 @@ public class MoveArc2D : LimitedMotion2D {
         var fromCos = Mathf.Cos(fromAngleRad);
 
         // 現在位置計算
-        curAngle = fromAngleRad + progress * rotateAngleRad;
+        var curAngleRad = fromAngleRad + progress * rotateAngleRad;
 
         position = initPosition + new Vector2(
-            -fromSin + Mathf.Sin(curAngle),
-            fromCos - Mathf.Cos(curAngle)
+            -fromSin + Mathf.Sin(curAngleRad),
+            fromCos - Mathf.Cos(curAngleRad)
         ) * radius;
+
+        curAngle = curAngleRad * Mathf.Rad2Deg;
     }
 
     /// <summary>
