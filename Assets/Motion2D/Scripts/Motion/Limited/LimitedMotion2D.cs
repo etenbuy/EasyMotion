@@ -21,6 +21,21 @@ public class LimitedMotion2D : MotionBase2D {
     protected float duration;
 
     /// <summary>
+    /// 進捗率関数の種類
+    /// </summary>
+    private ProgFuncBase.FuncType progFuncType = ProgFuncBase.FuncType.Liner;
+
+    /// <summary>
+    /// シリアライズ済み進捗率関数
+    /// </summary>
+    private byte[] serializedProgFunc = new byte[0];
+
+    /// <summary>
+    /// 進捗率関数
+    /// </summary>
+    private ProgFuncBase progFunc;
+
+    /// <summary>
     /// 終了時刻
     /// </summary>
     private float endTime;
@@ -51,7 +66,7 @@ public class LimitedMotion2D : MotionBase2D {
         }
 
         // 時限モーション更新
-        OnLimitedUpdate(progress);
+        OnLimitedUpdate(progFunc.GetProgress(progress));
 
         return updateNext;
     }
@@ -76,7 +91,14 @@ public class LimitedMotion2D : MotionBase2D {
     public override byte[] Serialize() {
         var result = base.Serialize();
 
-        return result.Concat(BitConverter.GetBytes(duration)).ToArray();
+        if ( progFunc == null ) {
+            progFunc = ProgFuncBase.CreateInstance(progFuncType);
+        }
+
+        return result
+            .Concat(BitConverter.GetBytes(duration))
+            .Concat(BitConverter.GetBytes((int)progFuncType))
+            .Concat(progFunc.Serialize()).ToArray();
     }
 
     /// <summary>
@@ -90,6 +112,9 @@ public class LimitedMotion2D : MotionBase2D {
 
         duration = BitConverter.ToSingle(bytes, offset);
         offset += sizeof(float);
+        progFuncType = (ProgFuncBase.FuncType)BitConverter.ToInt32(bytes, offset);
+        offset += sizeof(int);
+        progFunc = ProgFuncBase.GetDeserialized(progFuncType, bytes, offset, out offset);
 
         return offset;
     }
@@ -101,6 +126,16 @@ public class LimitedMotion2D : MotionBase2D {
     public override void DrawGUI() {
         base.DrawGUI();
         duration = UnityEditor.EditorGUILayout.FloatField("Duration", duration);
+        var prevType = progFuncType;
+        progFuncType = (ProgFuncBase.FuncType)UnityEditor.EditorGUILayout.EnumPopup("Function", progFuncType);
+
+        if ( progFuncType != prevType ) {
+            // 型が変更された
+            progFunc = ProgFuncBase.CreateInstance(progFuncType);
+            serializedProgFunc = progFunc.Serialize();
+        }
+
+        progFunc.DrawGUI();
     }
 #endif
 }

@@ -14,11 +14,11 @@ using System.Linq;
 /// <summary>
 /// 加速関数。
 /// </summary>
-public class AccFunc : ProgFunc {
+public class AccFunc : ProgFuncBase {
     /// <summary>
-    /// 加速時間(0～0.5)
+    /// 加速期間(0～0.5)
     /// </summary>
-    private float accTime;
+    private float accSpan;
 
     /// <summary>
     /// 最高速度(内部で自動計算される)
@@ -31,16 +31,19 @@ public class AccFunc : ProgFunc {
     /// <param name="progress">入力値</param>
     /// <returns>出力値</returns>
     public override float GetProgress(float progress) {
-        if ( progress <= accTime ) {
-            progress = maxSpeed / accTime / 2 * progress * progress;
-        } else if ( progress < 1 - accTime ) {
-            progress = maxSpeed * progress + maxSpeed * accTime / 2;
+        if ( accSpan == 0 ) {
+            return progress;
+        } else if ( progress <= accSpan ) {
+            progress = progress * progress / accSpan / 2;
+        } else if ( progress <= 1 - accSpan ) {
+            progress = progress - accSpan / 2;
         } else {
-            progress = -progress / accTime * (0.5f * progress + 1) + 1 - 1.5f * accTime;
-            progress *= maxSpeed;
+            progress = progress * (1 - progress / 2) + (accSpan * accSpan - 1) / 2;
+            progress /= accSpan;
+            progress += 1 - 1.5f * accSpan;
         }
 
-        return progress;
+        return progress * maxSpeed;
     }
 
     /// <summary>
@@ -50,7 +53,7 @@ public class AccFunc : ProgFunc {
     public override byte[] Serialize() {
         var result = base.Serialize();
 
-        return result.Concat(BitConverter.GetBytes(accTime)).ToArray();
+        return result.Concat(BitConverter.GetBytes(accSpan)).ToArray();
     }
 
     /// <summary>
@@ -62,10 +65,19 @@ public class AccFunc : ProgFunc {
     public override int Deserialize(byte[] bytes, int offset) {
         offset = base.Deserialize(bytes, offset);
 
-        accTime = BitConverter.ToSingle(bytes, offset);
-        maxSpeed = 1 / (1 - accTime);
+        accSpan = BitConverter.ToSingle(bytes, offset);
+        maxSpeed = 1 / (1 - accSpan);
         offset += sizeof(float);
 
         return offset;
     }
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// インスペクタ上のGUIを描画する
+    /// </summary>
+    public override void DrawGUI() {
+        accSpan = UnityEditor.EditorGUILayout.Slider("Accelerate Span", accSpan, 0, 0.5f);
+    }
+#endif
 }

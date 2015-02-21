@@ -25,6 +25,16 @@ public class EasyMotion2DEditor : Editor {
             return;
         }
         var script = target as EasyMotion2D;
+
+        if ( script.serializedMotion == null ) {
+            script.motion = EasyMotion2D.CreateInstance(script.type);
+            script.serializedMotion = script.motion.Serialize();
+        }
+        if ( script.rotation == null ) {
+            script.rotation = RotationBase2D.CreateInstance(script.rotationType);
+            script.serializedRotation = script.rotation.Serialize();
+        }
+
         script.motion = EasyMotion2D.GetDeserializedMotion(script.type, script.serializedMotion);
         script.rotation = RotationBase2D.GetDeserializedRotation(script.rotationType, script.serializedRotation);
     }
