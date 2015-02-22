@@ -26,11 +26,6 @@ public class LimitedMotion2D : MotionBase2D {
     private ProgFuncBase.FuncType progFuncType = ProgFuncBase.FuncType.Liner;
 
     /// <summary>
-    /// シリアライズ済み進捗率関数
-    /// </summary>
-    private byte[] serializedProgFunc = new byte[0];
-
-    /// <summary>
     /// 進捗率関数
     /// </summary>
     private ProgFuncBase progFunc;
@@ -132,7 +127,6 @@ public class LimitedMotion2D : MotionBase2D {
         if ( progFuncType != prevType || progFunc == null ) {
             // 型が変更された
             progFunc = ProgFuncBase.CreateInstance(progFuncType);
-            serializedProgFunc = progFunc.Serialize();
         }
 
         progFunc.DrawGUI();

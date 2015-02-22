@@ -21,6 +21,7 @@ public class ProgFuncBase {
     public enum FuncType {
         Liner,
         Acc,
+        Acc2,
     };
 
     /// <summary>
@@ -29,6 +30,7 @@ public class ProgFuncBase {
     private static Dictionary<FuncType, Type> runtimeType = new Dictionary<FuncType, Type>() {
         { FuncType.Liner, typeof(ProgFuncBase) },
         { FuncType.Acc, typeof(AccFunc) },
+        { FuncType.Acc2, typeof(Acc2Func) },
     };
 
     /// <summary>
