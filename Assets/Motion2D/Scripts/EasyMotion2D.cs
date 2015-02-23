@@ -26,6 +26,7 @@ public class EasyMotion2D : MonoBehaviour {
         MoveArc,
         MoveLiner,
         Sequence,
+        Chase,
     };
 
     /// <summary>
@@ -38,6 +39,7 @@ public class EasyMotion2D : MonoBehaviour {
         { MotionType.MoveArc, typeof(MoveArc2D) },
         { MotionType.MoveLiner, typeof(MoveLiner2D) },
         { MotionType.Sequence, typeof(MotionSequence2D) },
+        { MotionType.Chase, typeof(ChaseMotion2D) },
     };
 
     /// <summary>

@@ -18,12 +18,12 @@ public class TargetName2D : TargetBase2D {
     /// <summary>
     /// 目標物の名前
     /// </summary>
-    private string name;
+    private string name = string.Empty;
 
     /// <summary>
     /// 目標物のタグ名
     /// </summary>
-    private string tag;
+    private string tag = string.Empty;
 
     /// <summary>
     /// 目標物のTransform参照
@@ -83,10 +83,12 @@ public class TargetName2D : TargetBase2D {
         var length = BitConverter.ToInt32(bytes, offset);
         offset += sizeof(int);
         name = System.Text.Encoding.ASCII.GetString(bytes, offset, length);
+        offset += length;
 
         length = BitConverter.ToInt32(bytes, offset);
         offset += sizeof(int);
         tag = System.Text.Encoding.ASCII.GetString(bytes, offset, length);
+        offset += length;
 
         return offset;
     }
@@ -97,7 +99,7 @@ public class TargetName2D : TargetBase2D {
     /// </summary>
     public override void DrawGUI() {
         name = UnityEditor.EditorGUILayout.TextField("Name", name);
-        tag = UnityEditor.EditorGUILayout.TextField("Tag", tag);
+        tag = UnityEditor.EditorGUILayout.TagField("Tag", tag);
     }
 #endif
 }

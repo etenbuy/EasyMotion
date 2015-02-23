@@ -26,7 +26,7 @@ public abstract class TargetBase2D {
     /// ÀsŒ^‚Ì’è‹`
     /// </summary>
     private static Dictionary<TargetType, Type> runtimeType = new Dictionary<TargetType, Type>() {
-        { TargetType.Name, typeof(TargetBase2D) },
+        { TargetType.Name, typeof(TargetName2D) },
     };
 
     /// <summary>

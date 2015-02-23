@@ -60,27 +60,28 @@ public class ChaseMotion2D : EternalMotion2D {
     protected override bool OnEternalUpdate(float time) {
         // 目標物のTransform取得
         var targetTrans = target.transform;
-        if ( targetTrans == null ) {
-            // 目標物が存在しない
-            return true;
+        if ( targetTrans != null ) {
+            // 目標物への向き計算
+            var targetDir = (Vector2)targetTrans.localPosition - position;
+            var toAngle = Mathf.Atan2(targetDir.y, targetDir.x) * Mathf.Rad2Deg;
+
+            // 回転量計算
+            float diffAngle = RotationBase2D.AdjustAngleRange(toAngle - curAngle, -180);
+            var rotAngle = rotateSpeed * Time.deltaTime;
+
+            // 向き更新
+            if ( rotAngle > Mathf.Abs(diffAngle) ) {
+                // 目標角度を超えて回転する場合は目標角度に一致
+                curAngle = toAngle;
+            } else {
+                // 目標角度を超えない場合はその方向に回転
+                curAngle += diffAngle < 0 ? -rotAngle : rotAngle;
+            }
         }
 
-        // 目標物への向き計算
-        Vector2 targetDir = targetTrans.localPosition - transform.localPosition;
-        var toAngle = Mathf.Atan2(targetDir.y, targetDir.x) * Mathf.Rad2Deg;
-
-        // 回転量計算
-        float diffAngle = RotationBase2D.AdjustAngleRange(toAngle - curAngle, -180);
-        var rotAngle = speed * Time.deltaTime;
-
-        // 向き更新
-        if ( rotAngle > Mathf.Abs(diffAngle) ) {
-            // 目標角度を超えて回転する場合は目標角度に一致
-            curAngle = toAngle;
-        } else {
-            // 目標角度を超えない場合はその方向に回転
-            curAngle += diffAngle < 0 ? -rotAngle : rotAngle;
-        }
+        // 位置更新
+        var curAngleRad = curAngle * Mathf.Deg2Rad;
+        position += new Vector2(Mathf.Cos(curAngleRad), Mathf.Sin(curAngleRad)) * speed * Time.deltaTime;
 
         return true;
     }
@@ -91,6 +92,10 @@ public class ChaseMotion2D : EternalMotion2D {
     /// <returns>シリアライズされたバイナリ配列</returns>
     public override byte[] Serialize() {
         var result = base.Serialize();
+
+        if ( target == null ) {
+            target = TargetBase2D.CreateInstance(targetType);
+        }
 
         return result
             .Concat(BitConverter.GetBytes(fromAngle))
