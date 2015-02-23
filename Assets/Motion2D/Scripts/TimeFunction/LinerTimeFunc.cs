@@ -60,7 +60,7 @@ public class LinerTimeFunc : TimeFuncBase {
     /// </summary>
     public override void DrawGUI() {
         base.DrawGUI();
-        magnification = UnityEditor.EditorGUILayout.Slider("Magnification", magnification, 0, 0.5f);
+        magnification = UnityEditor.EditorGUILayout.FloatField("Magnification", magnification);
     }
 #endif
 }

@@ -16,6 +16,16 @@ using System.Linq;
 /// </summary>
 public class EternalMotion2D : MotionBase2D {
     /// <summary>
+    /// 時間関数の種類
+    /// </summary>
+    private TimeFuncBase.FuncType timeFuncType = TimeFuncBase.FuncType.None;
+
+    /// <summary>
+    /// 時間関数
+    /// </summary>
+    private TimeFuncBase timeFunc;
+
+    /// <summary>
     /// 開始時刻
     /// </summary>
     private float startTime;
@@ -53,4 +63,54 @@ public class EternalMotion2D : MotionBase2D {
     protected virtual bool OnEternalUpdate(float time) {
         return false;
     }
+
+    /// <summary>
+    /// シリアライズ
+    /// </summary>
+    /// <returns>シリアライズされたバイナリ配列</returns>
+    public override byte[] Serialize() {
+        var result = base.Serialize();
+
+        if ( timeFunc == null ) {
+            timeFunc = TimeFuncBase.CreateInstance(timeFuncType);
+        }
+
+        return result
+            .Concat(BitConverter.GetBytes((int)timeFuncType))
+            .Concat(timeFunc.Serialize()).ToArray();
+    }
+
+    /// <summary>
+    /// デシリアライズ
+    /// </summary>
+    /// <param name="bytes">シリアライズ済みモーションデータ</param>
+    /// <param name="offset">モーションデータの開始位置</param>
+    /// <returns>デシリアライズに使用したバイトサイズにoffsetを加算した値</returns>
+    public override int Deserialize(byte[] bytes, int offset) {
+        offset = base.Deserialize(bytes, offset);
+
+        timeFuncType = (TimeFuncBase.FuncType)BitConverter.ToInt32(bytes, offset);
+        offset += sizeof(int);
+        timeFunc = TimeFuncBase.GetDeserialized(timeFuncType, bytes, offset, out offset);
+
+        return offset;
+    }
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// インスペクタ上のGUIを描画する
+    /// </summary>
+    public override void DrawGUI() {
+        base.DrawGUI();
+        var prevType = timeFuncType;
+        timeFuncType = (TimeFuncBase.FuncType)UnityEditor.EditorGUILayout.EnumPopup("Function", timeFuncType);
+
+        if ( timeFuncType != prevType || timeFunc == null ) {
+            // 型が変更された
+            timeFunc = TimeFuncBase.CreateInstance(timeFuncType);
+        }
+
+        timeFunc.DrawGUI();
+    }
+#endif
 }
