@@ -202,7 +202,7 @@ public class RotationBase2D {
     /// <param name="angle">補正対象の角度</param>
     /// <param name="minAngle">角度範囲の最小値</param>
     /// <returns>補正された角度</returns>
-    protected static float AdjustAngleRange(float angle, float minAngle) {
+    public static float AdjustAngleRange(float angle, float minAngle) {
         var maxAngle = minAngle + 360f;
 
         if ( angle >= minAngle && angle < maxAngle ) {
