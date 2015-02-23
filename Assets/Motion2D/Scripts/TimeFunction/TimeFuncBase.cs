@@ -30,6 +30,7 @@ public class TimeFuncBase {
     private static Dictionary<FuncType, Type> runtimeType = new Dictionary<FuncType, Type>() {
         { FuncType.None, typeof(TimeFuncBase) },
         { FuncType.Liner, typeof(LinerTimeFunc) },
+        { FuncType.Square, typeof(SquareTimeFunc) },
     };
 
     /// <summary>

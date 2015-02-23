@@ -339,7 +339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 4
-  serializedMotion: 00000000010000000000803f0000c8420000c8c2
+  serializedMotion: 0000000002000000000000400000c8420000c8c2
   motion:
     delay: 0
     position: {x: -100, y: 100}
