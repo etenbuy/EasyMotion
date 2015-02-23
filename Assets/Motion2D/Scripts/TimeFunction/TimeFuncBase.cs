@@ -33,12 +33,12 @@ public class TimeFuncBase {
     };
 
     /// <summary>
-    /// 進捗度合を取得する
+    /// 時間を取得する
     /// </summary>
-    /// <param name="progress">入力値</param>
+    /// <param name="time">入力値</param>
     /// <returns>出力値</returns>
-    public virtual float GetProgress(float progress) {
-        return progress;
+    public virtual float GetTime(float time) {
+        return time;
     }
 
     /// <summary>

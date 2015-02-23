@@ -33,11 +33,12 @@ public class MoveLiner2D : EternalMotion2D {
     }
 
     /// <summary>
-    /// 永久モーションの更新処理
+    /// 永久モーションの更新処理(派生クラスで実装する)
     /// </summary>
-    /// <param name="time">経過時間</param>
+    /// <param name="time">モーション開始からの経過時間</param>
+    /// <param name="deltaTime">前回フレームからの経過時間</param>
     /// <returns>true:モーション継続 / false:以降のモーションを継続しない</returns>
-    protected override bool OnEternalUpdate(float time) {
+    protected override bool OnEternalUpdate(float time, float deltaTime) {
         position = initPosition + velocity * time;
         return true;
     }

@@ -53,11 +53,12 @@ public class ChaseMotion2D : EternalMotion2D {
     }
 
     /// <summary>
-    /// 永久モーションの更新処理
+    /// 永久モーションの更新処理(派生クラスで実装する)
     /// </summary>
-    /// <param name="time">経過時間</param>
+    /// <param name="time">モーション開始からの経過時間</param>
+    /// <param name="deltaTime">前回フレームからの経過時間</param>
     /// <returns>true:モーション継続 / false:以降のモーションを継続しない</returns>
-    protected override bool OnEternalUpdate(float time) {
+    protected override bool OnEternalUpdate(float time, float deltaTime) {
         // 目標物のTransform取得
         var targetTrans = target.transform;
         if ( targetTrans != null ) {
@@ -67,7 +68,7 @@ public class ChaseMotion2D : EternalMotion2D {
 
             // 回転量計算
             float diffAngle = RotationBase2D.AdjustAngleRange(toAngle - curAngle, -180);
-            var rotAngle = rotateSpeed * Time.deltaTime;
+            var rotAngle = rotateSpeed * deltaTime;
 
             // 向き更新
             if ( rotAngle > Mathf.Abs(diffAngle) ) {
@@ -81,7 +82,7 @@ public class ChaseMotion2D : EternalMotion2D {
 
         // 位置更新
         var curAngleRad = curAngle * Mathf.Deg2Rad;
-        position += new Vector2(Mathf.Cos(curAngleRad), Mathf.Sin(curAngleRad)) * speed * Time.deltaTime;
+        position += new Vector2(Mathf.Cos(curAngleRad), Mathf.Sin(curAngleRad)) * speed * deltaTime;
 
         return true;
     }

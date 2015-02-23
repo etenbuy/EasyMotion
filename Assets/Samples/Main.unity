@@ -187,12 +187,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 6
-  serializedMotion: 000000000000000000000000000016430000b443000000000e0000004d6f74696f6e53657175656e636508000000556e746167676564
+  serializedMotion: 00000000010000000000004000000000000016430000b443000000000e0000004d6f74696f6e53657175656e636508000000556e746167676564
   motion:
     delay: 0
     position: {x: 100, y: 0}
   rotationType: 2
-  serializedRotation: 000000000000b4430000b4c2
+  serializedRotation: 0000000000007a440000b4c2
   rotation:
     delay: 0
     angle: 0
@@ -339,7 +339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 4
-  serializedMotion: 0000000001000000000000000000c8420000c8c2
+  serializedMotion: 00000000010000000000803f0000c8420000c8c2
   motion:
     delay: 0
     position: {x: -100, y: 100}

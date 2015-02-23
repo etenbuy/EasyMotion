@@ -31,11 +31,16 @@ public class EternalMotion2D : MotionBase2D {
     private float startTime;
 
     /// <summary>
+    /// 前フレームの時刻
+    /// </summary>
+    private float prevTime;
+
+    /// <summary>
     /// モーションの初期化処理
     /// </summary>
     /// <returns>true:モーション継続 / false:以降のモーションを継続しない</returns>
     protected override bool OnStart() {
-        startTime = Time.time;
+        startTime = prevTime = Time.time;
         OnEternalStart();
         return true;
     }
@@ -45,8 +50,12 @@ public class EternalMotion2D : MotionBase2D {
     /// </summary>
     /// <returns>true:モーション継続 / false:以降のモーションを継続しない</returns>
     protected override bool OnUpdate() {
+        float time = timeFunc.GetTime(Time.time - startTime);
+        float deltaTime = time - prevTime;
+        prevTime = time;
+
         // 永久モーション更新
-        return OnEternalUpdate(Time.time - startTime);
+        return OnEternalUpdate(time, deltaTime);
     }
 
     /// <summary>
@@ -58,9 +67,10 @@ public class EternalMotion2D : MotionBase2D {
     /// <summary>
     /// 永久モーションの更新処理(派生クラスで実装する)
     /// </summary>
-    /// <param name="time">経過時間</param>
+    /// <param name="time">モーション開始からの経過時間</param>
+    /// <param name="deltaTime">前回フレームからの経過時間</param>
     /// <returns>true:モーション継続 / false:以降のモーションを継続しない</returns>
-    protected virtual bool OnEternalUpdate(float time) {
+    protected virtual bool OnEternalUpdate(float time, float deltaTime) {
         return false;
     }
 
