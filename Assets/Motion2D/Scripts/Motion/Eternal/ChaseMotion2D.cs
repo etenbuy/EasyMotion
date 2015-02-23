@@ -130,4 +130,43 @@ public class ChaseMotion2D : EternalMotion2D {
             return curAngle;
         }
     }
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// インスペクタ上のGUIを描画する
+    /// </summary>
+    public override void DrawGUI() {
+        base.DrawGUI();
+        fromAngle = UnityEditor.EditorGUILayout.FloatField("From Angle", fromAngle);
+        speed = UnityEditor.EditorGUILayout.FloatField("Speed", speed);
+        rotateSpeed = UnityEditor.EditorGUILayout.FloatField("Rotate Speed", rotateSpeed);
+
+        var prevType = targetType;
+        targetType = (TargetBase2D.TargetType)UnityEditor.EditorGUILayout.EnumPopup("Target Type", targetType);
+        if ( targetType != prevType || target == null ) {
+            // 型が変更された
+            target = TargetBase2D.CreateInstance(targetType);
+        }
+
+        target.DrawGUI();
+    }
+
+    /// <summary>
+    /// 速さ取得
+    /// </summary>
+    /// <param name="from">開始位置</param>
+    /// <returns>設定された速さ</returns>
+    public override float GetSpeed(Vector2 from) {
+        return speed;
+    }
+
+    /// <summary>
+    /// 速さ設定
+    /// </summary>
+    /// <param name="from">開始位置</param>
+    /// <param name="speed">速さ</param>
+    public override void SetSpeed(Vector2 from, float speed) {
+        this.speed = speed;
+    }
+#endif
 }
