@@ -35,11 +35,6 @@ public abstract class TargetBase2D {
     public abstract Transform transform { get; }
 
     /// <summary>
-    /// 目標物の位置
-    /// </summary>
-    public abstract Vector2 position { get; }
-
-    /// <summary>
     /// シリアライズ
     /// </summary>
     /// <returns>シリアライズされたバイナリ配列</returns>
