@@ -55,6 +55,7 @@ public class TargetName2D : TargetBase2D {
         }
     }
 
+    /// <summary>
     /// シリアライズ
     /// </summary>
     /// <returns>シリアライズされたバイナリ配列</returns>
