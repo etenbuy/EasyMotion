@@ -61,6 +61,11 @@ public class ChaseMotion2D : EternalMotion2D {
     private float prevRotateTime;
 
     /// <summary>
+    /// 目標物に向いたときに呼ばれるイベント
+    /// </summary>
+    public MotionEvent onTarget;
+
+    /// <summary>
     /// 永久モーションの初期化処理
     /// </summary>
     protected override void OnEternalStart() {
@@ -91,6 +96,11 @@ public class ChaseMotion2D : EternalMotion2D {
             if ( rotAngle > Mathf.Abs(diffAngle) ) {
                 // 目標角度を超えて回転する場合は目標角度に一致
                 curAngle = toAngle;
+
+                if ( onTarget != null ) {
+                    // 目標物に向いたイベント実行
+                    onTarget();
+                }
             } else {
                 // 目標角度を超えない場合はその方向に回転
                 curAngle += diffAngle < 0 ? -rotAngle : rotAngle;
