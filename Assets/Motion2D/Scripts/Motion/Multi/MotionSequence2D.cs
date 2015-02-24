@@ -32,6 +32,17 @@ public class MotionSequence2D : MotionBase2D {
     private float curAngle;
 
     /// <summary>
+    /// モーション切り替えイベント
+    /// </summary>
+    /// <param name="motion"></param>
+    public delegate void OnChange(int motion);
+
+    /// <summary>
+    /// モーション切り替えイベント
+    /// </summary>
+    public OnChange onChange;
+
+    /// <summary>
     /// モーションの初期化処理
     /// </summary>
     /// <returns>true:モーション継続 / false:以降のモーションを継続しない</returns>
@@ -69,6 +80,11 @@ public class MotionSequence2D : MotionBase2D {
             if ( ++current >= motions.Length ) {
                 // 実行するモーションが存在しなければ終了
                 return false;
+            }
+
+            if ( onChange != null ) {
+                // モーション変更イベント実行
+                onChange(current);
             }
 
             // 次のモーション初期化

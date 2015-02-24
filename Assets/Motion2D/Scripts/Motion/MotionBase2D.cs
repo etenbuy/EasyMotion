@@ -26,6 +26,16 @@ public class MotionBase2D {
     public Vector2 position;
 
     /// <summary>
+    /// モーション開始イベント
+    /// </summary>
+    public MotionEvent onStart;
+
+    /// <summary>
+    ///  モーション終了イベント
+    /// </summary>
+    public MotionEvent onEnd;
+
+    /// <summary>
     /// 初期位置
     /// </summary>
 #if UNITY_EDITOR
@@ -106,6 +116,10 @@ public class MotionBase2D {
                 if ( !OnStart() ) {
                     return false;
                 }
+                if ( onStart != null ) {
+                    // モーション開始イベント実行
+                    onStart();
+                }
             }
 
             // 更新動作
@@ -119,6 +133,11 @@ public class MotionBase2D {
             if ( !nextUpdate ) {
                 // モーション終了なら無効状態に遷移
                 state = State.Disable;
+
+                if ( onEnd != null ) {
+                    // モーション終了イベント実行
+                    onEnd();
+                }
             }
 
             return nextUpdate;
