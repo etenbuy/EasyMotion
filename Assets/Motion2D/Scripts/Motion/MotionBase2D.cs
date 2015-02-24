@@ -127,7 +127,7 @@ public class MotionBase2D {
 
             if ( updateTransform ) {
                 // à íuçXêV
-                transform.position = new Vector3(position.x, position.y, transform.localPosition.z);
+                transform.localPosition = new Vector3(position.x, position.y, transform.localPosition.z);
             }
 
             if ( !nextUpdate ) {
