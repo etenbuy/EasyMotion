@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 6
-  serializedMotion: 00000000010000000000803f000000000000c842020000000000803f00004842000000000e0000004d6f74696f6e53657175656e636500000000
+  serializedMotion: 00000000000000000000b442010000c842000000000000b442000000000e0000004d6f74696f6e53657175656e636500000000
   motion:
     delay: 0
     position: {x: 100, y: 0}
@@ -228,7 +228,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 455839502}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: .382683486, w: .923879564}
   m_LocalPosition: {x: 100, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []

@@ -21,6 +21,11 @@ public class ChaseMotion2D : EternalMotion2D {
     private float fromAngle;
 
     /// <summary>
+    /// 初期の向きは現在の向きの相対値とするかどうか
+    /// </summary>
+    private bool relativeAngle;
+
+    /// <summary>
     /// 前進する速さ
     /// </summary>
     private float speed;
@@ -69,7 +74,7 @@ public class ChaseMotion2D : EternalMotion2D {
     /// 永久モーションの初期化処理
     /// </summary>
     protected override void OnEternalStart() {
-        curAngle = fromAngle;
+        curAngle = relativeAngle ? fromAngle + transform.localEulerAngles.z : fromAngle;
     }
 
     /// <summary>
@@ -135,6 +140,7 @@ public class ChaseMotion2D : EternalMotion2D {
 
         return result
             .Concat(BitConverter.GetBytes(fromAngle))
+            .Concat(BitConverter.GetBytes(relativeAngle))
             .Concat(BitConverter.GetBytes(speed))
             .Concat(BitConverter.GetBytes((int)rotateTimeFuncType))
             .Concat(rotateTimeFunc.Serialize())
@@ -154,6 +160,8 @@ public class ChaseMotion2D : EternalMotion2D {
 
         fromAngle = BitConverter.ToSingle(bytes, offset);
         offset += sizeof(float);
+        relativeAngle = BitConverter.ToBoolean(bytes, offset);
+        offset += sizeof(bool);
         speed = BitConverter.ToSingle(bytes, offset);
         offset += sizeof(float);
 
@@ -186,6 +194,7 @@ public class ChaseMotion2D : EternalMotion2D {
     public override void DrawGUI() {
         base.DrawGUI();
         fromAngle = UnityEditor.EditorGUILayout.FloatField("From Angle", fromAngle);
+        relativeAngle = UnityEditor.EditorGUILayout.Toggle("Relative Angle", relativeAngle);
         speed = UnityEditor.EditorGUILayout.FloatField("Speed", speed);
 
         var prevTimeFuncType = rotateTimeFuncType;
