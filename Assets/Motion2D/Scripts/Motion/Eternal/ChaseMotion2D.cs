@@ -26,6 +26,16 @@ public class ChaseMotion2D : EternalMotion2D {
     private float speed;
 
     /// <summary>
+    /// 旋回成分の時間関数の種類
+    /// </summary>
+    private TimeFuncBase.FuncType rotateTimeFuncType = TimeFuncBase.FuncType.None;
+
+    /// <summary>
+    /// 旋回成分の時間関数
+    /// </summary>
+    private TimeFuncBase rotateTimeFunc;
+
+    /// <summary>
     /// 旋回速度
     /// </summary>
     private float rotateSpeed;
@@ -44,6 +54,11 @@ public class ChaseMotion2D : EternalMotion2D {
     /// 現在の向き
     /// </summary>
     private float curAngle;
+
+    /// <summary>
+    /// 1フレーム前の旋回時刻
+    /// </summary>
+    private float prevRotateTime;
 
     /// <summary>
     /// 永久モーションの初期化処理
@@ -68,7 +83,9 @@ public class ChaseMotion2D : EternalMotion2D {
 
             // 回転量計算
             float diffAngle = RotationBase2D.AdjustAngleRange(toAngle - curAngle, -180);
-            var rotAngle = rotateSpeed * deltaTime;
+            var rotateTime = rotateTimeFunc.GetTime(realTime);
+            var rotAngle = rotateSpeed * (rotateTime - prevRotateTime);
+            prevRotateTime = rotateTime;
 
             // 向き更新
             if ( rotAngle > Mathf.Abs(diffAngle) ) {
@@ -94,6 +111,10 @@ public class ChaseMotion2D : EternalMotion2D {
     public override byte[] Serialize() {
         var result = base.Serialize();
 
+        if ( rotateTimeFunc == null ) {
+            rotateTimeFunc = TimeFuncBase.CreateInstance(rotateTimeFuncType);
+        }
+
         if ( target == null ) {
             target = TargetBase2D.CreateInstance(targetType);
         }
@@ -101,6 +122,8 @@ public class ChaseMotion2D : EternalMotion2D {
         return result
             .Concat(BitConverter.GetBytes(fromAngle))
             .Concat(BitConverter.GetBytes(speed))
+            .Concat(BitConverter.GetBytes((int)rotateTimeFuncType))
+            .Concat(rotateTimeFunc.Serialize())
             .Concat(BitConverter.GetBytes(rotateSpeed))
             .Concat(BitConverter.GetBytes((int)targetType))
             .Concat(target.Serialize()).ToArray();
@@ -119,6 +142,11 @@ public class ChaseMotion2D : EternalMotion2D {
         offset += sizeof(float);
         speed = BitConverter.ToSingle(bytes, offset);
         offset += sizeof(float);
+
+        rotateTimeFuncType = (TimeFuncBase.FuncType)BitConverter.ToInt32(bytes, offset);
+        offset += sizeof(int);
+        rotateTimeFunc = TimeFuncBase.GetDeserialized(rotateTimeFuncType, bytes, offset, out offset);
+
         rotateSpeed = BitConverter.ToSingle(bytes, offset);
         offset += sizeof(float);
         targetType = (TargetBase2D.TargetType)BitConverter.ToInt32(bytes, offset);
@@ -145,6 +173,15 @@ public class ChaseMotion2D : EternalMotion2D {
         base.DrawGUI();
         fromAngle = UnityEditor.EditorGUILayout.FloatField("From Angle", fromAngle);
         speed = UnityEditor.EditorGUILayout.FloatField("Speed", speed);
+
+        var prevTimeFuncType = rotateTimeFuncType;
+        rotateTimeFuncType = (TimeFuncBase.FuncType)UnityEditor.EditorGUILayout.EnumPopup("Rotate Function", rotateTimeFuncType);
+        if ( rotateTimeFuncType != prevTimeFuncType || rotateTimeFunc == null ) {
+            // 型が変更された
+            rotateTimeFunc = TimeFuncBase.CreateInstance(rotateTimeFuncType);
+        }
+        rotateTimeFunc.DrawGUI();
+
         rotateSpeed = UnityEditor.EditorGUILayout.FloatField("Rotate Speed", rotateSpeed);
 
         var prevType = targetType;
@@ -153,7 +190,6 @@ public class ChaseMotion2D : EternalMotion2D {
             // 型が変更された
             target = TargetBase2D.CreateInstance(targetType);
         }
-
         target.DrawGUI();
     }
 

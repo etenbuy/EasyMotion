@@ -75,6 +75,24 @@ public class EternalMotion2D : MotionBase2D {
     }
 
     /// <summary>
+    /// 時間関数に影響されない時間
+    /// </summary>
+    protected float realTime {
+        get {
+            return Time.time - startTime;
+        }
+    }
+
+    /// <summary>
+    /// 実時間に影響されないデルタ時間
+    /// </summary>
+    protected float realDeltaTime {
+        get {
+            return Time.deltaTime;
+        }
+    }
+
+    /// <summary>
     /// シリアライズ
     /// </summary>
     /// <returns>シリアライズされたバイナリ配列</returns>
