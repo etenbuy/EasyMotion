@@ -83,7 +83,11 @@ public class ChaseMotion2D : EternalMotion2D {
         var targetTrans = target.transform;
         if ( targetTrans != null ) {
             // –Ú•W•¨‚Ö‚ÌŒü‚«ŒvŽZ
-            var targetDir = (Vector2)targetTrans.localPosition - position;
+            var targetPos = targetTrans.position;
+            if ( transform.parent != null ) {
+                targetPos = transform.parent.InverseTransformPoint(targetPos);
+            }
+            var targetDir = (Vector2)targetPos - position;
             var toAngle = Mathf.Atan2(targetDir.y, targetDir.x) * Mathf.Rad2Deg;
 
             // ‰ñ“]—ÊŒvŽZ
