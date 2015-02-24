@@ -279,7 +279,7 @@ public class MotionSequence2D : MotionBase2D {
         // Šeƒ‚[ƒVƒ‡ƒ“‚ÌGizmo‚ğ•`‰æ
         foreach ( var motion in motions ) {
             // Gizmo‚Ì•`‰æ
-            from = motion.DrawGizmos(from);
+            from = motion.DrawGizmos(transform, from);
         }
 
         return from;

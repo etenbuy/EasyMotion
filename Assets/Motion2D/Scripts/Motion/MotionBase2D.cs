@@ -239,12 +239,27 @@ public class MotionBase2D {
     /// <summary>
     /// Gizmoを描画する(Editorからの呼び出し用)
     /// </summary>
-    /// <param name="trans"></param>
+    /// <param name="trans">GameObjectのTransform</param>
     public void DrawGizmos(Transform trans) {
         if ( !Application.isPlaying ) {
             position = trans.localPosition;
         }
+        transform = trans;
         DrawGizmos(initPosition);
+    }
+
+    /// <summary>
+    /// Gizmoを描画する(Editorからの呼び出し用)
+    /// </summary>
+    /// <param name="trans">GameObjectのTransform</param>
+    /// <param name="from">現在位置</param>
+    /// <returns>移動後の位置</returns>
+    public Vector2 DrawGizmos(Transform trans, Vector2 from) {
+        if ( !Application.isPlaying ) {
+            position = trans.localPosition;
+        }
+        transform = trans;
+        return DrawGizmos(from);
     }
 
     /// <summary>
@@ -296,7 +311,15 @@ public class MotionBase2D {
         }
 
         Gizmos.color = gizmoColor;
-        Gizmos.DrawLine(from, to);
+
+        var transParent = transform.parent;
+        if ( transParent == null ) {
+            Gizmos.DrawLine(from, to);
+        } else {
+            Gizmos.DrawLine(
+                transform.parent.TransformPoint(from),
+                transform.parent.TransformPoint(to));
+        }
     }
 
     /// <summary>
@@ -309,8 +332,18 @@ public class MotionBase2D {
         }
 
         Gizmos.color = gizmoColor;
-        for ( int i = 1 ; i < points.Length ; ++i ) {
-            Gizmos.DrawLine(points[i - 1], points[i]);
+
+        var transParent = transform.parent;
+        if ( transParent == null ) {
+            for ( int i = 1 ; i < points.Length ; ++i ) {
+                Gizmos.DrawLine(points[i - 1], points[i]);
+            }
+        } else {
+            for ( int i = 1 ; i < points.Length ; ++i ) {
+                Gizmos.DrawLine(
+                    transform.parent.TransformPoint(points[i - 1]),
+                    transform.parent.TransformPoint(points[i]));
+            }
         }
     }
 
@@ -323,6 +356,16 @@ public class MotionBase2D {
     protected void DrawArrowCap(Vector2 from, float angle) {
         if ( !drawGizmos ) {
             return;
+        }
+
+        var transParent = transform.parent;
+
+        if ( transParent != null ) {
+            from = transform.parent.TransformPoint(from);
+
+            var angleRad = angle * Mathf.Deg2Rad;
+            var dir = transform.parent.TransformVector(Mathf.Cos(angleRad), Mathf.Sin(angleRad), 0);
+            angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         }
 
         var scale = CameraScale;
