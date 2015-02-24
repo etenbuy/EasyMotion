@@ -136,8 +136,10 @@ public class EasyMotion2D : MonoBehaviour {
     public static MotionBase2D GetDeserializedMotion(EasyMotion2D.MotionType type, byte[] bytes) {
         // モーションオブジェクト作成
         var motion = CreateInstance(type);
-        // モーションデータのデシリアライズ
-        motion.Deserialize(bytes, 0);
+        if ( bytes != null ) {
+            // モーションデータのデシリアライズ
+            motion.Deserialize(bytes, 0);
+        }
         return motion;
     }
 

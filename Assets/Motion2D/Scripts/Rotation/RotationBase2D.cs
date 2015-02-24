@@ -191,8 +191,10 @@ public class RotationBase2D {
     public static RotationBase2D GetDeserializedRotation(RotationType type, byte[] bytes) {
         // 回転動作オブジェクト作成
         var rotation = CreateInstance(type);
-        // 回転動作データのデシリアライズ
-        rotation.Deserialize(bytes, 0);
+        if ( bytes != null ) {
+            // 回転動作データのデシリアライズ
+            rotation.Deserialize(bytes, 0);
+        }
         return rotation;
     }
 
