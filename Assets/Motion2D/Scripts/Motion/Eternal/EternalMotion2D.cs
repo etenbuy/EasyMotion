@@ -40,7 +40,8 @@ public class EternalMotion2D : MotionBase2D {
     /// </summary>
     /// <returns>true:ƒ‚[ƒVƒ‡ƒ“Œp‘± / false:ˆÈ~‚Ìƒ‚[ƒVƒ‡ƒ“‚ğŒp‘±‚µ‚È‚¢</returns>
     protected override bool OnStart() {
-        startTime = prevTime = Time.time;
+        startTime = Time.time;
+        prevTime = timeFunc.GetTime(0);
         OnEternalStart();
         return true;
     }
