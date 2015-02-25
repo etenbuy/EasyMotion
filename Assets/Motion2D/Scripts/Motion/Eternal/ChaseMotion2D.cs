@@ -56,6 +56,11 @@ public class ChaseMotion2D : EternalMotion2D {
     private TargetBase2D target;
 
     /// <summary>
+    /// 目標物を向いたらモーションを終了するかどうか
+    /// </summary>
+    private bool lookEnd;
+
+    /// <summary>
     /// 現在の向き
     /// </summary>
     private float curAngle;
@@ -84,6 +89,8 @@ public class ChaseMotion2D : EternalMotion2D {
     /// <param name="deltaTime">前回フレームからの経過時間</param>
     /// <returns>true:モーション継続 / false:以降のモーションを継続しない</returns>
     protected override bool OnEternalUpdate(float time, float deltaTime) {
+        var result = true;
+
         // 目標物のTransform取得
         var targetTrans = target.transform;
         if ( targetTrans != null ) {
@@ -110,6 +117,12 @@ public class ChaseMotion2D : EternalMotion2D {
                     // 目標物に向いたイベント実行
                     onTarget();
                 }
+
+                if ( lookEnd ) {
+                    // モーション終了
+                    result = false;
+                }
+
             } else {
                 // 目標角度を超えない場合はその方向に回転
                 curAngle += diffAngle < 0 ? -rotAngle : rotAngle;
@@ -120,7 +133,7 @@ public class ChaseMotion2D : EternalMotion2D {
         var curAngleRad = curAngle * Mathf.Deg2Rad;
         position += new Vector2(Mathf.Cos(curAngleRad), Mathf.Sin(curAngleRad)) * speed * deltaTime;
 
-        return true;
+        return result;
     }
 
     /// <summary>
@@ -146,7 +159,8 @@ public class ChaseMotion2D : EternalMotion2D {
             .Concat(rotateTimeFunc.Serialize())
             .Concat(BitConverter.GetBytes(rotateSpeed))
             .Concat(BitConverter.GetBytes((int)targetType))
-            .Concat(target.Serialize()).ToArray();
+            .Concat(target.Serialize())
+            .Concat(BitConverter.GetBytes(lookEnd)).ToArray();
     }
 
     /// <summary>
@@ -174,6 +188,9 @@ public class ChaseMotion2D : EternalMotion2D {
         targetType = (TargetBase2D.TargetType)BitConverter.ToInt32(bytes, offset);
         offset += sizeof(int);
         target = TargetBase2D.GetDeserialized(targetType, bytes, offset, out offset);
+
+        lookEnd = BitConverter.ToBoolean(bytes, offset);
+        offset += sizeof(bool);
 
         return offset;
     }
@@ -214,6 +231,8 @@ public class ChaseMotion2D : EternalMotion2D {
             target = TargetBase2D.CreateInstance(targetType);
         }
         target.DrawGUI();
+
+        lookEnd = UnityEditor.EditorGUILayout.Toggle("Look End", lookEnd);
     }
 
     /// <summary>
