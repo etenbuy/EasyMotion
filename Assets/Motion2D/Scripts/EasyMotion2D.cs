@@ -27,6 +27,7 @@ public class EasyMotion2D : MonoBehaviour {
         MoveLiner,
         Sequence,
         Chase,
+        Forwrad,
     };
 
     /// <summary>
@@ -40,6 +41,7 @@ public class EasyMotion2D : MonoBehaviour {
         { MotionType.MoveLiner, typeof(MoveLiner2D) },
         { MotionType.Sequence, typeof(MotionSequence2D) },
         { MotionType.Chase, typeof(ChaseMotion2D) },
+        { MotionType.Forwrad, typeof(MoveForward2D) },
     };
 
     /// <summary>
