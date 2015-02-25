@@ -101,8 +101,12 @@ public class EasyMotion2DEditor : Editor {
             // 値が編集されたらシリアライズデータを更新
             script.serializedMotion = motion.Serialize();
             script.serializedRotation = script.rotation.Serialize();
-        }
 
-        serializedObject.ApplyModifiedProperties();
+            // 編集されたプロパティ値を適用する
+            serializedObject.ApplyModifiedProperties();
+
+            // 再描画
+            EditorUtility.SetDirty(script);
+        }
     }
 }
