@@ -93,6 +93,8 @@ public class MotionBase2D {
         transform = objTrans.transform;
         startTime = Time.time;
         position = initPosition = transform.localPosition;
+
+        OnInit();
     }
 
     /// <summary>
@@ -145,6 +147,11 @@ public class MotionBase2D {
 
         return false;
     }
+
+    /// <summary>
+    /// モーションの初期化処理(派生クラスで実装する)
+    /// </summary>
+    protected virtual void OnInit() {}
 
     /// <summary>
     /// モーションの初期化処理(派生クラスで実装する)

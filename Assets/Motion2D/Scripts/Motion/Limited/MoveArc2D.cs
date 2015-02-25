@@ -48,11 +48,8 @@ public class MoveArc2D : LimitedMotion2D {
     /// <summary>
     /// モーションの初期化処理
     /// </summary>
-    /// <returns>true:モーション継続 / false:以降のモーションを継続しない</returns>
-    protected override bool OnStart() {
-        if ( !base.OnStart() ) {
-            return false;
-        }
+    protected override void OnInit() {
+        base.OnInit();
 
         // 実行時の初角度の決定
         fromAngleRad = fromAngle;
@@ -68,8 +65,6 @@ public class MoveArc2D : LimitedMotion2D {
 
         // 弧度法表記に変換
         fromAngleRad *= Mathf.Deg2Rad;
-
-        return true;
     }
 
     /// <summary>
