@@ -36,9 +36,10 @@ public class MoveForward2D : EternalMotion2D {
     private float curAngle;
 
     /// <summary>
-    /// 永久モーションの初期化処理
+    /// モーションの初期化処理
     /// </summary>
-    protected override void OnEternalStart() {
+    protected override void OnInit() {
+        base.OnInit();
         // 内部変数の初期化
         UpdateParam();
     }
