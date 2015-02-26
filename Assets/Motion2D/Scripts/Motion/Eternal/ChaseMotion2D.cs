@@ -63,7 +63,7 @@ public class ChaseMotion2D : EternalMotion2D {
     /// <summary>
     /// Œ»İ‚ÌŒü‚«
     /// </summary>
-    private float curAngle;
+    private float curAngle = NO_DIRECTION;
 
     /// <summary>
     /// 1ƒtƒŒ[ƒ€‘O‚Ìù‰ñ
