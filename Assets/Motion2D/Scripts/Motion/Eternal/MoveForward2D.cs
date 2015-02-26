@@ -33,13 +33,21 @@ public class MoveForward2D : EternalMotion2D {
     /// <summary>
     /// 現在の向き
     /// </summary>
-    private float curAngle;
+    private float curAngle = NO_DIRECTION;
 
     /// <summary>
     /// モーションの初期化処理
     /// </summary>
     protected override void OnInit() {
         base.OnInit();
+        // 内部変数の初期化
+        UpdateParam();
+    }
+
+    /// <summary>
+    /// 永久モーションの初期化処理
+    /// </summary>
+    protected override void OnEternalStart() {
         // 内部変数の初期化
         UpdateParam();
     }
