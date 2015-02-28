@@ -72,7 +72,7 @@ public class MotionBase2D {
     /// <summary>
     /// GameObject‚ÌTransform
     /// </summary>
-    protected Transform transform;
+    public Transform transform { get; protected set; }
 
     /// <summary>
     /// ŠJn
