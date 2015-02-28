@@ -16,14 +16,9 @@ using System.Linq;
 /// </summary>
 public class MoveArc2D : LimitedMotion2D {
     /// <summary>
-    /// 初角度
+    /// 初期の向き
     /// </summary>
-    private float fromAngle = 0;
-
-    /// <summary>
-    /// 初期の向きは現在の向きの相対値とするかどうか
-    /// </summary>
-    private bool relativeAngle;
+    private Direction2D fromDirection;
 
     /// <summary>
     /// 旋回角度
@@ -46,21 +41,23 @@ public class MoveArc2D : LimitedMotion2D {
     private float fromAngleRad;
 
     /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public MoveArc2D() {
+        fromDirection = new Direction2D(this);
+    }
+
+    /// <summary>
     /// モーションの初期化処理
     /// </summary>
     protected override void OnInit() {
         base.OnInit();
 
         // 実行時の初角度の決定
-        fromAngleRad = fromAngle;
+        fromAngleRad = fromDirection.direction;
         if ( rotateAngle < 0 ) {
             // 右旋回の場合
             fromAngleRad += 180;
-        }
-
-        if ( relativeAngle ) {
-            // 相対角度指定の場合は現在角度を加算
-            fromAngleRad += transform.localEulerAngles.z;
         }
 
         // 弧度法表記に変換
@@ -99,8 +96,7 @@ public class MoveArc2D : LimitedMotion2D {
         var result = base.Serialize();
 
         return result
-            .Concat(BitConverter.GetBytes(fromAngle))
-            .Concat(BitConverter.GetBytes(relativeAngle))
+            .Concat(fromDirection.Serialize())
             .Concat(BitConverter.GetBytes(rotateAngle))
             .Concat(BitConverter.GetBytes(radius)).ToArray();
     }
@@ -114,10 +110,7 @@ public class MoveArc2D : LimitedMotion2D {
     public override int Deserialize(byte[] bytes, int offset) {
         offset = base.Deserialize(bytes, offset);
 
-        fromAngle = BitConverter.ToSingle(bytes, offset);
-        offset += sizeof(float);
-        relativeAngle = BitConverter.ToBoolean(bytes, offset);
-        offset += sizeof(bool);
+        offset = fromDirection.Deserialize(bytes, offset);
         rotateAngle = BitConverter.ToSingle(bytes, offset);
         offset += sizeof(float);
         radius = BitConverter.ToSingle(bytes, offset);
@@ -141,8 +134,7 @@ public class MoveArc2D : LimitedMotion2D {
     /// </summary>
     public override void DrawGUI() {
         base.DrawGUI();
-        fromAngle = UnityEditor.EditorGUILayout.FloatField("From Angle", fromAngle);
-        relativeAngle = UnityEditor.EditorGUILayout.Toggle("Relative Angle", relativeAngle);
+        fromDirection.DrawGUI();
         rotateAngle = UnityEditor.EditorGUILayout.FloatField("Rotate Angle", rotateAngle);
         radius = UnityEditor.EditorGUILayout.FloatField("Radius", radius);
     }
@@ -158,12 +150,7 @@ public class MoveArc2D : LimitedMotion2D {
 
         // 角度情報の初期化
         if ( !Application.isPlaying ) {
-            if ( relativeAngle ) {
-                fromAngleRad = (fromAngle + transform.localEulerAngles.z);
-            } else {
-                fromAngleRad = fromAngle;
-            }
-            fromAngleRad *= Mathf.Deg2Rad;
+            fromAngleRad = fromDirection.direction * Mathf.Deg2Rad;
         }
 
         var isRight = rotateAngle < 0;

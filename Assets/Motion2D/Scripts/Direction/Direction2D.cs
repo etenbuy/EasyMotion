@@ -102,8 +102,11 @@ public class Direction2D {
     /// インスペクタ上のGUIを描画する
     /// </summary>
     public void DrawGUI() {
+        UnityEditor.EditorGUILayout.LabelField("Direction");
+        ++UnityEditor.EditorGUI.indentLevel;
         type = (Type)UnityEditor.EditorGUILayout.EnumPopup("Type", type);
         angle = UnityEditor.EditorGUILayout.FloatField("Angle", angle);
+        --UnityEditor.EditorGUI.indentLevel;
     }
 #endif
 }
