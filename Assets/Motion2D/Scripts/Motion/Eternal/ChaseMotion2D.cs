@@ -78,7 +78,6 @@ public class ChaseMotion2D : EternalMotion2D {
     /// 永久モーションの初期化処理
     /// </summary>
     protected override void OnEternalStart() {
-        //curAngle = relativeAngle ? fromAngle + transform.localEulerAngles.z : fromAngle;
         curAngle = fromDirection.direction;
     }
 
@@ -232,6 +231,19 @@ public class ChaseMotion2D : EternalMotion2D {
     }
 
     /// <summary>
+    /// Gizmoを描画する
+    /// </summary>
+    /// <param name="from">現在位置</param>
+    /// <returns>移動後の位置</returns>
+    public override Vector2 DrawGizmos(Vector2 from) {
+        if ( !Application.isPlaying ) {
+            return from;
+        }
+
+        return position;
+    }
+
+    /// <summary>
     /// 速さ取得
     /// </summary>
     /// <param name="from">開始位置</param>
@@ -247,6 +259,20 @@ public class ChaseMotion2D : EternalMotion2D {
     /// <param name="speed">速さ</param>
     public override void SetSpeed(Vector2 from, float speed) {
         this.speed = speed;
+    }
+
+    /// <summary>
+    /// 終端位置の向きを取得する
+    /// </summary>
+    /// <param name="from">開始位置</param>
+    /// <param name="fromAngle">開始角度</param>
+    /// <returns>終端位置の向き</returns>
+    public override float GetEndDirection(Vector2 from, float fromAngle) {
+        if ( !Application.isPlaying || curAngle == NO_DIRECTION ) {
+            return fromAngle;
+        }
+
+        return curAngle;
     }
 #endif
 }

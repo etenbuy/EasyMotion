@@ -1,9 +1,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                               //
-//  File    :   MoveForward2D.cs                                                                 //
+//  File    :   MoveDirection2D.cs                                                               //
 //  Author  :   ftvoid                                                                           //
 //  Date    :   2015.02.25                                                                       //
-//  Desc    :   現在の向きに前進するモーション。                                                 //
+//  Desc    :   指定された向きに直進するモーション。                                             //
 //                                                                                               //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 using UnityEngine;
@@ -12,18 +12,18 @@ using System.Collections;
 using System.Linq;
 
 /// <summary>
-/// 現在の向きに前進するモーション。
+/// 指定された向きに直進するモーション。
 /// </summary>
-public class MoveForward2D : EternalMotion2D {
+public class MoveDirection2D : EternalMotion2D {
     /// <summary>
     /// 直進する速さ
     /// </summary>
     private float speed;
 
     /// <summary>
-    /// 前進方向のずらし角度
+    /// 直進する向き
     /// </summary>
-    private float angleOffset;
+    private Direction2D moveDirection;
 
     /// <summary>
     /// 移動速度
@@ -34,6 +34,13 @@ public class MoveForward2D : EternalMotion2D {
     /// 現在の向き
     /// </summary>
     private float curAngle = NO_DIRECTION;
+
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public MoveDirection2D() {
+        moveDirection = new Direction2D(this);
+    }
 
     /// <summary>
     /// モーションの初期化処理
@@ -72,7 +79,7 @@ public class MoveForward2D : EternalMotion2D {
 
         return result
             .Concat(BitConverter.GetBytes(speed))
-            .Concat(BitConverter.GetBytes(angleOffset)).ToArray();
+            .Concat(moveDirection.Serialize()).ToArray();
     }
 
     /// <summary>
@@ -86,8 +93,7 @@ public class MoveForward2D : EternalMotion2D {
 
         speed = BitConverter.ToSingle(bytes, offset);
         offset += sizeof(float);
-        angleOffset = BitConverter.ToSingle(bytes, offset);
-        offset += sizeof(float);
+        offset = moveDirection.Deserialize(bytes, offset);
 
         return offset;
     }
@@ -97,11 +103,7 @@ public class MoveForward2D : EternalMotion2D {
     /// </summary>
     public override float currentDirection {
         get {
-            if ( Application.isPlaying ) {
-                return curAngle;
-            } else {
-                return transform.localEulerAngles.z + angleOffset;
-            }
+            return curAngle;
         }
     }
 
@@ -110,7 +112,7 @@ public class MoveForward2D : EternalMotion2D {
     /// </summary>
     private void UpdateParam() {
         // 進行方向の計算
-        curAngle = transform.localEulerAngles.z + angleOffset;
+        curAngle = moveDirection.direction;
 
         // 移動速度の計算
         var curAngleRad = curAngle * Mathf.Deg2Rad;
@@ -124,7 +126,7 @@ public class MoveForward2D : EternalMotion2D {
     public override void DrawGUI() {
         base.DrawGUI();
         speed = UnityEditor.EditorGUILayout.FloatField("Speed", speed);
-        angleOffset = UnityEditor.EditorGUILayout.FloatField("Angle Offset", angleOffset);
+        moveDirection.DrawGUI();
     }
 
     /// <summary>
@@ -160,6 +162,16 @@ public class MoveForward2D : EternalMotion2D {
     /// <param name="speed">速さ</param>
     public override void SetSpeed(Vector2 from, float speed) {
         velocity = velocity.normalized * speed;
+    }
+
+    /// <summary>
+    /// 終端位置の向きを取得する
+    /// </summary>
+    /// <param name="from">開始位置</param>
+    /// <param name="fromAngle">開始角度</param>
+    /// <returns>終端位置の向き</returns>
+    public override float GetEndDirection(Vector2 from, float fromAngle) {
+        return Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
     }
 #endif
 }
