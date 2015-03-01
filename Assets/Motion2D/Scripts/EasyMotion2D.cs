@@ -28,6 +28,7 @@ public class EasyMotion2D : MonoBehaviour {
         Sequence,
         Chase,
         Direction,
+        LimitedLiner,
     };
 
     /// <summary>
@@ -42,6 +43,7 @@ public class EasyMotion2D : MonoBehaviour {
         { MotionType.Sequence, typeof(MotionSequence2D) },
         { MotionType.Chase, typeof(ChaseMotion2D) },
         { MotionType.Direction, typeof(MoveDirection2D) },
+        { MotionType.LimitedLiner, typeof(MoveVelocity2D) },
     };
 
     /// <summary>
