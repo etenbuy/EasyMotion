@@ -33,7 +33,7 @@ public class MoveArc2D : LimitedMotion2D {
     /// <summary>
     /// 現在の向き
     /// </summary>
-    private float curAngle = MotionBase2D.NO_DIRECTION;
+    private float curAngle;
 
     /// <summary>
     /// 初角度(弧度法表記)
@@ -234,6 +234,19 @@ public class MoveArc2D : LimitedMotion2D {
         } else {
             var length = radius * rotateAngle * Mathf.Deg2Rad;
             duration = length / speed;
+        }
+    }
+
+    /// <summary>
+    /// モーション終了時の向き
+    /// </summary>
+    public override float toDirection {
+        get {
+            var dir = fromDirection.direction;
+            if ( dir == NO_DIRECTION ) {
+                return NO_DIRECTION;
+            }
+            return dir + rotateAngle;
         }
     }
 #endif

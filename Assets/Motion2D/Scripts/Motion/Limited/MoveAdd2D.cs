@@ -126,5 +126,18 @@ public class MoveAdd2D : LimitedMotion2D {
             duration = move.magnitude / speed;
         }
     }
+
+    /// <summary>
+    /// ƒ‚[ƒVƒ‡ƒ“I—¹‚ÌŒü‚«
+    /// </summary>
+    public override float toDirection {
+        get {
+            if ( move == Vector2.zero ) {
+                return initDirection;
+            }
+
+            return Mathf.Atan2(move.y, move.x) * Mathf.Rad2Deg;
+        }
+    }
 #endif
 }

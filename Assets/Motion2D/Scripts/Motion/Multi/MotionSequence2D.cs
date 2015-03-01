@@ -48,9 +48,17 @@ public class MotionSequence2D : MotionBase2D {
     protected override void OnInit() {
         base.OnInit();
 
+#if UNITY_EDITOR
+        var initDir = initDirection;
+        foreach ( var motion in motions ) {
+            motion.InitMotion(transform, initDir);
+            initDir = motion.toDirection;
+        }
+#else
         foreach ( var motion in motions ) {
             motion.InitMotion(transform);
         }
+#endif
     }
 
     /// <summary>
@@ -100,7 +108,7 @@ public class MotionSequence2D : MotionBase2D {
 
             // 次のモーション初期化
             transform.localPosition = new Vector3(position.x, position.y, transform.localPosition.z);
-            motions[current].InitMotion(transform, motions[current - 1].direction);
+            motions[current].InitMotion(transform, motions[current - 1].currentDirection);
             motions[current].StartMotion();
 
             // 向きの更新
@@ -288,10 +296,21 @@ public class MotionSequence2D : MotionBase2D {
             return initPosition;
         }
 
+        var initDir = initDirection;
+        if ( initDir == NO_DIRECTION ) {
+            initDir = transform.localEulerAngles.z;
+        }
+
         // 各モーションのGizmoを描画
         foreach ( var motion in motions ) {
             // Gizmoの描画
-            from = motion.DrawGizmos(transform, from);
+            if ( Application.isPlaying ) {
+                from = motion.DrawGizmos(transform, from);
+            } else {
+                motion.initDirection = initDir;
+                from = motion.DrawGizmos(transform, from);
+                initDir = motion.toDirection;
+            }
         }
 
         return from;

@@ -453,5 +453,14 @@ public class MotionBase2D {
     /// <param name="speed">‘¬‚³</param>
     public virtual void SetSpeed(Vector2 from, float speed) {
     }
+
+    /// <summary>
+    /// ƒ‚[ƒVƒ‡ƒ“I—¹‚ÌŒü‚«
+    /// </summary>
+    public virtual float toDirection {
+        get {
+            return initDirection;
+        }
+    }
 #endif
 }
