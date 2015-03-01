@@ -86,7 +86,12 @@ public class TweenVelocity2D : LimitedMotion2D {
     /// </summary>
     public override float currentDirection {
         get {
-            var vel = fromVelocity + (toVelocity - fromVelocity) * curTime;
+            Vector2 vel;
+            if ( duration == 0 ) {
+                vel = toVelocity;
+            } else {
+                vel = fromVelocity + (toVelocity - fromVelocity) * curTime / duration;
+            }
             return Mathf.Atan2(vel.y, vel.x) * Mathf.Rad2Deg;
         }
     }
@@ -97,8 +102,12 @@ public class TweenVelocity2D : LimitedMotion2D {
     /// <param name="time">éûçè</param>
     /// <returns>à íu</returns>
     private Vector2 GetPosition(float time) {
+        if ( duration == 0 ) {
+            return Vector2.zero;
+        }
+
         Vector2 result;
-        result = (toVelocity - fromVelocity) * time / 2 + fromVelocity;
+        result = (toVelocity - fromVelocity) * time / (2 * duration) + fromVelocity;
         result *= time;
         return result;
     }
