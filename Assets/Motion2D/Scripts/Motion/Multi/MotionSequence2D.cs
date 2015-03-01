@@ -45,11 +45,11 @@ public class MotionSequence2D : MotionBase2D {
     /// <summary>
     /// モーションの初期化処理
     /// </summary>
-    public override void OnInit() {
+    protected override void OnInit() {
         base.OnInit();
 
         foreach ( var motion in motions ) {
-            motion.OnInit();
+            motion.InitMotion(transform);
         }
     }
 
@@ -63,7 +63,7 @@ public class MotionSequence2D : MotionBase2D {
         }
 
         current = 0;
-        motions[0].StartMotion(transform);
+        motions[0].StartMotion();
         curAngle = motions[0].direction;
 
         return true;
@@ -100,7 +100,7 @@ public class MotionSequence2D : MotionBase2D {
 
             // 次のモーション初期化
             transform.localPosition = new Vector3(position.x, position.y, transform.localPosition.z);
-            motions[current].StartMotion(transform);
+            motions[current].StartMotion();
 
             // 向きの更新
             curAngle = motions[current].direction;

@@ -85,16 +85,22 @@ public class MotionBase2D {
     private bool onStartCalled = false;
 
     /// <summary>
-    /// モーションの実行を開始する。
+    /// モーションインスタンスを初期化する
     /// </summary>
     /// <param name="objTrans">GameObjectのTransform</param>
-    public void StartMotion(Transform objTrans) {
-        state = delay > 0 ? State.Waiting : State.Running;
+    public void InitMotion(Transform objTrans) {
         transform = objTrans.transform;
+        OnInit();
+    }
+
+    /// <summary>
+    /// モーションの実行を開始する
+    /// </summary>
+    /// <param name="objTrans">GameObjectのTransform</param>
+    public void StartMotion() {
+        state = delay > 0 ? State.Waiting : State.Running;
         startTime = Time.time;
         position = initPosition = transform.localPosition;
-
-        OnInit();
     }
 
     /// <summary>
@@ -151,7 +157,7 @@ public class MotionBase2D {
     /// <summary>
     /// モーションの初期化処理(派生クラスで実装する)
     /// </summary>
-    public virtual void OnInit() { }
+    protected virtual void OnInit() { }
 
     /// <summary>
     /// モーションの初期化処理(派生クラスで実装する)

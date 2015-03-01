@@ -50,7 +50,7 @@ public class MoveArc2D : LimitedMotion2D {
     /// <summary>
     /// モーションの初期化処理
     /// </summary>
-    public override void OnInit() {
+    protected override void OnInit() {
         base.OnInit();
 
         // 実行時の初角度の決定

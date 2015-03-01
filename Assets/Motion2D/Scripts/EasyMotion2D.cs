@@ -104,7 +104,8 @@ public class EasyMotion2D : MonoBehaviour {
     private void Start() {
         // モーション実行開始
         var trans = transform;
-        motion.StartMotion(trans);
+        motion.InitMotion(trans);
+        motion.StartMotion();
         rotation.StartRotation(trans);
     }
 

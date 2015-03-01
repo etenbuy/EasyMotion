@@ -38,7 +38,7 @@ public class MoveForward2D : EternalMotion2D {
     /// <summary>
     /// ƒ‚[ƒVƒ‡ƒ“‚Ì‰Šú‰»ˆ—
     /// </summary>
-    public override void OnInit() {
+    protected override void OnInit() {
         base.OnInit();
         // “à•”•Ï”‚Ì‰Šú‰»
         UpdateParam();
