@@ -50,7 +50,7 @@ public class MoveArc2D : LimitedMotion2D {
     /// <summary>
     /// モーションの初期化処理
     /// </summary>
-    protected override void OnInit() {
+    public override void OnInit() {
         base.OnInit();
 
         // 実行時の初角度の決定
@@ -124,7 +124,7 @@ public class MoveArc2D : LimitedMotion2D {
     /// </summary>
     public override float currentDirection {
         get {
-            return curAngle;
+            return rotateAngle < 0 ? curAngle + 180 : curAngle;
         }
     }
 
@@ -149,14 +149,15 @@ public class MoveArc2D : LimitedMotion2D {
         const int POINT_NUM = 45;
 
         // 角度情報の初期化
+        var isRight = rotateAngle < 0;
+        var fromAngleRad = this.fromAngleRad;
         if ( !Application.isPlaying ) {
             fromAngleRad = fromDirection.direction * Mathf.Deg2Rad;
-        }
 
-        var isRight = rotateAngle < 0;
-        if ( isRight ) {
-            // 右旋回の場合
-            fromAngleRad -= Mathf.PI;
+            if ( isRight ) {
+                // 右旋回の場合
+                fromAngleRad -= Mathf.PI;
+            }
         }
 
         var fromSin = Mathf.Sin(fromAngleRad);

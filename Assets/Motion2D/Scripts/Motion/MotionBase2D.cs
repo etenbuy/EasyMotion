@@ -151,7 +151,7 @@ public class MotionBase2D {
     /// <summary>
     /// モーションの初期化処理(派生クラスで実装する)
     /// </summary>
-    protected virtual void OnInit() {}
+    public virtual void OnInit() { }
 
     /// <summary>
     /// モーションの初期化処理(派生クラスで実装する)

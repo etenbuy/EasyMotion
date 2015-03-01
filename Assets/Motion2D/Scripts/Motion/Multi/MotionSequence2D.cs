@@ -45,6 +45,17 @@ public class MotionSequence2D : MotionBase2D {
     /// <summary>
     /// モーションの初期化処理
     /// </summary>
+    public override void OnInit() {
+        base.OnInit();
+
+        foreach ( var motion in motions ) {
+            motion.OnInit();
+        }
+    }
+
+    /// <summary>
+    /// モーションの初期化処理
+    /// </summary>
     /// <returns>true:モーション継続 / false:以降のモーションを継続しない</returns>
     protected override bool OnStart() {
         if ( motions.Length == 0 ) {
