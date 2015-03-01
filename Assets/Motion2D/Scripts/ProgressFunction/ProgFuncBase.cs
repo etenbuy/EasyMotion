@@ -22,6 +22,8 @@ public class ProgFuncBase {
         Liner,
         Acc,
         Acc2,
+        SquareAcc,
+        SquareDec,
     };
 
     /// <summary>
@@ -31,6 +33,8 @@ public class ProgFuncBase {
         { FuncType.Liner, typeof(ProgFuncBase) },
         { FuncType.Acc, typeof(AccFunc) },
         { FuncType.Acc2, typeof(Acc2Func) },
+        { FuncType.SquareAcc, typeof(SquareAccFunc) },
+        { FuncType.SquareDec, typeof(SquareDecFunc) },
     };
 
     /// <summary>
