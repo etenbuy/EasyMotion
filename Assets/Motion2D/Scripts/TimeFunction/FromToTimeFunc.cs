@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                               //
-//  File    :   AccTimeFunc.cs                                                                   //
+//  File    :   FromToTimeFunc.cs                                                                //
 //  Author  :   ftvoid                                                                           //
 //  Date    :   2015.03.01                                                                       //
 //  Desc    :   時間進行の加減速関数。                                                           //
@@ -14,16 +14,21 @@ using System.Linq;
 /// <summary>
 /// 時間進行の加減速関数。
 /// </summary>
-public class AccTimeFunc : TimeFuncBase {
+public class FromToTimeFunc : TimeFuncBase {
     /// <summary>
-    /// 初期の時間進行速度
+    /// 変化前の時間の進行速度
     /// </summary>
-    private float initTimeScale = 1;
+    private float fromTimeScale = 1;
 
     /// <summary>
-    /// 時間進行の加速度
+    /// 変化後の時間の進行速度
     /// </summary>
-    private float acceleration = 0;
+    private float toTimeScale = 1;
+
+    /// <summary>
+    /// 変化時間
+    /// </summary>
+    private float duration = 1;
 
     /// <summary>
     /// 時間を取得する
@@ -31,7 +36,14 @@ public class AccTimeFunc : TimeFuncBase {
     /// <param name="time">入力値</param>
     /// <returns>出力値</returns>
     public override float GetTime(float time) {
-        return (acceleration * time / 2 + initTimeScale) * time;
+        float result;
+        if ( time < duration ) {
+            result = fromTimeScale + (toTimeScale - fromTimeScale) / (duration * 2) * time;
+            result *= time;
+        } else {
+            result = toTimeScale * time + (fromTimeScale - toTimeScale) * duration / 2;
+        }
+        return result;
     }
 
     /// <summary>
@@ -42,8 +54,9 @@ public class AccTimeFunc : TimeFuncBase {
         var result = base.Serialize();
 
         return result
-            .Concat(BitConverter.GetBytes(initTimeScale))
-            .Concat(BitConverter.GetBytes(acceleration)).ToArray();
+            .Concat(BitConverter.GetBytes(fromTimeScale))
+            .Concat(BitConverter.GetBytes(toTimeScale))
+            .Concat(BitConverter.GetBytes(duration)).ToArray();
     }
 
     /// <summary>
@@ -55,9 +68,11 @@ public class AccTimeFunc : TimeFuncBase {
     public override int Deserialize(byte[] bytes, int offset) {
         offset = base.Deserialize(bytes, offset);
 
-        initTimeScale = BitConverter.ToSingle(bytes, offset);
+        fromTimeScale = BitConverter.ToSingle(bytes, offset);
         offset += sizeof(float);
-        acceleration = BitConverter.ToSingle(bytes, offset);
+        toTimeScale = BitConverter.ToSingle(bytes, offset);
+        offset += sizeof(float);
+        duration = BitConverter.ToSingle(bytes, offset);
         offset += sizeof(float);
 
         return offset;
@@ -69,8 +84,9 @@ public class AccTimeFunc : TimeFuncBase {
     /// </summary>
     public override void DrawGUI() {
         base.DrawGUI();
-        initTimeScale = UnityEditor.EditorGUILayout.FloatField("Init Time Scale", initTimeScale);
-        acceleration = UnityEditor.EditorGUILayout.FloatField("Acceleration", acceleration);
+        fromTimeScale = UnityEditor.EditorGUILayout.FloatField("From Time Scale", fromTimeScale);
+        toTimeScale = UnityEditor.EditorGUILayout.FloatField("To Time Scale", toTimeScale);
+        duration = UnityEditor.EditorGUILayout.FloatField("Duration", duration);
     }
 #endif
 }

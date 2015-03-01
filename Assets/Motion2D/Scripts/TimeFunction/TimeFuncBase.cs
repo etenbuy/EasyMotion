@@ -22,6 +22,7 @@ public class TimeFuncBase {
         None,
         Liner,
         Square,
+        FromTo,
         Acc,
     };
 
@@ -32,6 +33,7 @@ public class TimeFuncBase {
         { FuncType.None, typeof(TimeFuncBase) },
         { FuncType.Liner, typeof(LinerTimeFunc) },
         { FuncType.Square, typeof(SquareTimeFunc) },
+        { FuncType.FromTo, typeof(FromToTimeFunc) },
         { FuncType.Acc, typeof(AccTimeFunc) },
     };
 
