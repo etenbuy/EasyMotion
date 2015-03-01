@@ -83,13 +83,41 @@ GameObject:
   m_Component:
   - 4: {fileID: 294697442}
   - 212: {fileID: 294697441}
+  - 114: {fileID: 294697440}
   m_Layer: 0
-  m_Name: MoveForward
+  m_Name: TweenVelocity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &294697440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 294697439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cecb22c7ac68bb489e33c1f982d1b6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 9
+  serializedMotion: 000000000000803f000000000000c8420000c842000000000000c842
+  motion:
+    delay: 0
+    position: {x: 0, y: 0}
+    initDirection: 3.40282347e+38
+  rotationType: 0
+  serializedRotation: 00000000
+  rotation:
+    delay: 0
+    angle: 0
+    motion:
+      delay: 0
+      position: {x: 0, y: 0}
+      initDirection: 3.40282347e+38
+    type: 0
 --- !u!212 &294697441
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -549,7 +577,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 5
-  serializedMotion: 000000000400000002000000000000000000803f00000000000096430000c84203000000000000000000803f000000000100000000000000000034430000c84206000000000000000000000001000000000000000000c842000000000000b44200000000060000004d6f7665546f0000000001080000000000000000004040000000000000c8c20000c8c2
+  serializedMotion: 000000000500000002000000000000000000803f00000000000096430000c84203000000000000000000803f000000000100000000000000000034430000c84206000000000000000000000001000000000000000000c842000000000000b44200000000060000004d6f7665546f0000000001080000000000000000004040000000000000c8c20000c8c209000000000000000000803f000000000000c8c20000c8c20000c84200000000
   motion:
     delay: 0
     position: {x: -100, y: -100}
