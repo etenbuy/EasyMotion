@@ -55,6 +55,12 @@ public class MotionBase2D {
 #else
     protected Vector2 initPosition { get; private set; }
 #endif
+
+    /// <summary>
+    /// 初期の向き
+    /// </summary>
+    public float initDirection = NO_DIRECTION;
+
     /// <summary>
     /// 実行時のモーション状態定義
     /// </summary>
@@ -88,8 +94,14 @@ public class MotionBase2D {
     /// モーションインスタンスを初期化する
     /// </summary>
     /// <param name="objTrans">GameObjectのTransform</param>
-    public void InitMotion(Transform objTrans) {
+    /// <param name="initDir">初期の向き</param>
+    public void InitMotion(Transform objTrans, float initDir = NO_DIRECTION) {
         transform = objTrans.transform;
+        if ( initDir == NO_DIRECTION ) {
+            initDirection = transform.localEulerAngles.z;
+        } else {
+            initDirection = initDir;
+        }
         OnInit();
     }
 

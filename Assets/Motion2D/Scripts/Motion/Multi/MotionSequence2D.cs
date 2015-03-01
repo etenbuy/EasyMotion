@@ -100,6 +100,7 @@ public class MotionSequence2D : MotionBase2D {
 
             // 次のモーション初期化
             transform.localPosition = new Vector3(position.x, position.y, transform.localPosition.z);
+            motions[current].InitMotion(transform, motions[current - 1].direction);
             motions[current].StartMotion();
 
             // 向きの更新

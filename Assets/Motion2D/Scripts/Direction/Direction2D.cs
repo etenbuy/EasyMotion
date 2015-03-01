@@ -59,7 +59,13 @@ public class Direction2D {
 
             case Type.MotionRelative:
                 // モーションの向きとの相対角度
-                return angle + motion.direction;
+                var direction = motion.initDirection;
+
+                if ( direction == MotionBase2D.NO_DIRECTION ) {
+                    return angle + motion.transform.localEulerAngles.z;
+                } else {
+                    return angle + direction;
+                }
 
             case Type.TransformRelative:
                 // Transformの向きとの相対角度
