@@ -23,6 +23,7 @@ public class RotationBase2D {
         None,
         Rotate,
         Forward,
+        Target,
     };
 
     /// <summary>
@@ -32,6 +33,7 @@ public class RotationBase2D {
         { RotationType.None, typeof(RotationBase2D) },
         { RotationType.Rotate, typeof(Rotate2D) },
         { RotationType.Forward, typeof(RotateForward2D) },
+        { RotationType.Target, typeof(RotateToTarget2D) },
     };
 
     /// <summary>

@@ -108,8 +108,8 @@ MonoBehaviour:
     delay: 0
     position: {x: 0, y: 0}
     initDirection: 3.40282347e+38
-  rotationType: 0
-  serializedRotation: 00000000
+  rotationType: 3
+  serializedRotation: 000000000e0000004d6f74696f6e53657175656e636500000000000034420000b4c2
   rotation:
     delay: 0
     angle: 0
