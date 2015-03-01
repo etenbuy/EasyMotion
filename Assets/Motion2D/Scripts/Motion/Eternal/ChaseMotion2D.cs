@@ -18,12 +18,7 @@ public class ChaseMotion2D : EternalMotion2D {
     /// <summary>
     /// 初期の向き
     /// </summary>
-    private float fromAngle;
-
-    /// <summary>
-    /// 初期の向きは現在の向きの相対値とするかどうか
-    /// </summary>
-    private bool relativeAngle;
+    private Direction2D fromDirection;
 
     /// <summary>
     /// 前進する速さ
@@ -75,11 +70,16 @@ public class ChaseMotion2D : EternalMotion2D {
     /// </summary>
     public MotionEvent onTarget;
 
+    public ChaseMotion2D() {
+        fromDirection = new Direction2D(this);
+    }
+
     /// <summary>
     /// 永久モーションの初期化処理
     /// </summary>
     protected override void OnEternalStart() {
-        curAngle = relativeAngle ? fromAngle + transform.localEulerAngles.z : fromAngle;
+        //curAngle = relativeAngle ? fromAngle + transform.localEulerAngles.z : fromAngle;
+        curAngle = fromDirection.direction;
     }
 
     /// <summary>
@@ -152,8 +152,7 @@ public class ChaseMotion2D : EternalMotion2D {
         }
 
         return result
-            .Concat(BitConverter.GetBytes(fromAngle))
-            .Concat(BitConverter.GetBytes(relativeAngle))
+            .Concat(fromDirection.Serialize())
             .Concat(BitConverter.GetBytes(speed))
             .Concat(BitConverter.GetBytes((int)rotateTimeFuncType))
             .Concat(rotateTimeFunc.Serialize())
@@ -172,10 +171,7 @@ public class ChaseMotion2D : EternalMotion2D {
     public override int Deserialize(byte[] bytes, int offset) {
         offset = base.Deserialize(bytes, offset);
 
-        fromAngle = BitConverter.ToSingle(bytes, offset);
-        offset += sizeof(float);
-        relativeAngle = BitConverter.ToBoolean(bytes, offset);
-        offset += sizeof(bool);
+        offset = fromDirection.Deserialize(bytes, offset);
         speed = BitConverter.ToSingle(bytes, offset);
         offset += sizeof(float);
 
@@ -210,8 +206,8 @@ public class ChaseMotion2D : EternalMotion2D {
     /// </summary>
     public override void DrawGUI() {
         base.DrawGUI();
-        fromAngle = UnityEditor.EditorGUILayout.FloatField("From Angle", fromAngle);
-        relativeAngle = UnityEditor.EditorGUILayout.Toggle("Relative Angle", relativeAngle);
+
+        fromDirection.DrawGUI();
         speed = UnityEditor.EditorGUILayout.FloatField("Speed", speed);
 
         var prevTimeFuncType = rotateTimeFuncType;

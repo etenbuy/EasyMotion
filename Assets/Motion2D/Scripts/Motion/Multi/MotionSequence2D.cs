@@ -29,7 +29,7 @@ public class MotionSequence2D : MotionBase2D {
     /// <summary>
     /// 現在の向き
     /// </summary>
-    private float curAngle;
+    private float curAngle = NO_DIRECTION;
 
     /// <summary>
     /// モーション切り替えイベント
