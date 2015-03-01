@@ -238,16 +238,16 @@ public class MoveArc2D : LimitedMotion2D {
     }
 
     /// <summary>
-    /// モーション終了時の向き
+    /// 終端位置の向きを取得する
     /// </summary>
-    public override float toDirection {
-        get {
-            var dir = fromDirection.direction;
-            if ( dir == NO_DIRECTION ) {
-                return NO_DIRECTION;
-            }
-            return dir + rotateAngle;
+    /// <param name="from">開始位置</param>
+    /// <param name="fromAngle">開始角度</param>
+    /// <returns>終端位置の向き</returns>
+    public override float GetEndDirection(Vector2 from, float fromAngle) {
+        if ( fromAngle == NO_DIRECTION ) {
+            return NO_DIRECTION;
         }
+        return fromAngle + rotateAngle;
     }
 #endif
 }

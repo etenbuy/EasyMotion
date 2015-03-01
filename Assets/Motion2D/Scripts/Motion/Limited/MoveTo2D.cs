@@ -128,5 +128,16 @@ public class MoveTo2D : LimitedMotion2D {
             duration = line.magnitude / speed;
         }
     }
+
+    /// <summary>
+    /// 終端位置の向きを取得する
+    /// </summary>
+    /// <param name="from">開始位置</param>
+    /// <param name="fromAngle">開始角度</param>
+    /// <returns>終端位置の向き</returns>
+    public override float GetEndDirection(Vector2 from, float fromAngle) {
+        var dir = to - from;
+        return Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+    }
 #endif
 }

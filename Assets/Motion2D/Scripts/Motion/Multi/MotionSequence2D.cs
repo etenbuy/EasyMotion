@@ -49,11 +49,18 @@ public class MotionSequence2D : MotionBase2D {
         base.OnInit();
 
 #if UNITY_EDITOR
+        drawGizmos = false;
+
+        var from = transform.localPosition;
         var initDir = initDirection;
+
         foreach ( var motion in motions ) {
             motion.InitMotion(transform, initDir);
-            initDir = motion.toDirection;
+            initDir = motion.GetEndDirection(from, initDir);
+            from = motion.DrawGizmos(from);
         }
+
+        drawGizmos = true;
 #else
         foreach ( var motion in motions ) {
             motion.InitMotion(transform);
@@ -308,8 +315,8 @@ public class MotionSequence2D : MotionBase2D {
                 from = motion.DrawGizmos(transform, from);
             } else {
                 motion.initDirection = initDir;
+                initDir = motion.GetEndDirection(from, initDir);
                 from = motion.DrawGizmos(transform, from);
-                initDir = motion.toDirection;
             }
         }
 

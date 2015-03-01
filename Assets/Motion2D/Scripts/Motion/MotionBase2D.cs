@@ -455,12 +455,13 @@ public class MotionBase2D {
     }
 
     /// <summary>
-    /// モーション終了時の向き
+    /// 終端位置の向きを取得する
     /// </summary>
-    public virtual float toDirection {
-        get {
-            return initDirection;
-        }
+    /// <param name="from">開始位置</param>
+    /// <param name="fromAngle">開始角度</param>
+    /// <returns>終端位置の向き</returns>
+    public virtual float GetEndDirection(Vector2 from, float fromAngle) {
+        return initDirection;
     }
 #endif
 }

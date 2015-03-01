@@ -128,16 +128,17 @@ public class MoveAdd2D : LimitedMotion2D {
     }
 
     /// <summary>
-    /// モーション終了時の向き
+    /// 終端位置の向きを取得する
     /// </summary>
-    public override float toDirection {
-        get {
-            if ( move == Vector2.zero ) {
-                return initDirection;
-            }
-
-            return Mathf.Atan2(move.y, move.x) * Mathf.Rad2Deg;
+    /// <param name="from">開始位置</param>
+    /// <param name="fromAngle">開始角度</param>
+    /// <returns>終端位置の向き</returns>
+    public override float GetEndDirection(Vector2 from, float fromAngle) {
+        if ( move == Vector2.zero ) {
+            return initDirection;
         }
+
+        return Mathf.Atan2(move.y, move.x) * Mathf.Rad2Deg;
     }
 #endif
 }
