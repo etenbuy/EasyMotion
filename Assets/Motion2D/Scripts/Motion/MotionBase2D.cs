@@ -234,6 +234,12 @@ public class MotionBase2D {
         }
     }
 
+    /// <summary>
+    /// 初速度を指定する
+    /// </summary>
+    /// <param name="vel">初速度</param>
+    public virtual void SetInitVelocity(Vector2 vel) { }
+
 #if UNITY_EDITOR
     /// <summary>
     /// エディタに表示するGizmo色

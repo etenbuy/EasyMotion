@@ -200,6 +200,17 @@ public class ChaseMotion2D : EternalMotion2D {
         }
     }
 
+    /// <summary>
+    /// 初速度を指定する
+    /// </summary>
+    /// <param name="vel">初速度</param>
+    public override void SetInitVelocity(Vector2 vel) {
+        speed = vel.magnitude;
+        if ( vel != Vector2.zero ) {
+            curAngle = Mathf.Atan2(vel.y, vel.x) * Mathf.Rad2Deg;
+        }
+    }
+
 #if UNITY_EDITOR
     /// <summary>
     /// インスペクタ上のGUIを描画する

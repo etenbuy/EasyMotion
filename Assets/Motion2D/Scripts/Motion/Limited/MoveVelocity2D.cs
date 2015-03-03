@@ -79,6 +79,15 @@ public class MoveVelocity2D : LimitedMotion2D {
         }
     }
 
+    /// <summary>
+    /// 初速度を指定する
+    /// </summary>
+    /// <param name="vel">初速度</param>
+    public override void SetInitVelocity(Vector2 vel) {
+        velocity = vel;
+        curAngle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
+    }
+
 #if UNITY_EDITOR
     /// <summary>
     /// インスペクタ上のGUIを描画する

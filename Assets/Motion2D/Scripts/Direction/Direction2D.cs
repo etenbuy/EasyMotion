@@ -18,7 +18,7 @@ public class Direction2D {
     /// <summary>
     /// 向きの表現方法
     /// </summary>
-    enum Type {
+    public enum Type {
         None,                   // 絶対角度
         MotionRelative,         // モーションの向きとの相対角度
         TransformRelative,      // Transformの向きとの相対角度
@@ -27,12 +27,12 @@ public class Direction2D {
     /// <summary>
     /// 向きの表現方法
     /// </summary>
-    private Type type = Type.None;
+    public Type type = Type.None;
 
     /// <summary>
     /// 角度
     /// </summary>
-    private float angle;
+    public float angle;
 
     /// <summary>
     /// 管理元のモーションオブジェクト

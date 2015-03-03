@@ -108,6 +108,17 @@ public class MoveDirection2D : EternalMotion2D {
     }
 
     /// <summary>
+    /// 初速度を指定する
+    /// </summary>
+    /// <param name="vel">初速度</param>
+    public override void SetInitVelocity(Vector2 vel) {
+        velocity = vel;
+        moveDirection.type = Direction2D.Type.None;
+        moveDirection.angle = Mathf.Atan2(vel.y, vel.x) * Mathf.Rad2Deg;
+        UpdateParam();
+    }
+
+    /// <summary>
     /// 内部的に使用する進行方向・速度を更新する
     /// </summary>
     private void UpdateParam() {
