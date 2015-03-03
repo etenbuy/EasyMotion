@@ -113,6 +113,7 @@ public class MotionBase2D {
         state = delay > 0 ? State.Waiting : State.Running;
         startTime = Time.time;
         position = initPosition = transform.localPosition;
+        onStartCalled = false;
     }
 
     /// <summary>

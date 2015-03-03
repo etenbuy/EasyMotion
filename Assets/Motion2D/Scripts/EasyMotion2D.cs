@@ -30,6 +30,7 @@ public class EasyMotion2D : MonoBehaviour {
         Direction,
         LimitedLiner,
         TweenVelocity,
+        Loop,
     };
 
     /// <summary>
@@ -46,6 +47,7 @@ public class EasyMotion2D : MonoBehaviour {
         { MotionType.Direction, typeof(MoveDirection2D) },
         { MotionType.LimitedLiner, typeof(MoveVelocity2D) },
         { MotionType.TweenVelocity, typeof(TweenVelocity2D) },
+        { MotionType.Loop, typeof(MotionLoop2D) },
     };
 
     /// <summary>

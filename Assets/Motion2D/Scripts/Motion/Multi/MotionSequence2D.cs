@@ -19,17 +19,17 @@ public class MotionSequence2D : MotionBase2D {
     /// <summary>
     /// 動作対象のモーション
     /// </summary>
-    private MotionBase2D[] motions;
+    protected MotionBase2D[] motions;
 
     /// <summary>
     /// 現在実行中のモーション
     /// </summary>
-    private int current;
+    protected int current;
 
     /// <summary>
     /// 現在の向き
     /// </summary>
-    private float curAngle = NO_DIRECTION;
+    protected float curAngle = NO_DIRECTION;
 
     /// <summary>
     /// モーション切り替えイベント

@@ -79,6 +79,7 @@ public class ChaseMotion2D : EternalMotion2D {
     /// </summary>
     protected override void OnEternalStart() {
         curAngle = fromDirection.direction;
+        prevRotateTime = rotateTimeFunc.GetTime(realTime);
     }
 
     /// <summary>
