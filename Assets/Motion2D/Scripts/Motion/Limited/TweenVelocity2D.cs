@@ -97,6 +97,14 @@ public class TweenVelocity2D : LimitedMotion2D {
     }
 
     /// <summary>
+    /// 初速度を指定する
+    /// </summary>
+    /// <param name="vel">初速度</param>
+    public override void SetInitVelocity(Vector2 vel) {
+        fromVelocity = vel;
+    }
+
+    /// <summary>
     /// 位置を時刻より取得する
     /// </summary>
     /// <param name="time">時刻</param>
