@@ -183,6 +183,17 @@ public class MotionSequence2D : MotionBase2D {
         }
     }
 
+    /// <summary>
+    /// 初速度を指定する
+    /// </summary>
+    /// <param name="vel">初速度</param>
+    public override void SetInitVelocity(Vector2 vel) {
+        if ( motions.Length > 0 ) {
+            // 最初のモーションにのみ初速度を適用
+            motions[0].SetInitVelocity(vel);
+        }
+    }
+
 #if UNITY_EDITOR
     /// <summary>
     /// インスペクタ上のGUIを描画する
