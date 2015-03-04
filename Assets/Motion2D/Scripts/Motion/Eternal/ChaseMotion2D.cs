@@ -207,7 +207,8 @@ public class ChaseMotion2D : EternalMotion2D {
     public override void SetInitVelocity(Vector2 vel) {
         speed = vel.magnitude;
         if ( vel != Vector2.zero ) {
-            curAngle = Mathf.Atan2(vel.y, vel.x) * Mathf.Rad2Deg;
+            fromDirection.type = Direction2D.Type.None;
+            fromDirection.angle = Mathf.Atan2(vel.y, vel.x) * Mathf.Rad2Deg;
         }
     }
 
