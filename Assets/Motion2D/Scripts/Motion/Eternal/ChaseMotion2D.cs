@@ -70,15 +70,25 @@ public class ChaseMotion2D : EternalMotion2D {
     /// </summary>
     public MotionEvent onTarget;
 
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
     public ChaseMotion2D() {
         fromDirection = new Direction2D(this);
+    }
+
+    /// <summary>
+    /// モーションの初期化処理
+    /// </summary>
+    protected override void OnInit() {
+        base.OnInit();
+        curAngle = fromDirection.direction;
     }
 
     /// <summary>
     /// 永久モーションの初期化処理
     /// </summary>
     protected override void OnEternalStart() {
-        curAngle = fromDirection.direction;
         prevRotateTime = rotateTimeFunc.GetTime(realTime);
     }
 

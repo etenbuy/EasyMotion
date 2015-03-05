@@ -60,6 +60,8 @@ public class MoveArc2D : LimitedMotion2D {
             fromAngleRad += 180;
         }
 
+        curAngle = fromAngleRad;
+
         // 弧度法表記に変換
         fromAngleRad *= Mathf.Deg2Rad;
     }

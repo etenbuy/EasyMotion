@@ -26,10 +26,11 @@ public class MoveVelocity2D : LimitedMotion2D {
     private float curAngle;
 
     /// <summary>
-    /// 時限モーションの初期化処理
+    /// モーションの初期化処理
     /// </summary>
-    /// <param name="progress">進捗率</param>
-    protected override void OnLimitedStart() {
+    protected override void OnInit() {
+        base.OnInit();
+
         curAngle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
     }
 

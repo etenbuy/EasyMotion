@@ -26,9 +26,10 @@ public class MoveLiner2D : EternalMotion2D {
     private float curAngle;
 
     /// <summary>
-    /// 永久モーションの初期化処理
+    /// モーションの初期化処理
     /// </summary>
-    protected override void OnEternalStart() {
+    protected override void OnInit() {
+        base.OnInit();
         curAngle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
     }
 

@@ -31,13 +31,6 @@ public class TweenVelocity2D : LimitedMotion2D {
     private float curTime;
 
     /// <summary>
-    /// 時限モーションの初期化処理
-    /// </summary>
-    /// <param name="progress">進捗率</param>
-    protected override void OnLimitedStart() {
-    }
-
-    /// <summary>
     /// 時限モーションの更新処理
     /// </summary>
     /// <param name="progress">進捗率</param>
@@ -87,7 +80,9 @@ public class TweenVelocity2D : LimitedMotion2D {
     public override float currentDirection {
         get {
             Vector2 vel;
-            if ( duration == 0 ) {
+            if ( toVelocity == Vector2.zero ) {
+                vel = fromVelocity;
+            } else if ( duration == 0 ) {
                 vel = toVelocity;
             } else {
                 vel = fromVelocity + (toVelocity - fromVelocity) * curTime / duration;
@@ -144,7 +139,8 @@ public class TweenVelocity2D : LimitedMotion2D {
         }
         var to = points[POINT_NUM] = from + GetPosition(duration);
         DrawLine(points);
-        DrawArrowCap(to, Mathf.Atan2(toVelocity.y, toVelocity.x) * Mathf.Rad2Deg);
+        var vel = toVelocity == Vector2.zero ? fromVelocity : toVelocity;
+        DrawArrowCap(to, Mathf.Atan2(vel.y, vel.x) * Mathf.Rad2Deg);
 
         return to;
     }

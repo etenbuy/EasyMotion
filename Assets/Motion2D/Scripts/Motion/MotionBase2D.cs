@@ -68,6 +68,7 @@ public class MotionBase2D {
         Disable,
         Waiting,
         Running,
+        End,
     }
 
     /// <summary>
@@ -153,7 +154,7 @@ public class MotionBase2D {
 
             if ( !nextUpdate ) {
                 // モーション終了なら無効状態に遷移
-                state = State.Disable;
+                state = State.End;
 
                 if ( onEnd != null ) {
                     // モーション終了イベント実行
@@ -213,7 +214,7 @@ public class MotionBase2D {
     /// </summary>
     public float direction {
         get {
-            if ( state != State.Running ) {
+            if ( state != State.Running && state != State.End ) {
                 return NO_DIRECTION;
             }
             return currentDirection;
@@ -260,6 +261,11 @@ public class MotionBase2D {
     /// モーション実行中の色
     /// </summary>
     private static Color runningColor = Color.magenta;
+
+    /// <summary>
+    /// モーション実行終了後の色
+    /// </summary>
+    private static Color endColor = Color.gray;
 
     /// <summary>
     /// インスペクタ上のGUIを描画する
@@ -321,6 +327,8 @@ public class MotionBase2D {
                 return waitingColor;
             case State.Running:
                 return runningColor;
+            case State.End:
+                return endColor;
             }
 
             return disableColor;
