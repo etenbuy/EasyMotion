@@ -153,6 +153,13 @@ public class AdvancedMotion2D : MotionBase2D {
     public override void DrawGUI() {
         base.DrawGUI();
 
+        if ( motion == null ) {
+            motion = EasyMotion2D.CreateInstance(EasyMotion2D.MotionType.Stop);
+        }
+        if ( rotation == null ) {
+            rotation = RotationBase2D.CreateInstance(RotationBase2D.RotationType.None);
+        }
+
         var curMotionType = EasyMotion2D.GetSerializedType(motion.GetType());
         var newMotionType = (EasyMotion2D.MotionType)UnityEditor.EditorGUILayout.EnumPopup("Motion Type", curMotionType);
         if ( newMotionType != curMotionType ) {
