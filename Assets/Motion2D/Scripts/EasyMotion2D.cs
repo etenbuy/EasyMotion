@@ -31,6 +31,7 @@ public class EasyMotion2D : MonoBehaviour {
         LimitedLiner,
         TweenVelocity,
         Loop,
+        Advanced,
     };
 
     /// <summary>
@@ -48,6 +49,7 @@ public class EasyMotion2D : MonoBehaviour {
         { MotionType.LimitedLiner, typeof(MoveVelocity2D) },
         { MotionType.TweenVelocity, typeof(TweenVelocity2D) },
         { MotionType.Loop, typeof(MotionLoop2D) },
+        { MotionType.Advanced, typeof(AdvancedMotion2D) },
     };
 
     /// <summary>

@@ -10,6 +10,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// 2D回転動作の基底クラス。
@@ -122,11 +123,13 @@ public class RotationBase2D {
             var nextUpdate = OnUpdate();
 
             // 向き更新
-            transform.localEulerAngles = new Vector3(
-                transform.localEulerAngles.x,
-                transform.localEulerAngles.y,
-                angle
-            );
+            if ( type != RotationType.None ) {
+                transform.localEulerAngles = new Vector3(
+                    transform.localEulerAngles.x,
+                    transform.localEulerAngles.y,
+                    angle
+                );
+            }
 
             if ( !nextUpdate ) {
                 // 回転動作終了なら無効状態に遷移
@@ -181,7 +184,9 @@ public class RotationBase2D {
     /// <param name="type"></param>
     /// <returns></returns>
     public static RotationBase2D CreateInstance(RotationBase2D.RotationType type) {
-        return Activator.CreateInstance(runtimeType[type]) as RotationBase2D;
+        var rotation = Activator.CreateInstance(runtimeType[type]) as RotationBase2D;
+        rotation.type = type;
+        return rotation;
     }
 
     /// <summary>
@@ -198,6 +203,31 @@ public class RotationBase2D {
             rotation.Deserialize(bytes, 0);
         }
         return rotation;
+    }
+
+    /// <summary>
+    /// デシリアライズされた回転動作オブジェクトを取得する
+    /// </summary>
+    /// <param name="type">回転動作型</param>
+    /// <param name="bytes">シリアライズ済み回転動作データ</param>
+    /// <param name="offset">モーションデータの開始位置</param>
+    /// <param name="nextOffset">次のモーションデータの開始位置</param>
+    /// <returns>実行時回転動作オブジェクト</returns>
+    public static RotationBase2D GetDeserializedRotation(RotationType type, byte[] bytes, int offset, out int nextOffset) {
+        // 回転動作オブジェクト作成
+        var rotation = CreateInstance(type);
+        // 回転動作データのデシリアライズ
+        nextOffset = rotation.Deserialize(bytes, offset);
+        return rotation;
+    }
+
+    /// <summary>
+    /// シリアライズ済みモーション型を取得する
+    /// </summary>
+    /// <param name="type">実行時モーション型</param>
+    /// <returns>シリアライズ済みモーション型</returns>
+    public static RotationType GetSerializedType(Type type) {
+        return runtimeType.First(x => x.Value == type).Key;
     }
 
     /// <summary>
